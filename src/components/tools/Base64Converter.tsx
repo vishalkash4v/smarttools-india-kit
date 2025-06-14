@@ -127,7 +127,7 @@ const Base64Converter = () => {
             Base64 Encoder/Decoder
           </CardTitle>
           <CardDescription>
-            Encode text to Base64, decode Base64 strings, or convert files to Base64.
+            Encode text to Base64, decode Base64 strings, or convert files (up to 2MB) to Base64.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -149,7 +149,7 @@ const Base64Converter = () => {
 
             <TabsContent value="text" className="space-y-6">
               {/* Mode Toggle for Text */}
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Button
                   variant={mode === 'encode' ? 'default' : 'outline'}
                   onClick={() => setMode('encode')}
@@ -189,7 +189,7 @@ const Base64Converter = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Button onClick={handleConvert} disabled={!inputText} className="flex-1">
                   {mode === 'encode' ? 'Encode' : 'Decode'}
                 </Button>
@@ -229,7 +229,7 @@ const Base64Converter = () => {
               {/* File Upload for Images */}
               <div className="space-y-2">
                 <Label htmlFor="imageInput">Upload Image (Max 2MB)</Label>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     ref={fileInputRef}
                     id="imageInput"
@@ -294,7 +294,7 @@ const Base64Converter = () => {
               {/* File Upload for Audio */}
               <div className="space-y-2">
                 <Label htmlFor="audioInput">Upload Audio File (Max 2MB)</Label>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     ref={fileInputRef}
                     id="audioInput"
