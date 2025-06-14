@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -12,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator as CalculatorIcon, Gift, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Settings, Sparkles, ArrowLeft, Binary, TrendingUp, PiggyBank, Landmark, Receipt, Thermometer, Ruler } from 'lucide-react';
+import { Home, Percent, Calculator as CalculatorIcon, Gift, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Settings, Sparkles, ArrowLeft, Binary, TrendingUp, PiggyBank, Landmark, Receipt, Thermometer, Ruler, Type, PenTool } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const toolCategories = [
@@ -45,6 +46,8 @@ const toolCategories = [
       { title: 'Duplicate Line Remover', url: '/duplicate-line-remover', icon: ListX, pageId: 'duplicate-line-remover' },
       { title: 'JSON Formatter', url: '/json-formatter', icon: Braces, pageId: 'json-formatter' },
       { title: 'Base64 Encoder/Decoder', url: '/base64-converter', icon: Binary, pageId: 'base64-converter' },
+      { title: 'Lorem Ipsum Generator', url: '/lorem-ipsum-generator', icon: Type, pageId: 'lorem-ipsum-generator' },
+      { title: 'AI Text Rewriter', url: '/ai-text-rewriter', icon: PenTool, pageId: 'ai-text-rewriter' },
     ]
   },
   {

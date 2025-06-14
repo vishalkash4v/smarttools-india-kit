@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Percent, Calculator as CalculatorIcon, Gift, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Binary, TrendingUp, PiggyBank, Landmark, Receipt, Thermometer, Ruler } from 'lucide-react';
+import { ArrowLeft, Percent, Calculator as CalculatorIcon, Gift, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Binary, TrendingUp, PiggyBank, Landmark, Receipt, Thermometer, Ruler, Type, PenTool } from 'lucide-react';
 
 interface Tool {
   title: string;
@@ -39,6 +40,8 @@ const toolsByCategory: Record<string, Tool[]> = {
     { title: 'Duplicate Line Remover', description: 'Remove duplicate lines from large text blocks.', url: '/duplicate-line-remover', icon: ListX, comingSoon: false, category: "Text & Writing Tools" },
     { title: 'JSON Formatter', description: 'Format, validate, and beautify JSON data.', url: '/json-formatter', icon: Braces, comingSoon: false, category: "Text & Writing Tools" },
     { title: 'Base64 Encoder/Decoder', description: 'Encode and decode Base64 strings easily.', url: '/base64-converter', icon: Binary, comingSoon: false, category: "Text & Writing Tools" },
+    { title: 'Lorem Ipsum Generator', description: 'Generate placeholder text for your designs and layouts.', url: '/lorem-ipsum-generator', icon: Type, comingSoon: false, category: "Text & Writing Tools" },
+    { title: 'AI Text Rewriter', description: 'Rewrite content to avoid AI detection and make it unique.', url: '/ai-text-rewriter', icon: PenTool, comingSoon: false, category: "Text & Writing Tools" },
   ],
   "Productivity Tools": [
     { title: 'To-Do List', description: 'Manage your tasks with persistent local storage.', url: '/todo-list', icon: ListChecks, comingSoon: false, category: "Productivity Tools" },

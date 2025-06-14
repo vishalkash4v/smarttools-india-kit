@@ -53,6 +53,8 @@ const FdCalculatorPage = lazy(() => import("@/pages/tools/FdCalculatorPage"));
 const IncomeTaxCalculatorPage = lazy(() => import("@/pages/tools/IncomeTaxCalculatorPage"));
 const TemperatureConverterPage = lazy(() => import("@/pages/tools/TemperatureConverterPage"));
 const UnitConverterPage = lazy(() => import("@/pages/tools/UnitConverterPage"));
+const LoremIpsumGeneratorPage = lazy(() => import("@/pages/tools/LoremIpsumGeneratorPage"));
+const AiTextRewriterPage = lazy(() => import("@/pages/tools/AiTextRewriterPage"));
 
 function App() {
   return (
@@ -111,6 +113,8 @@ function App() {
                       <Route path="/income-tax-calculator" element={<IncomeTaxCalculatorPage />} />
                       <Route path="/temperature-converter" element={<TemperatureConverterPage />} />
                       <Route path="/unit-converter" element={<UnitConverterPage />} />
+                      <Route path="/lorem-ipsum-generator" element={<LoremIpsumGeneratorPage />} />
+                      <Route path="/ai-text-rewriter" element={<AiTextRewriterPage />} />
                     </Routes>
                   </Suspense>
                 </main>
