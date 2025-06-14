@@ -63,12 +63,7 @@ export default defineConfig(({ mode }) => ({
         '/url-shortener',
         '/hashtag-generator',
         '/social-media-planner'
-      ],
-      renderer: '@prerenderer/renderer-puppeteer',
-      rendererOptions: {
-        headless: true,
-        renderAfterDocumentEvent: 'render-event'
-      }
+      ]
     })
   ].filter(Boolean),
   resolve: {
