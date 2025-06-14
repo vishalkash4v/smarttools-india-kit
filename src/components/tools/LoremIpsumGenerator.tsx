@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 const LoremIpsumGenerator = () => {
   const [paragraphs, setParagraphs] = useState('3');
   const [wordsPerParagraph, setWordsPerParagraph] = useState('50');
+  const [randomWords, setRandomWords] = useState('false');
   const [startWithLorem, setStartWithLorem] = useState('true');
   const [generatedText, setGeneratedText] = useState('');
   const { toast } = useToast();
@@ -31,15 +32,24 @@ const LoremIpsumGenerator = () => {
     'ipsam', 'quia', 'voluptas', 'aspernatur', 'aut', 'odit', 'fugit'
   ];
 
-  const generateParagraph = (wordCount: number, isFirst: boolean) => {
+  const generateParagraph = (baseWordCount: number, isFirst: boolean) => {
     let words = [];
+    let actualWordCount = baseWordCount;
+
+    // If random words is enabled, vary the word count by ±30%
+    if (randomWords === 'true') {
+      const variation = Math.floor(baseWordCount * 0.3);
+      const minWords = Math.max(10, baseWordCount - variation);
+      const maxWords = baseWordCount + variation;
+      actualWordCount = Math.floor(Math.random() * (maxWords - minWords + 1)) + minWords;
+    }
     
     if (isFirst && startWithLorem === 'true') {
       words = ['Lorem', 'ipsum', 'dolor', 'sit', 'amet'];
-      wordCount -= 5;
+      actualWordCount -= 5;
     }
 
-    for (let i = 0; i < wordCount; i++) {
+    for (let i = 0; i < actualWordCount; i++) {
       const randomWord = loremWords[Math.floor(Math.random() * loremWords.length)];
       words.push(randomWord);
     }
@@ -95,7 +105,7 @@ const LoremIpsumGenerator = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-2">
               <Label htmlFor="paragraphs">Number of Paragraphs</Label>
               <Input
@@ -118,6 +128,19 @@ const LoremIpsumGenerator = () => {
                 value={wordsPerParagraph}
                 onChange={(e) => setWordsPerParagraph(e.target.value)}
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Random Words per Paragraph</Label>
+              <Select value={randomWords} onValueChange={setRandomWords}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="false">Fixed Count</SelectItem>
+                  <SelectItem value="true">Random (±30%)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
