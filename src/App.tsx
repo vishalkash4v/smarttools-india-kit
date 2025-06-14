@@ -1,9 +1,10 @@
-import { Suspense, lazy } from 'react';
+
+import { Suspense, lazy, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
@@ -59,6 +60,17 @@ import UrlSlugGeneratorPage from "@/pages/tools/UrlSlugGeneratorPage";
 import BarcodeGeneratorPage from "@/pages/tools/BarcodeGeneratorPage";
 import TextToHandwritingPage from "@/pages/tools/TextToHandwritingPage";
 
+// Scroll to top component
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <HelmetProvider>
@@ -69,6 +81,7 @@ function App() {
               <Toaster />
               <Sonner />
               <BrowserRouter>
+                <ScrollToTop />
                 <div className="min-h-screen flex flex-col bg-background">
                   <Header />
                   <main className="flex-1">
