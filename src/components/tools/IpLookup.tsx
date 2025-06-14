@@ -52,8 +52,8 @@ const IpLookup = () => {
     try {
       const results = await Promise.allSettled([
         fetch('https://ipapi.co/json/'),
-        fetch('https://ipv4.seeip.org/jsonip'),
-        fetch('https://ipv6.seeip.org/jsonip')
+        fetch('https://api.ipify.org?format=json'),
+        fetch('https://api64.ipify.org?format=json')
       ]);
 
       const [mainDataRes, ipv4Res, ipv6Res] = results;
@@ -166,48 +166,48 @@ const IpLookup = () => {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {ipv4 && (
-                    <div className="flex justify-between items-start gap-2">
-                      <span className="text-sm text-muted-foreground whitespace-nowrap">IPv4 Address:</span>
+                    <div className="grid grid-cols-[max-content_1fr] items-start gap-x-2">
+                      <span className="text-sm text-muted-foreground whitespace-nowrap pt-1">IPv4 Address:</span>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(ipv4, 'IPv4 Address')}
-                        className="h-auto p-1 font-mono text-sm text-right"
+                        className="h-auto p-1 font-mono text-sm text-right break-all w-full justify-end"
                       >
                         {ipv4}
                       </Button>
                     </div>
                   )}
                   {ipv6 && (
-                     <div className="flex justify-between items-start gap-2">
-                      <span className="text-sm text-muted-foreground whitespace-nowrap">IPv6 Address:</span>
+                     <div className="grid grid-cols-[max-content_1fr] items-start gap-x-2">
+                      <span className="text-sm text-muted-foreground whitespace-nowrap pt-1">IPv6 Address:</span>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(ipv6, 'IPv6 Address')}
-                        className="h-auto p-1 font-mono text-sm text-right"
+                        className="h-auto p-1 font-mono text-sm text-right break-all w-full justify-end"
                       >
                         {ipv6}
                       </Button>
                     </div>
                   )}
                    {!ipv4 && !ipv6 && ipData?.ip && (
-                    <div className="flex justify-between items-start gap-2">
-                      <span className="text-sm text-muted-foreground whitespace-nowrap">IP Address:</span>
+                    <div className="grid grid-cols-[max-content_1fr] items-start gap-x-2">
+                      <span className="text-sm text-muted-foreground whitespace-nowrap pt-1">IP Address:</span>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(ipData.ip, 'IP Address')}
-                        className="h-auto p-1 font-mono text-sm text-right"
+                        className="h-auto p-1 font-mono text-sm text-right break-all w-full justify-end"
                       >
                         {ipData.ip}
                       </Button>
                     </div>
                    )}
                   {ipData?.org && (
-                    <div className="flex justify-between items-start gap-2">
+                    <div className="grid grid-cols-[max-content_1fr] items-start gap-x-2">
                       <span className="text-sm text-muted-foreground">ISP:</span>
-                      <span className="text-sm font-medium text-right">{ipData.org}</span>
+                      <span className="text-sm font-medium text-right break-words">{ipData.org}</span>
                     </div>
                   )}
                 </CardContent>
@@ -223,29 +223,29 @@ const IpLookup = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[max-content_1fr] gap-x-2">
                       <span className="text-sm text-muted-foreground">Country:</span>
-                      <span className="text-sm font-medium">{ipData.country_name} ({ipData.country_code})</span>
+                      <span className="text-sm font-medium text-right">{ipData.country_name} ({ipData.country_code})</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[max-content_1fr] gap-x-2">
                       <span className="text-sm text-muted-foreground">Region:</span>
-                      <span className="text-sm font-medium">{ipData.region}</span>
+                      <span className="text-sm font-medium text-right">{ipData.region}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[max-content_1fr] gap-x-2">
                       <span className="text-sm text-muted-foreground">City:</span>
-                      <span className="text-sm font-medium">{ipData.city}</span>
+                      <span className="text-sm font-medium text-right">{ipData.city}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[max-content_1fr] gap-x-2">
                       <span className="text-sm text-muted-foreground">Postal:</span>
-                      <span className="text-sm font-medium">{ipData.postal || 'N/A'}</span>
+                      <span className="text-sm font-medium text-right">{ipData.postal || 'N/A'}</span>
                     </div>
-                    <div className="flex justify-between items-start">
-                      <span className="text-sm text-muted-foreground">Coordinates:</span>
+                    <div className="grid grid-cols-[max-content_1fr] items-start gap-x-2">
+                      <span className="text-sm text-muted-foreground pt-1">Coordinates:</span>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(`${ipData.latitude}, ${ipData.longitude}`, 'Coordinates')}
-                        className="h-auto p-1 text-sm text-right"
+                        className="h-auto p-1 text-sm text-right break-all w-full justify-end"
                       >
                         {ipData.latitude}, {ipData.longitude}
                       </Button>
@@ -264,25 +264,25 @@ const IpLookup = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[max-content_1fr] gap-x-2">
                       <span className="text-sm text-muted-foreground">Timezone:</span>
-                      <span className="text-sm font-medium">{ipData.timezone}</span>
+                      <span className="text-sm font-medium text-right">{ipData.timezone}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[max-content_1fr] gap-x-2">
                       <span className="text-sm text-muted-foreground">UTC Offset:</span>
-                      <span className="text-sm font-medium">{ipData.utc_offset}</span>
+                      <span className="text-sm font-medium text-right">{ipData.utc_offset}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[max-content_1fr] gap-x-2">
                       <span className="text-sm text-muted-foreground">Currency:</span>
-                      <span className="text-sm font-medium">{ipData.currency} ({ipData.currency_name})</span>
+                      <span className="text-sm font-medium text-right break-words">{ipData.currency} ({ipData.currency_name})</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[max-content_1fr] gap-x-2">
                       <span className="text-sm text-muted-foreground">Calling Code:</span>
-                      <span className="text-sm font-medium">{ipData.country_calling_code}</span>
+                      <span className="text-sm font-medium text-right">{ipData.country_calling_code}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="grid grid-cols-[max-content_1fr] gap-x-2">
                       <span className="text-sm text-muted-foreground">In EU:</span>
-                      <span className="text-sm font-medium">{ipData.in_eu ? 'Yes' : 'No'}</span>
+                      <span className="text-sm font-medium text-right">{ipData.in_eu ? 'Yes' : 'No'}</span>
                     </div>
                   </CardContent>
                 </Card>
