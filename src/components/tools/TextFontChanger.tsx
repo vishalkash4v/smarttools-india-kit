@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -55,6 +54,70 @@ const TextFontChanger = () => {
       })
     },
     {
+      name: 'Bold Italic',
+      description: 'Mathematical Bold Italic',
+      category: 'Unicode',
+      transform: (text) => text.replace(/[A-Za-z]/g, (char) => {
+        const boldItalicMap: { [key: string]: string } = {
+          'A': '𝑨', 'B': '𝑩', 'C': '𝑪', 'D': '𝑫', 'E': '𝑬', 'F': '𝑭', 'G': '𝑮', 'H': '𝑯', 'I': '𝑰', 'J': '𝑱',
+          'K': '𝑲', 'L': '𝑳', 'M': '𝑴', 'N': '𝑵', 'O': '𝑶', 'P': '𝑷', 'Q': '𝑸', 'R': '𝑹', 'S': '𝑺', 'T': '𝑻',
+          'U': '𝑼', 'V': '𝑽', 'W': '𝑾', 'X': '𝑿', 'Y': '𝒀', 'Z': '𝒁',
+          'a': '𝒂', 'b': '𝒃', 'c': '𝒄', 'd': '𝒅', 'e': '𝒆', 'f': '𝒇', 'g': '𝒈', 'h': '𝒉', 'i': '𝒊', 'j': '𝒋',
+          'k': '𝒌', 'l': '𝒍', 'm': '𝒎', 'n': '𝒏', 'o': '𝒐', 'p': '𝒑', 'q': '𝒒', 'r': '𝒓', 's': '𝒔', 't': '𝒕',
+          'u': '𝒖', 'v': '𝒗', 'w': '𝒘', 'x': '𝒙', 'y': '𝒚', 'z': '𝒛'
+        };
+        return boldItalicMap[char] || char;
+      })
+    },
+    {
+      name: 'Script',
+      description: 'Mathematical Script',
+      category: 'Unicode',
+      transform: (text) => text.replace(/[A-Za-z]/g, (char) => {
+        const scriptMap: { [key: string]: string } = {
+          'A': '𝒜', 'B': 'ℬ', 'C': '𝒞', 'D': '𝒟', 'E': 'ℰ', 'F': 'ℱ', 'G': '𝒢', 'H': 'ℋ', 'I': 'ℐ', 'J': '𝒥',
+          'K': '𝒦', 'L': 'ℒ', 'M': 'ℳ', 'N': '𝒩', 'O': '𝒪', 'P': '𝒫', 'Q': '𝒬', 'R': 'ℛ', 'S': '𝒮', 'T': '𝒯',
+          'U': '𝒰', 'V': '𝒱', 'W': '𝒲', 'X': '𝒳', 'Y': '𝒴', 'Z': '𝒵',
+          'a': '𝒶', 'b': '𝒷', 'c': '𝒸', 'd': '𝒹', 'e': 'ℯ', 'f': '𝒻', 'g': 'ℊ', 'h': '𝒽', 'i': '𝒾', 'j': '𝒿',
+          'k': '𝓀', 'l': '𝓁', 'm': '𝓂', 'n': '𝓃', 'o': 'ℴ', 'p': '𝓅', 'q': '𝓆', 'r': '𝓇', 's': '𝓈', 't': '𝓉',
+          'u': '𝓊', 'v': '𝓋', 'w': '𝓌', 'x': '𝓍', 'y': '𝓎', 'z': '𝓏'
+        };
+        return scriptMap[char] || char;
+      })
+    },
+    {
+      name: 'Bold Script',
+      description: 'Mathematical Bold Script',
+      category: 'Unicode',
+      transform: (text) => text.replace(/[A-Za-z]/g, (char) => {
+        const boldScriptMap: { [key: string]: string } = {
+          'A': '𝓐', 'B': '𝓑', 'C': '𝓒', 'D': '𝓓', 'E': '𝓔', 'F': '𝓕', 'G': '𝓖', 'H': '𝓗', 'I': '𝓘', 'J': '𝓙',
+          'K': '𝓚', 'L': '𝓛', 'M': '𝓜', 'N': '𝓝', 'O': '𝓞', 'P': '𝓟', 'Q': '𝓠', 'R': '𝓡', 'S': '𝓢', 'T': '𝓣',
+          'U': '𝓤', 'V': '𝓥', 'W': '𝓦', 'X': '𝓧', 'Y': '𝓨', 'Z': '𝓩',
+          'a': '𝓪', 'b': '𝓫', 'c': '𝓬', 'd': '𝓭', 'e': '𝓮', 'f': '𝓯', 'g': '𝓰', 'h': '𝓱', 'i': '𝓲', 'j': '𝓳',
+          'k': '𝓴', 'l': '𝓵', 'm': '𝓶', 'n': '𝓷', 'o': '𝓸', 'p': '𝓹', 'q': '𝓺', 'r': '𝓻', 's': '𝓼', 't': '𝓽',
+          'u': '𝓾', 'v': '𝓿', 'w': '𝔀', 'x': '𝔁', 'y': '𝔂', 'z': '𝔃'
+        };
+        return boldScriptMap[char] || char;
+      })
+    },
+    {
+      name: 'Fraktur',
+      description: 'Mathematical Fraktur',
+      category: 'Unicode',
+      transform: (text) => text.replace(/[A-Za-z]/g, (char) => {
+        const frakturMap: { [key: string]: string } = {
+          'A': '𝔄', 'B': '𝔅', 'C': 'ℭ', 'D': '𝔇', 'E': '𝔈', 'F': '𝔉', 'G': '𝔊', 'H': 'ℌ', 'I': 'ℑ', 'J': '𝔍',
+          'K': '𝔎', 'L': '𝔏', 'M': '𝔐', 'N': '𝔑', 'O': '𝔒', 'P': '𝔓', 'Q': '𝔔', 'R': 'ℜ', 'S': '𝔖', 'T': '𝔗',
+          'U': '𝔘', 'V': '𝔙', 'W': '𝔚', 'X': '𝔛', 'Y': '𝔜', 'Z': 'ℨ',
+          'a': '𝔞', 'b': '𝔟', 'c': '𝔠', 'd': '𝔡', 'e': '𝔢', 'f': '𝔣', 'g': '𝔤', 'h': '𝔥', 'i': '𝔦', 'j': '𝔧',
+          'k': '𝔨', 'l': '𝔩', 'm': '𝔪', 'n': '𝔫', 'o': '𝔬', 'p': '𝔭', 'q': '𝔮', 'r': '𝔯', 's': '𝔰', 't': '𝔱',
+          'u': '𝔲', 'v': '𝔳', 'w': '𝔴', 'x': '𝔵', 'y': '𝔶', 'z': '𝔷'
+        };
+        return frakturMap[char] || char;
+      })
+    },
+    {
       name: 'Double Struck',
       description: 'Mathematical Double-Struck',
       category: 'Unicode',
@@ -69,6 +132,40 @@ const TextFontChanger = () => {
           '0': '𝟘', '1': '𝟙', '2': '𝟚', '3': '𝟛', '4': '𝟜', '5': '𝟝', '6': '𝟞', '7': '𝟟', '8': '𝟠', '9': '𝟡'
         };
         return doubleMap[char] || char;
+      })
+    },
+    {
+      name: 'Sans-Serif',
+      description: 'Mathematical Sans-Serif',
+      category: 'Unicode',
+      transform: (text) => text.replace(/[A-Za-z0-9]/g, (char) => {
+        const sansMap: { [key: string]: string } = {
+          'A': '𝖠', 'B': '𝖡', 'C': '𝖢', 'D': '𝖣', 'E': '𝖤', 'F': '𝖥', 'G': '𝖦', 'H': '𝖧', 'I': '𝖨', 'J': '𝖩',
+          'K': '𝖪', 'L': '𝖫', 'M': '𝖬', 'N': '𝖭', 'O': '𝖮', 'P': '𝖯', 'Q': '𝖰', 'R': '𝖱', 'S': '𝖲', 'T': '𝖳',
+          'U': '𝖴', 'V': '𝖵', 'W': '𝖶', 'X': '𝖷', 'Y': '𝖸', 'Z': '𝖹',
+          'a': '𝖺', 'b': '𝖻', 'c': '𝖼', 'd': '𝖽', 'e': '𝖾', 'f': '𝖿', 'g': '𝗀', 'h': '𝗁', 'i': '𝗂', 'j': '𝗃',
+          'k': '𝗄', 'l': '𝗅', 'm': '𝗆', 'n': '𝗇', 'o': '𝗈', 'p': '𝗉', 'q': '𝗊', 'r': '𝗋', 's': '𝗌', 't': '𝗍',
+          'u': '𝗎', 'v': '𝗏', 'w': '𝗐', 'x': '𝗑', 'y': '𝗒', 'z': '𝗓',
+          '0': '𝟢', '1': '𝟣', '2': '𝟤', '3': '𝟥', '4': '𝟦', '5': '𝟧', '6': '𝟨', '7': '𝟩', '8': '𝟪', '9': '𝟫'
+        };
+        return sansMap[char] || char;
+      })
+    },
+    {
+      name: 'Bold Sans-Serif',
+      description: 'Mathematical Bold Sans-Serif',
+      category: 'Unicode',
+      transform: (text) => text.replace(/[A-Za-z0-9]/g, (char) => {
+        const boldSansMap: { [key: string]: string } = {
+          'A': '𝗔', 'B': '𝗕', 'C': '𝗖', 'D': '𝗗', 'E': '𝗘', 'F': '𝗙', 'G': '𝗚', 'H': '𝗛', 'I': '𝗜', 'J': '𝗝',
+          'K': '𝗞', 'L': '𝗟', 'M': '𝗠', 'N': '𝗡', 'O': '𝗢', 'P': '𝗣', 'Q': '𝗤', 'R': '𝗥', 'S': '𝗦', 'T': '𝗧',
+          'U': '𝗨', 'V': '𝗩', 'W': '𝗪', 'X': '𝗫', 'Y': '𝗬', 'Z': '𝗭',
+          'a': '𝗮', 'b': '𝗯', 'c': '𝗰', 'd': '𝗱', 'e': '𝗲', 'f': '𝗳', 'g': '𝗴', 'h': '𝗵', 'i': '𝗶', 'j': '𝗷',
+          'k': '𝗸', 'l': '𝗹', 'm': '𝗺', 'n': '𝗻', 'o': '𝗼', 'p': '𝗽', 'q': '𝗾', 'r': '𝗿', 's': '𝘀', 't': '𝘁',
+          'u': '𝘂', 'v': '𝘃', 'w': '𝘄', 'x': '𝘅', 'y': '𝘆', 'z': '𝘇',
+          '0': '𝟬', '1': '𝟭', '2': '𝟮', '3': '𝟯', '4': '𝟰', '5': '𝟱', '6': '𝟲', '7': '𝟳', '8': '𝟴', '9': '𝟵'
+        };
+        return boldSansMap[char] || char;
       })
     },
     {
@@ -144,6 +241,37 @@ const TextFontChanger = () => {
         return squareMap[char.toUpperCase()] || char;
       })
     },
+    {
+      name: 'Fullwidth',
+      description: 'Wide Characters',
+      category: 'Special',
+      transform: (text) => text.replace(/[A-Za-z0-9!@#$%^&*()_+=\[\]{}|;:'"<>,.?\/~` -]/g, (char) => {
+        const fullwidthMap: { [key: string]: string } = {
+          'A': 'Ａ', 'B': 'Ｂ', 'C': 'Ｃ', 'D': 'Ｄ', 'E': 'Ｅ', 'F': 'Ｆ', 'G': 'Ｇ', 'H': 'Ｈ', 'I': 'Ｉ', 'J': 'Ｊ',
+          'K': 'Ｋ', 'L': 'Ｌ', 'M': 'Ｍ', 'N': 'Ｎ', 'O': 'Ｏ', 'P': 'Ｐ', 'Q': 'Ｑ', 'R': 'Ｒ', 'S': 'Ｓ', 'T': 'Ｔ',
+          'U': 'Ｕ', 'V': 'Ｖ', 'W': 'Ｗ', 'X': 'Ｘ', 'Y': 'Ｙ', 'Z': 'Ｚ',
+          'a': 'ａ', 'b': 'ｂ', 'c': 'ｃ', 'd': 'ｄ', 'e': 'ｅ', 'f': 'ｆ', 'g': 'ｇ', 'h': 'ｈ', 'i': 'ｉ', 'j': 'ｊ',
+          'k': 'ｋ', 'l': 'ｌ', 'm': 'ｍ', 'n': 'ｎ', 'o': 'ｏ', 'p': 'ｐ', 'q': 'ｑ', 'r': 'ｒ', 's': 'ｓ', 't': 'ｔ',
+          'u': 'ｕ', 'v': 'ｖ', 'w': 'ｗ', 'x': 'ｘ', 'y': 'ｙ', 'z': 'ｚ',
+          '0': '０', '1': '１', '2': '２', '3': '３', '4': '４', '5': '５', '6': '６', '7': '７', '8': '８', '9': '９',
+          ' ': '　', '!': '！', '@': '＠', '#': '＃', '$': '＄', '%': '％', '^': '＾', '&': '＆', '*': '＊', '(': '（', ')': '）'
+        };
+        return fullwidthMap[char] || char;
+      })
+    },
+    {
+      name: 'Small Caps',
+      description: 'Small Capital Letters',
+      category: 'Special',
+      transform: (text) => text.replace(/[a-z]/g, (char) => {
+        const smallCapsMap: { [key: string]: string } = {
+          'a': 'ᴀ', 'b': 'ʙ', 'c': 'ᴄ', 'd': 'ᴅ', 'e': 'ᴇ', 'f': 'ғ', 'g': 'ɢ', 'h': 'ʜ', 'i': 'ɪ', 'j': 'ᴊ',
+          'k': 'ᴋ', 'l': 'ʟ', 'm': 'ᴍ', 'n': 'ɴ', 'o': 'ᴏ', 'p': 'ᴘ', 'q': 'ǫ', 'r': 'ʀ', 's': 'ѕ', 't': 'ᴛ',
+          'u': 'ᴜ', 'v': 'ᴠ', 'w': 'ᴡ', 'x': 'x', 'y': 'ʏ', 'z': 'ᴢ'
+        };
+        return smallCapsMap[char] || char;
+      })
+    },
     // Decorative Styles
     {
       name: 'Zalgo Text',
@@ -180,6 +308,24 @@ const TextFontChanger = () => {
       category: 'Decorative',
       transform: (text) => text.split('').map(char => char + '\u0332').join('')
     },
+    {
+      name: 'Double Underline',
+      description: 'Text with Double Underline',
+      category: 'Decorative',
+      transform: (text) => text.split('').map(char => char + '\u0333').join('')
+    },
+    {
+      name: 'Overline',
+      description: 'Text with Line Above',
+      category: 'Decorative',
+      transform: (text) => text.split('').map(char => char + '\u0305').join('')
+    },
+    {
+      name: 'Crossed Out',
+      description: 'Text with X Through',
+      category: 'Decorative',
+      transform: (text) => text.split('').map(char => char + '\u0336\u0338').join('')
+    },
     // Text Case Styles
     {
       name: 'aLtErNaTiNg CaSe',
@@ -195,6 +341,14 @@ const TextFontChanger = () => {
       category: 'Case',
       transform: (text) => text.split('').map((char, index) => 
         index % 2 === 1 ? char.toLowerCase() : char.toUpperCase()
+      ).join('')
+    },
+    {
+      name: 'RaNdOm CaSe',
+      description: 'Random Upper and Lower Case',
+      category: 'Case',
+      transform: (text) => text.split('').map(char => 
+        Math.random() > 0.5 ? char.toUpperCase() : char.toLowerCase()
       ).join('')
     },
     {
@@ -216,6 +370,26 @@ const TextFontChanger = () => {
       transform: (text) => text.replace(/\w\S*/g, (txt) => 
         txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
       )
+    },
+    {
+      name: 'Sentence case',
+      description: 'First Letter Capitalized',
+      category: 'Case',
+      transform: (text) => text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+    },
+    // Emoji Styles
+    {
+      name: 'Letter Emojis',
+      description: 'Regional Indicator Symbols',
+      category: 'Emoji',
+      transform: (text) => text.replace(/[A-Za-z]/g, (char) => {
+        const emojiMap: { [key: string]: string } = {
+          'A': '🇦', 'B': '🇧', 'C': '🇨', 'D': '🇩', 'E': '🇪', 'F': '🇫', 'G': '🇬', 'H': '🇭', 'I': '🇮', 'J': '🇯',
+          'K': '🇰', 'L': '🇱', 'M': '🇲', 'N': '🇳', 'O': '🇴', 'P': '🇵', 'Q': '🇶', 'R': '🇷', 'S': '🇸', 'T': '🇹',
+          'U': '🇺', 'V': '🇻', 'W': '🇼', 'X': '🇽', 'Y': '🇾', 'Z': '🇿'
+        };
+        return emojiMap[char.toUpperCase()] || char;
+      })
     }
   ];
 

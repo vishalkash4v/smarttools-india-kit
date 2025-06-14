@@ -1,3 +1,4 @@
+
 import { Suspense, lazy, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -64,6 +65,7 @@ import UrlShortenerPage from "@/pages/tools/UrlShortenerPage";
 import HashtagGeneratorPage from "@/pages/tools/HashtagGeneratorPage";
 import SocialMediaPlannerPage from "@/pages/tools/SocialMediaPlannerPage";
 import TextFontChangerPage from "@/pages/tools/TextFontChangerPage";
+import UrlWrapperPage from "@/pages/tools/UrlWrapperPage";
 
 // Scroll to top component
 function ScrollToTop() {
@@ -146,6 +148,7 @@ function App() {
                         <Route path="/hashtag-generator" element={<HashtagGeneratorPage />} />
                         <Route path="/social-media-planner" element={<SocialMediaPlannerPage />} />
                         <Route path="/text-font-changer" element={<TextFontChangerPage />} />
+                        <Route path="/url-wrapper" element={<UrlWrapperPage />} />
                       </Routes>
                     </Suspense>
                   </main>

@@ -1,4 +1,3 @@
-
 import {
   LayoutDashboard,
   Settings,
@@ -107,6 +106,7 @@ export function AppSidebar() {
         { title: "Table to JSON Converter", url: "/table-to-json-converter", icon: Table },
         { title: "List Randomizer", url: "/list-randomizer", icon: Layout },
         { title: "Barcode Generator", url: "/barcode-generator", icon: Layout },
+        { title: "URL App Wrapper", url: "/url-wrapper", icon: Link2 },
       ]
     },
     {

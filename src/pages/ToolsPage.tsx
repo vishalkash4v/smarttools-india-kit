@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type } from "lucide-react";
+import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -177,6 +177,14 @@ const ToolsPage = () => {
       description: 'Generate barcodes from text for various applications.',
       path: '/barcode-generator',
       icon: Barcode
+    },
+    { 
+      id: 'url-wrapper', 
+      name: 'URL App Wrapper', 
+      category: 'Utility Tools', 
+      description: 'Convert regular URLs into app-opening links for mobile apps and web services.',
+      path: '/url-wrapper',
+      icon: Smartphone
     },
 
     // Number Tools
