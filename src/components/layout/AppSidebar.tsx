@@ -1,4 +1,3 @@
-
 import {
   LayoutDashboard,
   Settings,
@@ -27,20 +26,6 @@ import {
   Link2,
   Hash,
   CalendarDays as CalendarSchedule,
-  Brain,
-  Bot,
-  Zap,
-  Target,
-  BarChart3,
-  PieChart,
-  TrendingUp,
-  TrendingDown,
-  FileImage,
-  MessageSquare,
-  Database,
-  Layers,
-  Cpu,
-  Shuffle,
 } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -82,36 +67,6 @@ export function AppSidebar() {
       ]
     },
     {
-      title: "Stock Market Tools",
-      items: [
-        { title: "Stock Portfolio Tracker", url: "/stock-portfolio-tracker", icon: BarChart3 },
-        { title: "Stock Screener", url: "/stock-screener", icon: Target },
-        { title: "Dividend Calculator", url: "/dividend-calculator", icon: Coins },
-        { title: "Compound Interest Calculator", url: "/compound-interest-calculator", icon: TrendingUp },
-        { title: "Risk Return Calculator", url: "/risk-return-calculator", icon: Activity },
-        { title: "Options Calculator", url: "/options-calculator", icon: BarChart3 },
-        { title: "Market Volatility Calculator", url: "/market-volatility-calculator", icon: TrendingDown },
-        { title: "Retirement Calculator", url: "/retirement-calculator", icon: PieChart },
-        { title: "Asset Allocation Calculator", url: "/asset-allocation-calculator", icon: PieChart },
-        { title: "Stock Valuation Calculator", url: "/stock-valuation-calculator", icon: Calculator },
-      ]
-    },
-    {
-      title: "AI Tools",
-      items: [
-        { title: "AI Prompt Generator", url: "/ai-prompt-generator", icon: Brain },
-        { title: "AI Code Reviewer", url: "/ai-code-reviewer", icon: FileCode2 },
-        { title: "AI Content Optimizer", url: "/ai-content-optimizer", icon: Zap },
-        { title: "AI Image Generator", url: "/ai-image-generator", icon: FileImage },
-        { title: "AI Chatbot Builder", url: "/ai-chatbot-builder", icon: Bot },
-        { title: "AI Data Analyzer", url: "/ai-data-analyzer", icon: Database },
-        { title: "AI Model Comparator", url: "/ai-model-comparator", icon: Layers },
-        { title: "AI Workflow Automation", url: "/ai-workflow-automation", icon: Cpu },
-        { title: "AI Sentiment Analyzer", url: "/ai-sentiment-analyzer", icon: MessageSquare },
-        { title: "AI Text Summarizer", url: "/ai-text-summarizer", icon: FileText },
-      ]
-    },
-    {
       title: "Calculator Tools",
       items: [
         { title: "Simple Calculator", url: "/simple-calculator", icon: Calculator },
@@ -147,7 +102,7 @@ export function AppSidebar() {
         { title: "Live Preview", url: "/live-preview", icon: Layout },
         { title: "JavaScript Minifier", url: "/javascript-minifier", icon: FileCode2 },
         { title: "Table to JSON Converter", url: "/table-to-json-converter", icon: Table },
-        { title: "List Randomizer", url: "/list-randomizer", icon: Shuffle },
+        { title: "List Randomizer", url: "/list-randomizer", icon: Layout },
         { title: "Barcode Generator", url: "/barcode-generator", icon: Layout },
       ]
     },

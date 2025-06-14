@@ -5,7 +5,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Brain, Bot, Zap, Target, BarChart3, PieChart, LineChart, Activity, Coins, CandlestickChart, TrendingDown, Calculator as Calc, Smartphone, MessageSquare, FileImage, Cpu, Layers, Database, Shuffle } from "lucide-react";
+import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -114,170 +114,6 @@ const ToolsPage = () => {
       icon: StickyNote
     },
 
-    // Stock Market Tools
-    { 
-      id: 'stock-portfolio-tracker', 
-      name: 'Stock Portfolio Tracker', 
-      category: 'Stock Market Tools', 
-      description: 'Track your stock investments and portfolio performance.',
-      path: '/stock-portfolio-tracker',
-      icon: BarChart3
-    },
-    { 
-      id: 'stock-screener', 
-      name: 'Stock Screener', 
-      category: 'Stock Market Tools', 
-      description: 'Filter and find stocks based on financial criteria.',
-      path: '/stock-screener',
-      icon: Target
-    },
-    { 
-      id: 'dividend-calculator', 
-      name: 'Dividend Calculator', 
-      category: 'Stock Market Tools', 
-      description: 'Calculate dividend yields and income from stocks.',
-      path: '/dividend-calculator',
-      icon: Coins
-    },
-    { 
-      id: 'compound-interest-calculator', 
-      name: 'Compound Interest Calculator', 
-      category: 'Stock Market Tools', 
-      description: 'Calculate compound interest for long-term investments.',
-      path: '/compound-interest-calculator',
-      icon: TrendingUp
-    },
-    { 
-      id: 'risk-return-calculator', 
-      name: 'Risk Return Calculator', 
-      category: 'Stock Market Tools', 
-      description: 'Analyze risk vs return ratios for investments.',
-      path: '/risk-return-calculator',
-      icon: Activity
-    },
-    { 
-      id: 'options-calculator', 
-      name: 'Options Calculator', 
-      category: 'Stock Market Tools', 
-      description: 'Calculate options pricing and profit/loss scenarios.',
-      path: '/options-calculator',
-      icon: CandlestickChart
-    },
-    { 
-      id: 'market-volatility-calculator', 
-      name: 'Market Volatility Calculator', 
-      category: 'Stock Market Tools', 
-      description: 'Calculate and analyze market volatility metrics.',
-      path: '/market-volatility-calculator',
-      icon: TrendingDown
-    },
-    { 
-      id: 'retirement-calculator', 
-      name: 'Retirement Calculator', 
-      category: 'Stock Market Tools', 
-      description: 'Plan your retirement savings and investment goals.',
-      path: '/retirement-calculator',
-      icon: PieChart
-    },
-    { 
-      id: 'asset-allocation-calculator', 
-      name: 'Asset Allocation Calculator', 
-      category: 'Stock Market Tools', 
-      description: 'Optimize your portfolio asset allocation strategy.',
-      path: '/asset-allocation-calculator',
-      icon: PieChart
-    },
-    { 
-      id: 'stock-valuation-calculator', 
-      name: 'Stock Valuation Calculator', 
-      category: 'Stock Market Tools', 
-      description: 'Calculate intrinsic value of stocks using various models.',
-      path: '/stock-valuation-calculator',
-      icon: Calc
-    },
-
-    // AI Tools
-    { 
-      id: 'ai-prompt-generator', 
-      name: 'AI Prompt Generator', 
-      category: 'AI Tools', 
-      description: 'Generate effective prompts for AI models and chatbots.',
-      path: '/ai-prompt-generator',
-      icon: Brain
-    },
-    { 
-      id: 'ai-code-reviewer', 
-      name: 'AI Code Reviewer', 
-      category: 'AI Tools', 
-      description: 'Get AI-powered code reviews and suggestions.',
-      path: '/ai-code-reviewer',
-      icon: Code
-    },
-    { 
-      id: 'ai-content-optimizer', 
-      name: 'AI Content Optimizer', 
-      category: 'AI Tools', 
-      description: 'Optimize your content for SEO and readability using AI.',
-      path: '/ai-content-optimizer',
-      icon: Zap
-    },
-    { 
-      id: 'ai-image-generator', 
-      name: 'AI Image Generator', 
-      category: 'AI Tools', 
-      description: 'Generate images from text descriptions using AI.',
-      path: '/ai-image-generator',
-      icon: FileImage
-    },
-    { 
-      id: 'ai-chatbot-builder', 
-      name: 'AI Chatbot Builder', 
-      category: 'AI Tools', 
-      description: 'Build and customize AI chatbots for your website.',
-      path: '/ai-chatbot-builder',
-      icon: Bot
-    },
-    { 
-      id: 'ai-data-analyzer', 
-      name: 'AI Data Analyzer', 
-      category: 'AI Tools', 
-      description: 'Analyze data patterns and get insights using AI.',
-      path: '/ai-data-analyzer',
-      icon: Database
-    },
-    { 
-      id: 'ai-model-comparator', 
-      name: 'AI Model Comparator', 
-      category: 'AI Tools', 
-      description: 'Compare different AI models and their capabilities.',
-      path: '/ai-model-comparator',
-      icon: Layers
-    },
-    { 
-      id: 'ai-workflow-automation', 
-      name: 'AI Workflow Automation', 
-      category: 'AI Tools', 
-      description: 'Automate workflows and tasks using AI assistance.',
-      path: '/ai-workflow-automation',
-      icon: Cpu
-    },
-    { 
-      id: 'ai-sentiment-analyzer', 
-      name: 'AI Sentiment Analyzer', 
-      category: 'AI Tools', 
-      description: 'Analyze sentiment and emotions in text using AI.',
-      path: '/ai-sentiment-analyzer',
-      icon: MessageSquare
-    },
-    { 
-      id: 'ai-text-summarizer', 
-      name: 'AI Text Summarizer', 
-      category: 'AI Tools', 
-      description: 'Summarize long texts and documents using AI.',
-      path: '/ai-text-summarizer',
-      icon: FileText
-    },
-
     // Utility Tools
     { 
       id: 'qr-code-generator', 
@@ -325,7 +161,7 @@ const ToolsPage = () => {
       category: 'Utility Tools', 
       description: 'Randomize the order of items in any list.',
       path: '/list-randomizer',
-      icon: Shuffle
+      icon: List
     },
     { 
       id: 'barcode-generator', 
@@ -511,10 +347,6 @@ const ToolsPage = () => {
     switch (category) {
       case 'Text & Writing Tools':
         return 'text-blue-500';
-      case 'Stock Market Tools':
-        return 'text-emerald-500';
-      case 'AI Tools':
-        return 'text-violet-500';
       case 'Utility Tools':
         return 'text-green-500';
       case 'Number Tools':
@@ -536,10 +368,6 @@ const ToolsPage = () => {
     switch (category) {
       case 'Text & Writing Tools':
         return 'bg-blue-100 dark:bg-blue-900/20';
-      case 'Stock Market Tools':
-        return 'bg-emerald-100 dark:bg-emerald-900/20';
-      case 'AI Tools':
-        return 'bg-violet-100 dark:bg-violet-900/20';
       case 'Utility Tools':
         return 'bg-green-100 dark:bg-green-900/20';
       case 'Number Tools':
