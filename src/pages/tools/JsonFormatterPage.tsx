@@ -2,7 +2,7 @@
 import React from 'react';
 import JsonFormatter from '@/components/tools/JsonFormatter';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Json } from 'lucide-react';
+import { Braces } from 'lucide-react'; // Changed Json to Braces
 
 const JsonFormatterPage = () => {
   return (
@@ -10,7 +10,7 @@ const JsonFormatterPage = () => {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-3 mb-2">
-            <Json className="h-8 w-8 text-primary" />
+            <Braces className="h-8 w-8 text-primary" /> {/* Changed Json to Braces */}
             <CardTitle className="text-3xl">JSON Formatter</CardTitle>
           </div>
           <CardDescription>Format and validate your JSON data with ease.</CardDescription>
@@ -24,3 +24,4 @@ const JsonFormatterPage = () => {
 };
 
 export default JsonFormatterPage;
+

@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { Copy, CheckCircle, XCircle } from 'lucide-react';
+import { Label } from '@/components/ui/label';
 
 const JsonFormatter: React.FC = () => {
   const [inputText, setInputText] = useState<string>('');
