@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -94,6 +95,12 @@
     @apply bg-background text-foreground;
   }
   
+  /* Global style to prevent content overflow and improve responsiveness */
+  div, p, span, h1, h2, h3, h4, h5, h6, td, th, li {
+    overflow-wrap: break-word;
+    word-wrap: break-word; /* legacy fallback */
+  }
+
   /* Metallic theme specific styles */
   .metallic body {
     background: linear-gradient(135deg, #e6f0ff 0%, #b3d9ff 25%, #80c7ff 50%, #4db5ff 75%, #1aa3ff 100%);

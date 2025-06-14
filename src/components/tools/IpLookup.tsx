@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -37,6 +36,8 @@ interface IpData {
 
 const IpLookup = () => {
   const [ipData, setIpData] = useState<IpData | null>(null);
+  const [ipv4, setIpv4] = useState<string | null>(null);
+  const [ipv6, setIpv6] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
@@ -44,14 +45,45 @@ const IpLookup = () => {
   const fetchIpData = async () => {
     setLoading(true);
     setError(null);
+    setIpv4(null);
+    setIpv6(null);
+    setIpData(null);
     
     try {
-      const response = await fetch('https://ipapi.co/json/');
-      if (!response.ok) {
-        throw new Error('Failed to fetch IP data');
+      const results = await Promise.allSettled([
+        fetch('https://ipapi.co/json/'),
+        fetch('https://ipv4.seeip.org/jsonip'),
+        fetch('https://ipv6.seeip.org/jsonip')
+      ]);
+
+      const [mainDataRes, ipv4Res, ipv6Res] = results;
+
+      if (mainDataRes.status === 'fulfilled' && mainDataRes.value.ok) {
+        const data = await mainDataRes.value.json();
+        setIpData(data);
+      } else {
+        console.error('Failed to fetch main IP data with location.');
       }
-      const data = await response.json();
-      setIpData(data);
+
+      if (ipv4Res.status === 'fulfilled' && ipv4Res.value.ok) {
+        const data = await ipv4Res.value.json();
+        setIpv4(data.ip);
+      } else {
+        console.warn('Could not fetch IPv4 address.');
+      }
+
+      if (ipv6Res.status === 'fulfilled' && ipv6Res.value.ok) {
+        const data = await ipv6Res.value.json();
+        setIpv6(data.ip);
+      } else {
+        console.warn('Could not fetch IPv6 address.');
+      }
+
+      const hasAnyData = results.some(res => res.status === 'fulfilled' && res.value.ok);
+      if (!hasAnyData) {
+        throw new Error('Failed to fetch any IP data. Please check your network connection.');
+      }
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
       setError(errorMessage);
@@ -116,13 +148,13 @@ const IpLookup = () => {
         <CardContent>
           <div className="flex justify-between items-center mb-6">
             <div></div>
-            <Button onClick={fetchIpData} variant="outline" size="sm">
-              <RefreshCw className="h-4 w-4 mr-2" />
+            <Button onClick={fetchIpData} variant="outline" size="sm" disabled={loading}>
+              <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               Refresh
             </Button>
           </div>
 
-          {ipData && (
+          {(ipData || ipv4 || ipv6) && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* IP Information */}
               <Card className="bg-muted/50">
@@ -133,104 +165,128 @@ const IpLookup = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">IP Address:</span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => copyToClipboard(ipData.ip, 'IP Address')}
-                      className="h-auto p-1 font-mono text-sm"
-                    >
-                      {ipData.ip}
-                    </Button>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">IP Version:</span>
-                    <span className="text-sm font-medium bg-primary/10 text-primary px-2 py-1 rounded-md">
-                      {ipData.version}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Network:</span>
-                    <span className="text-sm font-medium font-mono">{ipData.network}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">ISP:</span>
-                    <span className="text-sm font-medium">{ipData.org}</span>
-                  </div>
+                  {ipv4 && (
+                    <div className="flex justify-between items-start gap-2">
+                      <span className="text-sm text-muted-foreground whitespace-nowrap">IPv4 Address:</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => copyToClipboard(ipv4, 'IPv4 Address')}
+                        className="h-auto p-1 font-mono text-sm text-right"
+                      >
+                        {ipv4}
+                      </Button>
+                    </div>
+                  )}
+                  {ipv6 && (
+                     <div className="flex justify-between items-start gap-2">
+                      <span className="text-sm text-muted-foreground whitespace-nowrap">IPv6 Address:</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => copyToClipboard(ipv6, 'IPv6 Address')}
+                        className="h-auto p-1 font-mono text-sm text-right"
+                      >
+                        {ipv6}
+                      </Button>
+                    </div>
+                  )}
+                   {!ipv4 && !ipv6 && ipData?.ip && (
+                    <div className="flex justify-between items-start gap-2">
+                      <span className="text-sm text-muted-foreground whitespace-nowrap">IP Address:</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => copyToClipboard(ipData.ip, 'IP Address')}
+                        className="h-auto p-1 font-mono text-sm text-right"
+                      >
+                        {ipData.ip}
+                      </Button>
+                    </div>
+                   )}
+                  {ipData?.org && (
+                    <div className="flex justify-between items-start gap-2">
+                      <span className="text-sm text-muted-foreground">ISP:</span>
+                      <span className="text-sm font-medium text-right">{ipData.org}</span>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
               {/* Location Information */}
-              <Card className="bg-muted/50">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <MapPin className="h-5 w-5" />
-                    Location
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Country:</span>
-                    <span className="text-sm font-medium">{ipData.country_name} ({ipData.country_code})</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Region:</span>
-                    <span className="text-sm font-medium">{ipData.region}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">City:</span>
-                    <span className="text-sm font-medium">{ipData.city}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Postal:</span>
-                    <span className="text-sm font-medium">{ipData.postal}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Coordinates:</span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => copyToClipboard(`${ipData.latitude}, ${ipData.longitude}`, 'Coordinates')}
-                      className="h-auto p-1 text-sm"
-                    >
-                      {ipData.latitude}, {ipData.longitude}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              {ipData && (
+                <Card className="bg-muted/50">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <MapPin className="h-5 w-5" />
+                      Location
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Country:</span>
+                      <span className="text-sm font-medium">{ipData.country_name} ({ipData.country_code})</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Region:</span>
+                      <span className="text-sm font-medium">{ipData.region}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">City:</span>
+                      <span className="text-sm font-medium">{ipData.city}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Postal:</span>
+                      <span className="text-sm font-medium">{ipData.postal || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between items-start">
+                      <span className="text-sm text-muted-foreground">Coordinates:</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => copyToClipboard(`${ipData.latitude}, ${ipData.longitude}`, 'Coordinates')}
+                        className="h-auto p-1 text-sm text-right"
+                      >
+                        {ipData.latitude}, {ipData.longitude}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Additional Information */}
-              <Card className="bg-muted/50">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Shield className="h-5 w-5" />
-                    Additional Info
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Timezone:</span>
-                    <span className="text-sm font-medium">{ipData.timezone}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">UTC Offset:</span>
-                    <span className="text-sm font-medium">{ipData.utc_offset}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Currency:</span>
-                    <span className="text-sm font-medium">{ipData.currency} ({ipData.currency_name})</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Calling Code:</span>
-                    <span className="text-sm font-medium">{ipData.country_calling_code}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">In EU:</span>
-                    <span className="text-sm font-medium">{ipData.in_eu ? 'Yes' : 'No'}</span>
-                  </div>
-                </CardContent>
-              </Card>
+              {ipData && (
+                <Card className="bg-muted/50">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Shield className="h-5 w-5" />
+                      Additional Info
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Timezone:</span>
+                      <span className="text-sm font-medium">{ipData.timezone}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">UTC Offset:</span>
+                      <span className="text-sm font-medium">{ipData.utc_offset}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Currency:</span>
+                      <span className="text-sm font-medium">{ipData.currency} ({ipData.currency_name})</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Calling Code:</span>
+                      <span className="text-sm font-medium">{ipData.country_calling_code}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">In EU:</span>
+                      <span className="text-sm font-medium">{ipData.in_eu ? 'Yes' : 'No'}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           )}
         </CardContent>
