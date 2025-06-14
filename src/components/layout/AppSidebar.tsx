@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -12,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Settings } from 'lucide-react';
+import { Home, Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Settings, Sparkles } from 'lucide-react';
 
 const toolCategories = [
   {
@@ -70,61 +71,79 @@ const AppSidebar = () => {
   const location = useLocation();
 
   return (
-    <Sidebar className="border-r">
-      <SidebarHeader className="p-4 border-b">
-        <Link to="/" className="flex items-center gap-2">
-          <GanttChartSquare className="h-8 w-8 text-primary" />
-          <h1 className="text-2xl font-semibold text-foreground">SmartTools</h1>
+    <Sidebar className="border-r bg-gradient-to-b from-sidebar to-sidebar/95 shadow-professional-lg">
+      <SidebarHeader className="p-6 border-b border-sidebar-border/50">
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="relative">
+            <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+            <div className="absolute inset-0 h-8 w-8 text-primary opacity-30 animate-ping" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-sidebar-foreground group-hover:text-primary transition-colors duration-300">
+              SmartTools
+            </h1>
+            <p className="text-xs text-sidebar-foreground/60 font-medium">
+              Professional toolkit
+            </p>
+          </div>
         </Link>
       </SidebarHeader>
-      <SidebarContent className="py-4">
+      
+      <SidebarContent className="py-6">
         <SidebarMenu>
-          <SidebarMenuItem>
+          <SidebarMenuItem className="stagger-item">
             <SidebarMenuButton
               asChild
               variant="default"
               isActive={location.pathname === '/'}
-              className="w-full justify-start"
+              className="w-full justify-start mx-2 mb-2 rounded-xl hover-lift transition-all duration-300 hover:bg-sidebar-accent/80"
             >
-              <Link to="/">
-                <Home className="h-5 w-5 mr-3" />
-                <span>Home</span>
+              <Link to="/" className="flex items-center gap-4">
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <Home className="h-5 w-5 text-primary" />
+                </div>
+                <span className="font-medium">Home</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          <SidebarMenuItem>
+          
+          <SidebarMenuItem className="stagger-item">
             <SidebarMenuButton
               asChild
               variant="default"
               isActive={location.pathname === '/themes'}
-              className="w-full justify-start"
+              className="w-full justify-start mx-2 mb-4 rounded-xl hover-lift transition-all duration-300 hover:bg-sidebar-accent/80"
             >
-              <Link to="/themes">
-                <Settings className="h-5 w-5 mr-3" />
-                <span>Themes & Settings</span>
+              <Link to="/themes" className="flex items-center gap-4">
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <Settings className="h-5 w-5 text-primary" />
+                </div>
+                <span className="font-medium">Themes & Settings</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
 
-        {toolCategories.map((category) => (
-          <SidebarGroup key={category.name} className="pt-4">
-            <SidebarGroupLabel className="px-2 mb-1 text-sm font-semibold text-muted-foreground">
+        {toolCategories.map((category, categoryIndex) => (
+          <SidebarGroup key={category.name} className="pt-2 stagger-item" style={{ animationDelay: `${0.1 + categoryIndex * 0.1}s` }}>
+            <SidebarGroupLabel className="px-4 mb-3 text-xs font-bold text-sidebar-foreground/70 uppercase tracking-wider">
               {category.name}
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {category.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
+                {category.items.map((item, itemIndex) => (
+                  <SidebarMenuItem key={item.title} className="stagger-item" style={{ animationDelay: `${0.2 + categoryIndex * 0.1 + itemIndex * 0.05}s` }}>
                     <SidebarMenuButton
                       asChild
                       variant="default"
                       isActive={location.pathname === item.url}
-                      className="w-full justify-start"
+                      className="w-full justify-start mx-2 mb-1 rounded-xl hover-lift transition-all duration-300 hover:bg-sidebar-accent/80 data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:border-primary/20"
                     >
-                      <Link to={item.url}>
-                        <item.icon className="h-5 w-5 mr-3" />
-                        <span>{item.title}</span>
+                      <Link to={item.url} className="flex items-center gap-3">
+                        <div className={`p-1.5 rounded-lg ${location.pathname === item.url ? 'bg-primary/20' : 'bg-sidebar-accent/50'} transition-colors duration-300`}>
+                          <item.icon className={`h-4 w-4 ${location.pathname === item.url ? 'text-primary' : 'text-sidebar-foreground/70'}`} />
+                        </div>
+                        <span className="font-medium text-sm">{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -134,9 +153,15 @@ const AppSidebar = () => {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter className="p-4 border-t">
-        <div className="text-xs text-muted-foreground">
-          &copy; {new Date().getFullYear()} SmartTools India
+      
+      <SidebarFooter className="p-6 border-t border-sidebar-border/50">
+        <div className="text-center">
+          <div className="text-xs text-sidebar-foreground/50 font-medium">
+            &copy; {new Date().getFullYear()} SmartTools India
+          </div>
+          <div className="text-xs text-sidebar-foreground/30 mt-1">
+            Built with ❤️ for productivity
+          </div>
         </div>
       </SidebarFooter>
     </Sidebar>
