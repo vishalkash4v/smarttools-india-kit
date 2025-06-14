@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency } from 'lucide-react'; // Added Currency
+import { Home, Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Json } from 'lucide-react'; // Added Currency, QrCode, KeyRound, Json
 
 const toolCategories = [
   {
@@ -36,12 +36,15 @@ const toolCategories = [
       { title: 'Whitespace Remover', url: '/whitespace-remover', icon: Eraser, pageId: 'whitespace-remover' },
       { title: 'Text Reverser', url: '/text-reverser', icon: Undo, pageId: 'text-reverser' },
       { title: 'Duplicate Line Remover', url: '/duplicate-line-remover', icon: ListX, pageId: 'duplicate-line-remover' },
+      { title: 'JSON Formatter', url: '/json-formatter', icon: Json, pageId: 'json-formatter' }, // New Tool
     ]
   },
   {
     name: "Productivity Tools",
     items: [
       { title: 'To-Do List', url: '/todo-list', icon: ListChecks, pageId: 'todo-list' },
+      { title: 'QR Code Generator', url: '/qr-code-generator', icon: QrCode, pageId: 'qr-code-generator' }, // New Tool
+      { title: 'Password Generator', url: '/password-generator', icon: KeyRound, pageId: 'password-generator' }, // New Tool
     ]
   },
   {

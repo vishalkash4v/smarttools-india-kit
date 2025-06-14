@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from 'react-router-dom';
-import { Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency } from 'lucide-react';
+import { Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Json } from 'lucide-react';
 
 interface Tool {
   title: string;
@@ -30,9 +30,12 @@ const toolsByCategory: Record<string, Tool[]> = {
     { title: 'Whitespace Remover', description: 'Remove extra spaces from text.', url: '/whitespace-remover', icon: Eraser, comingSoon: false, category: "Text & Writing Tools" },
     { title: 'Text Reverser', description: 'Reverse your input text.', url: '/text-reverser', icon: Undo, comingSoon: false, category: "Text & Writing Tools" },
     { title: 'Duplicate Line Remover', description: 'Remove duplicate lines from text.', url: '/duplicate-line-remover', icon: ListX, comingSoon: false, category: "Text & Writing Tools" },
+    { title: 'JSON Formatter', description: 'Format and validate JSON data.', url: '/json-formatter', icon: Json, comingSoon: false, category: "Text & Writing Tools" },
   ],
   "Productivity Tools": [
     { title: 'To-Do List', description: 'Manage your tasks with localStorage.', url: '/todo-list', icon: ListChecks, comingSoon: false, category: "Productivity Tools" },
+    { title: 'QR Code Generator', description: 'Generate QR codes for text or URLs.', url: '/qr-code-generator', icon: QrCode, comingSoon: false, category: "Productivity Tools" },
+    { title: 'Password Generator', description: 'Create strong, random passwords.', url: '/password-generator', icon: KeyRound, comingSoon: false, category: "Productivity Tools" },
     { title: 'Invoice Generator', description: 'Create professional invoices.', url: '#', icon: GanttChartSquare, comingSoon: true, category: "Productivity Tools" },
     { title: 'Resume Builder', description: 'Build your perfect resume.', url: '#', icon: GanttChartSquare, comingSoon: true, category: "Productivity Tools" },
   ],

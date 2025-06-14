@@ -21,7 +21,10 @@ import ColorPickerToolPage from "./pages/tools/ColorPickerToolPage";
 import DuplicateLineRemoverPage from "./pages/tools/DuplicateLineRemoverPage";
 import EmiCalculatorPage from "./pages/tools/EmiCalculatorPage";
 import SimpleCalculatorPage from "./pages/tools/SimpleCalculatorPage";
-import CurrencyConverterPage from "./pages/tools/CurrencyConverterPage"; // New Import
+import CurrencyConverterPage from "./pages/tools/CurrencyConverterPage";
+import QRCodeGeneratorPage from "./pages/tools/QRCodeGeneratorPage"; // New Import
+import PasswordGeneratorPage from "./pages/tools/PasswordGeneratorPage"; // New Import
+import JsonFormatterPage from "./pages/tools/JsonFormatterPage"; // New Import
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,7 +54,10 @@ const App = () => {
               <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
               <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
               <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
-              <Route path="/currency-converter" element={<CurrencyConverterPage />} /> {/* New Route */}
+              <Route path="/currency-converter" element={<CurrencyConverterPage />} />
+              <Route path="/qr-code-generator" element={<QRCodeGeneratorPage />} /> {/* New Route */}
+              <Route path="/password-generator" element={<PasswordGeneratorPage />} /> {/* New Route */}
+              <Route path="/json-formatter" element={<JsonFormatterPage />} /> {/* New Route */}
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
