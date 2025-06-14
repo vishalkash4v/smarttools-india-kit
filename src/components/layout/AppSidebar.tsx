@@ -12,18 +12,19 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote } from 'lucide-react'; // Added Banknote
+import { Home, Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote } from 'lucide-react'; // Renamed Calculator to CalculatorIcon
 
 const toolCategories = [
   {
     name: "Calculation & Conversion Tools",
     items: [
       { title: 'GST Calculator', url: '/gst-calculator', icon: Percent, pageId: 'gst-calculator' },
-      { title: 'Percentage Calculator', url: '/percentage-calculator', icon: Calculator, pageId: 'percentage-calculator' },
+      { title: 'Percentage Calculator', url: '/percentage-calculator', icon: CalculatorIcon, pageId: 'percentage-calculator' }, // Use CalculatorIcon
+      { title: 'Simple Calculator', url: '/simple-calculator', icon: CalculatorIcon, pageId: 'simple-calculator' }, // New Tool - Using CalculatorIcon
       { title: 'Age Calculator', url: '/age-calculator', icon: Gift, pageId: 'age-calculator' },
       { title: 'Date Difference Calculator', url: '/date-difference-calculator', icon: CalendarRange, pageId: 'date-difference-calculator' },
       { title: 'BMI Calculator', url: '/bmi-calculator', icon: Scale, pageId: 'bmi-calculator' },
-      { title: 'EMI Calculator', url: '/emi-calculator', icon: Banknote, pageId: 'emi-calculator' }, // New Tool
+      { title: 'EMI Calculator', url: '/emi-calculator', icon: Banknote, pageId: 'emi-calculator' },
     ]
   },
   {

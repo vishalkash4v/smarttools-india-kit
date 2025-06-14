@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,7 +18,8 @@ import TextReverserPage from "./pages/tools/TextReverserPage";
 import BmiCalculatorPage from "./pages/tools/BmiCalculatorPage";
 import ColorPickerToolPage from "./pages/tools/ColorPickerToolPage";
 import DuplicateLineRemoverPage from "./pages/tools/DuplicateLineRemoverPage";
-import EmiCalculatorPage from "./pages/tools/EmiCalculatorPage"; // New Import
+import EmiCalculatorPage from "./pages/tools/EmiCalculatorPage";
+import SimpleCalculatorPage from "./pages/tools/SimpleCalculatorPage"; // New Import
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,7 +47,8 @@ const App = () => {
               <Route path="/bmi-calculator" element={<BmiCalculatorPage />} />
               <Route path="/color-picker" element={<ColorPickerToolPage />} />
               <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
-              <Route path="/emi-calculator" element={<EmiCalculatorPage />} /> {/* New Route */}
+              <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
+              <Route path="/simple-calculator" element={<SimpleCalculatorPage />} /> {/* New Route */}
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
@@ -58,4 +59,3 @@ const App = () => {
 };
 
 export default App;
-
