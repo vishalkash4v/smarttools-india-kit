@@ -334,6 +334,48 @@ const ToolsPage = () => {
     },
   ];
 
+  const getIconColor = (category: string) => {
+    switch (category) {
+      case 'Text & Writing Tools':
+        return 'text-blue-500';
+      case 'Utility Tools':
+        return 'text-green-500';
+      case 'Number Tools':
+        return 'text-purple-500';
+      case 'Converter Tools':
+        return 'text-orange-500';
+      case 'Development Tools':
+        return 'text-red-500';
+      case 'Timer Tools':
+        return 'text-yellow-500';
+      case 'Network Tools':
+        return 'text-cyan-500';
+      default:
+        return 'text-gray-500';
+    }
+  };
+
+  const getBackgroundColor = (category: string) => {
+    switch (category) {
+      case 'Text & Writing Tools':
+        return 'bg-blue-100 dark:bg-blue-900/20';
+      case 'Utility Tools':
+        return 'bg-green-100 dark:bg-green-900/20';
+      case 'Number Tools':
+        return 'bg-purple-100 dark:bg-purple-900/20';
+      case 'Converter Tools':
+        return 'bg-orange-100 dark:bg-orange-900/20';
+      case 'Development Tools':
+        return 'bg-red-100 dark:bg-red-900/20';
+      case 'Timer Tools':
+        return 'bg-yellow-100 dark:bg-yellow-900/20';
+      case 'Network Tools':
+        return 'bg-cyan-100 dark:bg-cyan-900/20';
+      default:
+        return 'bg-gray-100 dark:bg-gray-900/20';
+    }
+  };
+
   useEffect(() => {
     // Set initial filtered tools to all tools
     setFilteredTools(allTools);
@@ -397,19 +439,30 @@ const ToolsPage = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredTools.map((tool) => (
-              <Card key={tool.id} className="h-full flex flex-col">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    {React.createElement(tool.icon, { className: "h-4 w-4" })}
-                    {tool.name}
-                  </CardTitle>
+              <Card key={tool.id} className="h-full flex flex-col hover:shadow-lg transition-shadow">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className={`p-3 rounded-xl ${getBackgroundColor(tool.category)}`}>
+                      {React.createElement(tool.icon, { 
+                        className: `h-8 w-8 ${getIconColor(tool.category)}` 
+                      })}
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg leading-tight">{tool.name}</CardTitle>
+                      <p className="text-xs text-muted-foreground mt-1">{tool.category}</p>
+                    </div>
+                  </div>
                 </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardDescription>{tool.description}</CardDescription>
+                <CardContent className="flex-grow pt-0">
+                  <CardDescription className="text-sm leading-relaxed">{tool.description}</CardDescription>
+                  <Button 
+                    onClick={() => navigate(tool.path)} 
+                    className="w-full mt-4"
+                    variant="outline"
+                  >
+                    Use Tool
+                  </Button>
                 </CardContent>
-                <Button onClick={() => navigate(tool.path)} className="mt-auto">
-                  Go to Tool
-                </Button>
               </Card>
             ))}
           </div>
