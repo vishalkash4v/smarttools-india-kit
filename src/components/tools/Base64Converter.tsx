@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -67,6 +66,43 @@ const Base64Converter = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleGeneratePreview = () => {
+    if (!inputText) return;
+
+    // If it's a data URL, use it directly after validation
+    if (inputText.startsWith('data:')) {
+      if (
+        (fileType === 'image' && inputText.startsWith('data:image')) ||
+        (fileType === 'audio' && inputText.startsWith('data:audio'))
+      ) {
+        setOutputText(inputText);
+      } else {
+        toast({
+          title: 'Invalid Data URL',
+          description: `The provided Data URL does not seem to be for an ${fileType}.`,
+          variant: 'destructive',
+        });
+      }
+      return;
+    }
+
+    // It's a raw base64 string, so we guess the mime type
+    let mimeType = '';
+    if (fileType === 'image') {
+      mimeType = 'image/png'; // A reasonable default
+    } else if (fileType === 'audio') {
+      mimeType = 'audio/mpeg'; // A reasonable default
+    }
+
+    if (mimeType) {
+      setOutputText(`data:${mimeType};base64,${inputText}`);
+      toast({
+        title: 'Preview Generated',
+        description: `Assuming mime type is ${mimeType}. For other types, please provide a full Data URL.`,
+      });
+    }
+  };
+
   const handleConvert = () => {
     if (fileType === 'text') {
       if (mode === 'encode') {
@@ -78,24 +114,33 @@ const Base64Converter = () => {
   };
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(mode === 'encode' && fileType !== 'text' ? outputText : inputText);
+    const textToCopy = fileType === 'text' ? outputText : inputText;
+    if (!textToCopy) {
       toast({
-        title: "Copied!",
-        description: "Result copied to clipboard.",
+        title: "Nothing to Copy",
+        description: "There is no output to copy.",
+        variant: "destructive",
+      });
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      toast({
+        title: 'Copied!',
+        description: 'Result copied to clipboard.',
       });
     } catch (error) {
       toast({
-        title: "Copy Failed",
-        description: "Failed to copy to clipboard.",
-        variant: "destructive",
+        title: 'Copy Failed',
+        description: 'Failed to copy to clipboard.',
+        variant: 'destructive',
       });
     }
   };
 
   const handleSwapMode = () => {
     setMode(mode === 'encode' ? 'decode' : 'encode');
-    setInputText(fileType === 'text' ? outputText : '');
+    setInputText(''); // Clear input on swap for simplicity
     setOutputText('');
   };
 
@@ -127,11 +172,18 @@ const Base64Converter = () => {
             Base64 Encoder/Decoder
           </CardTitle>
           <CardDescription>
-            Encode text to Base64, decode Base64 strings, or convert files (up to 2MB) to Base64.
+            Encode text/files to Base64, or decode Base64 strings to preview images and audio (up to 2MB).
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <Tabs defaultValue="text" onValueChange={(value) => setFileType(value as 'text' | 'image' | 'audio')}>
+          <Tabs
+            defaultValue="text"
+            onValueChange={(value) => {
+              setFileType(value as 'text' | 'image' | 'audio');
+              // Reset state on tab change to avoid conflicts
+              handleClear();
+            }}
+          >
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="text" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
@@ -147,33 +199,33 @@ const Base64Converter = () => {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="text" className="space-y-6">
-              {/* Mode Toggle for Text */}
-              <div className="flex flex-col sm:flex-row gap-2">
-                <Button
-                  variant={mode === 'encode' ? 'default' : 'outline'}
-                  onClick={() => setMode('encode')}
-                  className="flex-1"
-                >
-                  Encode to Base64
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handleSwapMode}
-                  title="Swap input/output"
-                >
-                  <ArrowUpDown className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant={mode === 'decode' ? 'default' : 'outline'}
-                  onClick={() => setMode('decode')}
-                  className="flex-1"
-                >
-                  Decode from Base64
-                </Button>
-              </div>
+            {/* Mode Toggle for All Tabs */}
+            <div className="flex flex-col sm:flex-row gap-2 pt-6">
+              <Button
+                variant={mode === 'encode' ? 'default' : 'outline'}
+                onClick={() => setMode('encode')}
+                className="flex-1"
+              >
+                {fileType === 'text' ? 'Encode to Base64' : 'File to Base64'}
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleSwapMode}
+                title="Swap Modes"
+              >
+                <ArrowUpDown className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={mode === 'decode' ? 'default' : 'outline'}
+                onClick={() => setMode('decode')}
+                className="flex-1"
+              >
+                {fileType === 'text' ? 'Decode from Base64' : 'Base64 to File'}
+              </Button>
+            </div>
 
+            <TabsContent value="text" className="space-y-6">
               {/* Text Input */}
               <div className="space-y-2">
                 <Label htmlFor="textInput">
@@ -226,132 +278,214 @@ const Base64Converter = () => {
             </TabsContent>
 
             <TabsContent value="image" className="space-y-6">
-              {/* File Upload for Images */}
-              <div className="space-y-2">
-                <Label htmlFor="imageInput">Upload Image (Max 2MB)</Label>
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <input
-                    ref={fileInputRef}
-                    id="imageInput"
-                    type="file"
-                    accept={getAcceptedFileTypes()}
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
-                  <Button
-                    variant="outline"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex items-center gap-2"
-                  >
-                    <Upload className="h-4 w-4" />
-                    Choose Image
-                  </Button>
-                  <Button variant="outline" onClick={handleClear}>
-                    Clear
-                  </Button>
-                </div>
-              </div>
-
-              {/* Image Preview and Base64 Output */}
-              {outputText && (
-                <div className="space-y-4">
+              {mode === 'encode' ? (
+                <>
+                  {/* File Upload for Images */}
                   <div className="space-y-2">
-                    <Label>Image Preview</Label>
-                    <div className="border rounded-lg p-4 bg-muted/50">
-                      <img
-                        src={outputText}
-                        alt="Uploaded"
-                        className="max-w-full max-h-64 object-contain mx-auto"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="imageBase64">Base64 Output</Label>
-                    <div className="relative">
-                      <Textarea
-                        id="imageBase64"
-                        value={inputText}
-                        readOnly
-                        className="min-h-32 pr-12 font-mono text-xs"
+                    <Label htmlFor="imageInput">Upload Image (Max 2MB)</Label>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <input
+                        ref={fileInputRef}
+                        id="imageInput"
+                        type="file"
+                        accept={getAcceptedFileTypes()}
+                        onChange={handleFileUpload}
+                        className="hidden"
                       />
                       <Button
                         variant="outline"
-                        size="icon"
-                        onClick={handleCopy}
-                        className="absolute top-2 right-2"
-                        title="Copy to clipboard"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex items-center gap-2"
                       >
-                        <Copy className="h-4 w-4" />
+                        <Upload className="h-4 w-4" />
+                        Choose Image
+                      </Button>
+                      <Button variant="outline" onClick={handleClear}>
+                        Clear
                       </Button>
                     </div>
                   </div>
-                </div>
+
+                  {/* Image Preview and Base64 Output */}
+                  {outputText && (
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Image Preview</Label>
+                        <div className="border rounded-lg p-4 bg-muted/50">
+                          <img
+                            src={outputText}
+                            alt="Uploaded"
+                            className="max-w-full max-h-64 object-contain mx-auto"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="imageBase64">Base64 Output</Label>
+                        <div className="relative">
+                          <Textarea
+                            id="imageBase64"
+                            value={inputText}
+                            readOnly
+                            className="min-h-32 pr-12 font-mono text-xs"
+                          />
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={handleCopy}
+                            className="absolute top-2 right-2"
+                            title="Copy to clipboard"
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  {/* Base64/DataURL Input for decoding */}
+                  <div className="space-y-2">
+                    <Label htmlFor="base64ToImageInput">Base64 or Data URL to Preview</Label>
+                    <Textarea
+                      id="base64ToImageInput"
+                      placeholder="Paste Base64 string or a full Data URL (e.g., data:image/png;base64,...)"
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                      className="min-h-32 font-mono text-xs"
+                    />
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button onClick={handleGeneratePreview} disabled={!inputText} className="flex-1">
+                      Generate Preview
+                    </Button>
+                    <Button variant="outline" onClick={handleClear}>
+                      Clear
+                    </Button>
+                  </div>
+
+                  {/* Image Preview */}
+                  {outputText && (
+                    <div className="space-y-2">
+                      <Label>Image Preview</Label>
+                      <div className="border rounded-lg p-4 bg-muted/50">
+                        <img
+                          src={outputText}
+                          alt="Preview from Base64"
+                          className="max-w-full max-h-64 object-contain mx-auto"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
             </TabsContent>
 
             <TabsContent value="audio" className="space-y-6">
-              {/* File Upload for Audio */}
-              <div className="space-y-2">
-                <Label htmlFor="audioInput">Upload Audio File (Max 2MB)</Label>
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <input
-                    ref={fileInputRef}
-                    id="audioInput"
-                    type="file"
-                    accept={getAcceptedFileTypes()}
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
-                  <Button
-                    variant="outline"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex items-center gap-2"
-                  >
-                    <Upload className="h-4 w-4" />
-                    Choose Audio
-                  </Button>
-                  <Button variant="outline" onClick={handleClear}>
-                    Clear
-                  </Button>
-                </div>
-              </div>
-
-              {/* Audio Preview and Base64 Output */}
-              {outputText && (
-                <div className="space-y-4">
+              {mode === 'encode' ? (
+                <>
+                  {/* File Upload for Audio */}
                   <div className="space-y-2">
-                    <Label>Audio Preview</Label>
-                    <div className="border rounded-lg p-4 bg-muted/50">
-                      <audio
-                        src={outputText}
-                        controls
-                        className="w-full"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="audioBase64">Base64 Output</Label>
-                    <div className="relative">
-                      <Textarea
-                        id="audioBase64"
-                        value={inputText}
-                        readOnly
-                        className="min-h-32 pr-12 font-mono text-xs"
+                    <Label htmlFor="audioInput">Upload Audio File (Max 2MB)</Label>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <input
+                        ref={fileInputRef}
+                        id="audioInput"
+                        type="file"
+                        accept={getAcceptedFileTypes()}
+                        onChange={handleFileUpload}
+                        className="hidden"
                       />
                       <Button
                         variant="outline"
-                        size="icon"
-                        onClick={handleCopy}
-                        className="absolute top-2 right-2"
-                        title="Copy to clipboard"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex items-center gap-2"
                       >
-                        <Copy className="h-4 w-4" />
+                        <Upload className="h-4 w-4" />
+                        Choose Audio
+                      </Button>
+                      <Button variant="outline" onClick={handleClear}>
+                        Clear
                       </Button>
                     </div>
                   </div>
-                </div>
+
+                  {/* Audio Preview and Base64 Output */}
+                  {outputText && (
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Audio Preview</Label>
+                        <div className="border rounded-lg p-4 bg-muted/50">
+                          <audio
+                            src={outputText}
+                            controls
+                            className="w-full"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="audioBase64">Base64 Output</Label>
+                        <div className="relative">
+                          <Textarea
+                            id="audioBase64"
+                            value={inputText}
+                            readOnly
+                            className="min-h-32 pr-12 font-mono text-xs"
+                          />
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={handleCopy}
+                            className="absolute top-2 right-2"
+                            title="Copy to clipboard"
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  {/* Base64/DataURL Input for decoding */}
+                  <div className="space-y-2">
+                    <Label htmlFor="base64ToAudioInput">Base64 or Data URL to Preview</Label>
+                    <Textarea
+                      id="base64ToAudioInput"
+                      placeholder="Paste Base64 string or a full Data URL (e.g., data:audio/mpeg;base64,...)"
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                      className="min-h-32 font-mono text-xs"
+                    />
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button onClick={handleGeneratePreview} disabled={!inputText} className="flex-1">
+                      Generate Preview
+                    </Button>
+                    <Button variant="outline" onClick={handleClear}>
+                      Clear
+                    </Button>
+                  </div>
+
+                  {/* Audio Preview */}
+                  {outputText && (
+                    <div className="space-y-2">
+                      <Label>Audio Preview</Label>
+                      <div className="border rounded-lg p-4 bg-muted/50">
+                        <audio
+                          src={outputText}
+                          controls
+                          className="w-full"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
             </TabsContent>
           </Tabs>
