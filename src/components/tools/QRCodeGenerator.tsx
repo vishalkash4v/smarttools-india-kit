@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { QRCode } from 'qrcode.react'; // Changed to named import
+import { QRCodeCanvas } from 'qrcode.react'; // Changed to QRCodeCanvas
 import { useToast } from '@/components/ui/use-toast';
 import { Download } from 'lucide-react';
 
@@ -78,7 +79,7 @@ const QRCodeGenerator: React.FC = () => {
       {qrValue && (
         <Card className="mt-6">
           <CardContent className="p-6 flex flex-col items-center space-y-4">
-            <QRCode // This usage should now work with the named import
+            <QRCodeCanvas // Changed to QRCodeCanvas
               id="qrcode-canvas"
               value={qrValue}
               size={256}
@@ -96,3 +97,4 @@ const QRCodeGenerator: React.FC = () => {
 };
 
 export default QRCodeGenerator;
+
