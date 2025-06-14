@@ -1,23 +1,20 @@
-
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Copy, ExternalLink, Smartphone, Globe, RefreshCw, Youtube, MessageCircle, Instagram, Facebook, Twitter } from "lucide-react";
+import { Copy, ExternalLink, Smartphone, Globe, RefreshCw, Youtube, MessageCircle, Instagram, Facebook, Twitter, Link } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-interface PlatformLink {
+interface GeneratedResult {
+  smartLink: string;
   platform: string;
-  deepLink: string;
-  description: string;
-  icon: React.ReactNode;
 }
 
 const UrlWrapper = () => {
   const [inputUrl, setInputUrl] = useState('');
-  const [platformLinks, setPlatformLinks] = useState<PlatformLink[]>([]);
+  const [generatedResult, setGeneratedResult] = useState<GeneratedResult | null>(null);
   const { toast } = useToast();
 
   const isValidUrl = (url: string) => {
@@ -46,8 +43,6 @@ const UrlWrapper = () => {
       return 'tiktok';
     } else if (domain.includes('linkedin.com')) {
       return 'linkedin';
-    } else if (domain.includes('whatsapp.com')) {
-      return 'whatsapp';
     }
     return 'generic';
   };
@@ -64,138 +59,45 @@ const UrlWrapper = () => {
     return match ? match[1] : null;
   };
 
-  const generatePlatformLinks = (url: string, platform: string): PlatformLink[] => {
-    const links: PlatformLink[] = [];
-
+  const generateAppUrl = (url: string, platform: string): string | null => {
     switch (platform) {
-      case 'youtube':
+      case 'youtube': {
         const videoId = extractVideoId(url);
-        if (videoId) {
-          links.push({
-            platform: 'YouTube App',
-            deepLink: `youtube://watch?v=${videoId}`,
-            description: 'Opens directly in YouTube mobile app',
-            icon: <Youtube className="h-4 w-4" />
-          });
-          links.push({
-            platform: 'YouTube Vanced',
-            deepLink: `vanced://watch?v=${videoId}`,
-            description: 'Opens in YouTube Vanced app',
-            icon: <Youtube className="h-4 w-4" />
-          });
-        }
-        break;
-
-      case 'instagram':
+        return videoId ? `youtube://watch?v=${videoId}` : null;
+      }
+      case 'instagram': {
         const postId = extractInstagramId(url);
-        if (postId) {
-          links.push({
-            platform: 'Instagram App',
-            deepLink: `instagram://media?id=${postId}`,
-            description: 'Opens directly in Instagram mobile app',
-            icon: <Instagram className="h-4 w-4" />
-          });
-        }
-        links.push({
-          platform: 'Instagram Profile',
-          deepLink: `instagram://user?username=${url.split('/').pop()}`,
-          description: 'Opens Instagram profile in app',
-          icon: <Instagram className="h-4 w-4" />
-        });
-        break;
-
+        if (postId) return `instagram://media?id=${postId}`;
+        const username = url.split('/').filter(u => u && !u.includes('.com')).pop();
+        return username ? `instagram://user?username=${username}` : null;
+      }
       case 'facebook':
-        links.push({
-          platform: 'Facebook App',
-          deepLink: `fb://facewebmodal/f?href=${encodeURIComponent(url)}`,
-          description: 'Opens directly in Facebook mobile app',
-          icon: <Facebook className="h-4 w-4" />
-        });
-        break;
-
-      case 'twitter':
+        return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
+      case 'twitter': {
         const tweetMatch = url.match(/status\/(\d+)/);
-        if (tweetMatch) {
-          links.push({
-            platform: 'Twitter App',
-            deepLink: `twitter://status?id=${tweetMatch[1]}`,
-            description: 'Opens tweet in Twitter/X mobile app',
-            icon: <Twitter className="h-4 w-4" />
-          });
-        }
-        const userMatch = url.match(/twitter\.com\/([^\/\?]+)|x\.com\/([^\/\?]+)/);
-        if (userMatch) {
-          const username = userMatch[1] || userMatch[2];
-          links.push({
-            platform: 'Twitter Profile',
-            deepLink: `twitter://user?screen_name=${username}`,
-            description: 'Opens Twitter/X profile in app',
-            icon: <Twitter className="h-4 w-4" />
-          });
-        }
-        break;
-
-      case 'telegram':
-        if (url.includes('t.me/')) {
-          const channelMatch = url.match(/t\.me\/([^\/\?]+)/);
-          if (channelMatch) {
-            links.push({
-              platform: 'Telegram App',
-              deepLink: `tg://resolve?domain=${channelMatch[1]}`,
-              description: 'Opens Telegram channel/chat in app',
-              icon: <MessageCircle className="h-4 w-4" />
-            });
-          }
-        }
-        break;
-
+        if (tweetMatch) return `twitter://status?id=${tweetMatch[1]}`;
+        const userMatch = url.match(/(?:twitter|x)\.com\/([^\/?]+)/);
+        if (userMatch) return `twitter://user?screen_name=${userMatch[1]}`;
+        return null;
+      }
+      case 'telegram': {
+        const channelMatch = url.match(/t\.me\/([^\/?]+)/);
+        return channelMatch ? `tg://resolve?domain=${channelMatch[1]}` : null;
+      }
       case 'tiktok':
-        links.push({
-          platform: 'TikTok App',
-          deepLink: `snssdk1128://webview?url=${encodeURIComponent(url)}`,
-          description: 'Opens directly in TikTok mobile app',
-          icon: <Globe className="h-4 w-4" />
-        });
-        break;
-
-      case 'linkedin':
-        links.push({
-          platform: 'LinkedIn App',
-          deepLink: `linkedin://profile/${url.split('/in/')[1]?.split('/')[0] || ''}`,
-          description: 'Opens LinkedIn profile in app',
-          icon: <Globe className="h-4 w-4" />
-        });
-        break;
-
-      case 'whatsapp':
-        links.push({
-          platform: 'WhatsApp',
-          deepLink: `whatsapp://send?text=${encodeURIComponent(url)}`,
-          description: 'Share link via WhatsApp',
-          icon: <MessageCircle className="h-4 w-4" />
-        });
-        break;
-
+        // TikTok deep linking is complex, this is a common approach
+        return `snssdk1128://webview?url=${encodeURIComponent(url)}`;
+      case 'linkedin': {
+          const profileMatch = url.match(/linkedin\.com\/in\/([^\/?]+)/);
+          if (profileMatch) return `linkedin://in/${profileMatch[1]}`;
+          return `linkedin://` // Fallback to just opening the app
+      }
       default:
-        links.push({
-          platform: 'Generic App',
-          deepLink: `intent://${url.replace(/https?:\/\//, '')}#Intent;scheme=https;end`,
-          description: 'Android Intent for opening in preferred app',
-          icon: <Smartphone className="h-4 w-4" />
-        });
-        links.push({
-          platform: 'Custom Scheme',
-          deepLink: `app://open?url=${encodeURIComponent(url)}`,
-          description: 'Generic custom scheme for your app',
-          icon: <Globe className="h-4 w-4" />
-        });
-        break;
+        return null;
     }
-
-    return links;
   };
 
-  const generateWrappedUrls = useCallback(() => {
+  const generateSmartLink = useCallback(() => {
     if (!inputUrl.trim()) {
       toast({
         title: "Error",
@@ -215,12 +117,37 @@ const UrlWrapper = () => {
     }
 
     const platform = detectPlatform(inputUrl);
-    const links = generatePlatformLinks(inputUrl, platform);
-    setPlatformLinks(links);
+    if (platform === 'generic') {
+      toast({
+        title: "Unsupported Platform",
+        description: "This tool works best with specific apps like YouTube, Instagram, etc. A smart link could not be generated for this generic URL.",
+        variant: "destructive",
+      });
+      setGeneratedResult(null);
+      return;
+    }
+
+    const appUrl = generateAppUrl(inputUrl, platform);
+
+    if (!appUrl) {
+      toast({
+        title: "Could Not Generate Link",
+        description: `We could not create a specific app link for this ${platform} URL.`,
+        variant: "destructive",
+      });
+      setGeneratedResult(null);
+      return;
+    }
+    
+    const webUrl = inputUrl;
+    const smartLinkPath = `/redirect?webUrl=${encodeURIComponent(webUrl)}&appUrl=${encodeURIComponent(appUrl)}`;
+    const fullSmartLink = `${window.location.origin}${smartLinkPath}`;
+
+    setGeneratedResult({ smartLink: fullSmartLink, platform });
 
     toast({
-      title: "Deep Links Generated!",
-      description: `Found ${links.length} app-opening link${links.length > 1 ? 's' : ''} for ${platform}`,
+      title: "Smart Link Generated!",
+      description: `A smart link for ${platform} has been created.`,
     });
   }, [inputUrl, toast]);
 
@@ -242,16 +169,12 @@ const UrlWrapper = () => {
 
   const clearAll = useCallback(() => {
     setInputUrl('');
-    setPlatformLinks([]);
+    setGeneratedResult(null);
     toast({
       title: "Cleared!",
       description: "All fields have been cleared",
     });
   }, [toast]);
-
-  const testLink = (url: string) => {
-    window.open(url, '_blank');
-  };
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
@@ -262,7 +185,7 @@ const UrlWrapper = () => {
             <Smartphone className="h-5 w-5" />
           </CardTitle>
           <CardDescription>
-            Automatically detects platforms and creates proper deep links. Supports YouTube, Instagram, Facebook, Twitter/X, Telegram, TikTok, LinkedIn, WhatsApp and more!
+            Paste any link to generate a single Smart Link that opens in the app if installed, or in the browser otherwise. Supports YouTube, Instagram, Facebook, Twitter/X, and more!
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -280,9 +203,9 @@ const UrlWrapper = () => {
           </div>
 
           <div className="flex gap-2">
-            <Button onClick={generateWrappedUrls} className="flex-1">
-              <ExternalLink className="h-4 w-4 mr-2" />
-              Generate Deep Links
+            <Button onClick={generateSmartLink} className="flex-1">
+              <Link className="h-4 w-4 mr-2" />
+              Generate Smart Link
             </Button>
             <Button onClick={clearAll} variant="outline">
               <RefreshCw className="h-4 w-4 mr-2" />
@@ -290,100 +213,72 @@ const UrlWrapper = () => {
             </Button>
           </div>
 
-          {inputUrl && (
+          {inputUrl && !generatedResult && (
             <div className="p-3 bg-muted rounded-lg">
               <p className="text-sm text-muted-foreground mb-1">Original URL:</p>
               <p className="font-mono text-sm break-all">{inputUrl}</p>
-              {inputUrl && (
-                <Badge variant="outline" className="mt-2">
-                  Platform: {detectPlatform(inputUrl)}
-                </Badge>
-              )}
+              <Badge variant="outline" className="mt-2">
+                Platform: {detectPlatform(inputUrl)}
+              </Badge>
             </div>
           )}
         </CardContent>
       </Card>
 
-      {platformLinks.length > 0 && (
-        <div className="space-y-4">
-          {platformLinks.map((link, index) => (
-            <Card key={index}>
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    {link.icon}
-                    <div>
-                      <CardTitle className="text-lg">{link.platform}</CardTitle>
-                      <CardDescription>{link.description}</CardDescription>
-                    </div>
-                  </div>
-                  <Badge variant="outline">Deep Link</Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Textarea
-                  value={link.deepLink}
-                  readOnly
-                  className="font-mono text-sm resize-none"
-                  rows={2}
-                />
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => copyToClipboard(link.deepLink, link.platform)}
-                    variant="outline"
-                    size="sm"
-                  >
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copy
-                  </Button>
-                  <Button
-                    onClick={() => testLink(link.deepLink)}
-                    variant="outline"
-                    size="sm"
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Test
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">How to Use These Links</CardTitle>
-              <CardDescription>Implementation guide for deep links</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <h4 className="font-medium">For Mobile Apps:</h4>
-                <div className="p-3 bg-muted rounded-lg font-mono text-sm">
-                  <p>• iOS: Add URL schemes to Info.plist</p>
-                  <p>• Android: Add intent filters to AndroidManifest.xml</p>
-                  <p>• Test links on actual devices for best results</p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-medium">For Web Integration:</h4>
-                <div className="p-3 bg-muted rounded-lg font-mono text-sm">
-                  <p>• Use these links in buttons or QR codes</p>
-                  <p>• Fallback to web version if app not installed</p>
-                  <p>• Perfect for social media sharing</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      {generatedResult && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Link className="h-5 w-5" />
+              Your Smart Link is Ready!
+            </CardTitle>
+            <CardDescription>
+              This link will try to open the content in the <strong>{generatedResult.platform}</strong> app. If the app is not installed, it will open in the browser.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="smart-link-output" className="text-sm font-medium">
+                Share this link:
+              </label>
+              <Textarea
+                id="smart-link-output"
+                value={generatedResult.smartLink}
+                readOnly
+                className="font-mono text-sm resize-none"
+                rows={3}
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => copyToClipboard(generatedResult.smartLink, 'Smart Link')}
+                className="flex-1"
+              >
+                <Copy className="h-4 w-4 mr-2" />
+                Copy Link
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+              >
+                <a href={generatedResult.smartLink} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Test Link
+                </a>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       )}
 
-      {!platformLinks.length && (
+      {!generatedResult && (
         <Card>
           <CardContent className="py-8 text-center">
             <p className="text-muted-foreground">
-              Enter any URL above to automatically generate smart deep links that open content directly in mobile apps!
+              Enter any supported social media or video URL above to generate a smart link!
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              Supports: YouTube, Instagram, Facebook, Twitter/X, Telegram, TikTok, LinkedIn, WhatsApp & more
+              This link opens content directly in the mobile app, with a fallback to the browser.
             </p>
           </CardContent>
         </Card>

@@ -66,6 +66,7 @@ import HashtagGeneratorPage from "@/pages/tools/HashtagGeneratorPage";
 import SocialMediaPlannerPage from "@/pages/tools/SocialMediaPlannerPage";
 import TextFontChangerPage from "@/pages/tools/TextFontChangerPage";
 import UrlWrapperPage from "@/pages/tools/UrlWrapperPage";
+import RedirectPage from "@/pages/tools/RedirectPage";
 
 // Scroll to top component
 function ScrollToTop() {
@@ -149,6 +150,7 @@ function App() {
                         <Route path="/social-media-planner" element={<SocialMediaPlannerPage />} />
                         <Route path="/text-font-changer" element={<TextFontChangerPage />} />
                         <Route path="/url-wrapper" element={<UrlWrapperPage />} />
+                        <Route path="/redirect" element={<RedirectPage />} />
                       </Routes>
                     </Suspense>
                   </main>
