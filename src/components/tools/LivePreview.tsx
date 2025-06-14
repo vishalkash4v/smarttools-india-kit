@@ -9,16 +9,24 @@ import { Play, RefreshCw } from 'lucide-react';
 
 const LivePreview = () => {
   const [html, setHtml] = useState('<h1>Hello World!</h1>\n<p>Start editing to see live preview.</p>');
-  const [css, setCss] = useState('body {\n  font-family: Arial, sans-serif;\n  padding: 20px;\n}\n\nh1 {\n  color: #333;\n}');
+  const [css, setCss] = useState('body {\n  font-family: Arial, sans-serif;\n  padding: 20px;\n  margin: 0;\n}\n\nh1 {\n  color: #333;\n}');
   const [js, setJs] = useState('// Write your JavaScript code here\nconsole.log("Hello from JavaScript!");');
-  const [output, setOutput] = useState('');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const updatePreview = () => {
+    console.log('Updating preview...');
+    if (!iframeRef.current) {
+      console.log('No iframe ref available');
+      return;
+    }
+
     const combinedCode = `
       <!DOCTYPE html>
-      <html>
+      <html lang="en">
         <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Live Preview</title>
           <style>
             ${css}
           </style>
@@ -30,31 +38,42 @@ const LivePreview = () => {
               ${js}
             } catch (error) {
               console.error('JavaScript Error:', error);
+              document.body.innerHTML += '<div style="color: red; background: #ffe6e6; padding: 10px; margin: 10px 0; border: 1px solid red;">JavaScript Error: ' + error.message + '</div>';
             }
           </script>
         </body>
       </html>
     `;
-    setOutput(combinedCode);
-  };
 
-  useEffect(() => {
-    updatePreview();
-  }, [html, css, js]);
+    console.log('Generated code:', combinedCode);
 
-  useEffect(() => {
-    if (iframeRef.current && output) {
-      const iframe = iframeRef.current;
+    const iframe = iframeRef.current;
+    
+    // Method 1: Using srcdoc (preferred for modern browsers)
+    if ('srcdoc' in iframe) {
+      iframe.srcdoc = combinedCode;
+    } else {
+      // Method 2: Fallback for older browsers
       const doc = iframe.contentDocument || iframe.contentWindow?.document;
       if (doc) {
         doc.open();
-        doc.write(output);
+        doc.write(combinedCode);
         doc.close();
       }
     }
-  }, [output]);
+  };
+
+  useEffect(() => {
+    // Add a small delay to ensure iframe is ready
+    const timer = setTimeout(() => {
+      updatePreview();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [html, css, js]);
 
   const handleRefresh = () => {
+    console.log('Manual refresh triggered');
     updatePreview();
   };
 
@@ -91,7 +110,10 @@ const LivePreview = () => {
                     id="html-code"
                     placeholder="Enter your HTML code here..."
                     value={html}
-                    onChange={(e) => setHtml(e.target.value)}
+                    onChange={(e) => {
+                      console.log('HTML changed');
+                      setHtml(e.target.value);
+                    }}
                     className="min-h-[400px] font-mono text-sm"
                   />
                 </TabsContent>
@@ -102,7 +124,10 @@ const LivePreview = () => {
                     id="css-code"
                     placeholder="Enter your CSS code here..."
                     value={css}
-                    onChange={(e) => setCss(e.target.value)}
+                    onChange={(e) => {
+                      console.log('CSS changed');
+                      setCss(e.target.value);
+                    }}
                     className="min-h-[400px] font-mono text-sm"
                   />
                 </TabsContent>
@@ -113,7 +138,10 @@ const LivePreview = () => {
                     id="js-code"
                     placeholder="Enter your JavaScript code here..."
                     value={js}
-                    onChange={(e) => setJs(e.target.value)}
+                    onChange={(e) => {
+                      console.log('JS changed');
+                      setJs(e.target.value);
+                    }}
                     className="min-h-[400px] font-mono text-sm"
                   />
                 </TabsContent>
@@ -122,12 +150,13 @@ const LivePreview = () => {
 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Live Preview</h3>
-              <div className="border rounded-lg overflow-hidden">
+              <div className="border rounded-lg overflow-hidden bg-white">
                 <iframe
                   ref={iframeRef}
-                  className="w-full h-[500px] bg-white"
+                  className="w-full h-[500px]"
                   title="Live Preview"
-                  sandbox="allow-scripts"
+                  sandbox="allow-scripts allow-same-origin"
+                  style={{ border: 'none' }}
                 />
               </div>
             </div>
