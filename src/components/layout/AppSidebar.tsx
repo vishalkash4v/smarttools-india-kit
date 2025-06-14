@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -13,7 +12,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Settings, Sparkles } from 'lucide-react';
+import { Home, Percent, Calculator as CalculatorIcon, Gift, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Settings, Sparkles, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const toolCategories = [
   {
@@ -73,20 +73,29 @@ const AppSidebar = () => {
   return (
     <Sidebar className="border-r bg-gradient-to-b from-sidebar to-sidebar/95 shadow-professional-lg">
       <SidebarHeader className="p-6 border-b border-sidebar-border/50">
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="relative">
-            <Sparkles className="h-8 w-8 text-primary animate-pulse" />
-            <div className="absolute inset-0 h-8 w-8 text-primary opacity-30 animate-ping" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-sidebar-foreground group-hover:text-primary transition-colors duration-300">
-              SmartTools
-            </h1>
-            <p className="text-xs text-sidebar-foreground/60 font-medium">
-              Professional toolkit
-            </p>
-          </div>
-        </Link>
+        <div className="flex items-center justify-between mb-4">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+              <div className="absolute inset-0 h-8 w-8 text-primary opacity-30 animate-ping" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-sidebar-foreground group-hover:text-primary transition-colors duration-300">
+                SmartTools
+              </h1>
+              <p className="text-xs text-sidebar-foreground/60 font-medium">
+                Professional toolkit
+              </p>
+            </div>
+          </Link>
+        </div>
+        
+        <Button asChild variant="outline" size="sm" className="w-full hover-lift">
+          <Link to="/" className="flex items-center gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Link>
+        </Button>
       </SidebarHeader>
       
       <SidebarContent className="py-6">
@@ -95,14 +104,14 @@ const AppSidebar = () => {
             <SidebarMenuButton
               asChild
               variant="default"
-              isActive={location.pathname === '/'}
+              isActive={location.pathname === '/tools'}
               className="w-full justify-start mx-2 mb-2 rounded-xl hover-lift transition-all duration-300 hover:bg-sidebar-accent/80"
             >
-              <Link to="/" className="flex items-center gap-4">
+              <Link to="/tools" className="flex items-center gap-4">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <Home className="h-5 w-5 text-primary" />
                 </div>
-                <span className="font-medium">Home</span>
+                <span className="font-medium">All Tools</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

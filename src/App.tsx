@@ -1,12 +1,13 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from 'react-helmet-async';
 
 import MainLayout from "./components/layout/MainLayout";
-import IndexPage from "./pages/Index";
+import LandingPage from "./pages/LandingPage";
+import ToolsPage from "./pages/ToolsPage";
 import GstCalculatorPage from "./pages/tools/GstCalculatorPage";
 import PercentageCalculatorPage from "./pages/tools/PercentageCalculatorPage";
 import AgeCalculatorPage from "./pages/tools/AgeCalculatorPage";
@@ -39,45 +40,48 @@ const queryClient = new QueryClient();
 const App = () => {
   console.log("App.tsx is rendering / re-evaluating. Current time:", new Date().toISOString());
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<IndexPage />} />
-              <Route path="/gst-calculator" element={<GstCalculatorPage />} />
-              <Route path="/percentage-calculator" element={<PercentageCalculatorPage />} />
-              <Route path="/age-calculator" element={<AgeCalculatorPage />} />
-              <Route path="/date-difference-calculator" element={<DateDifferenceCalculatorPage />} />
-              <Route path="/word-counter" element={<WordCounterPage />} />
-              <Route path="/text-case-converter" element={<TextCaseConverterPage />} />
-              <Route path="/whitespace-remover" element={<WhitespaceRemoverPage />} />
-              <Route path="/todo-list" element={<TodoListPage />} />
-              <Route path="/text-reverser" element={<TextReverserPage />} />
-              <Route path="/bmi-calculator" element={<BmiCalculatorPage />} />
-              <Route path="/color-picker" element={<ColorPickerToolPage />} />
-              <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
-              <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
-              <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
-              <Route path="/currency-converter" element={<CurrencyConverterPage />} />
-              <Route path="/qr-code-generator" element={<QRCodeGeneratorPage />} />
-              <Route path="/password-generator" element={<PasswordGeneratorPage />} />
-              <Route path="/json-formatter" element={<JsonFormatterPage />} />
-              <Route path="/stopwatch" element={<StopwatchPage />} />
-              <Route path="/countdown-timer" element={<CountdownTimerPage />} />
-              <Route path="/live-preview" element={<LivePreviewPage />} />
-              <Route path="/regex-tester" element={<RegexTesterPage />} />
-              <Route path="/javascript-minifier" element={<JavaScriptMinifierPage />} />
-              <Route path="/table-to-json" element={<TableToJsonConverterPage />} />
-              <Route path="/themes" element={<ThemesPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/tools" element={<ToolsPage />} />
+                <Route path="/gst-calculator" element={<GstCalculatorPage />} />
+                <Route path="/percentage-calculator" element={<PercentageCalculatorPage />} />
+                <Route path="/age-calculator" element={<AgeCalculatorPage />} />
+                <Route path="/date-difference-calculator" element={<DateDifferenceCalculatorPage />} />
+                <Route path="/word-counter" element={<WordCounterPage />} />
+                <Route path="/text-case-converter" element={<TextCaseConverterPage />} />
+                <Route path="/whitespace-remover" element={<WhitespaceRemoverPage />} />
+                <Route path="/todo-list" element={<TodoListPage />} />
+                <Route path="/text-reverser" element={<TextReverserPage />} />
+                <Route path="/bmi-calculator" element={<BmiCalculatorPage />} />
+                <Route path="/color-picker" element={<ColorPickerToolPage />} />
+                <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
+                <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
+                <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
+                <Route path="/currency-converter" element={<CurrencyConverterPage />} />
+                <Route path="/qr-code-generator" element={<QRCodeGeneratorPage />} />
+                <Route path="/password-generator" element={<PasswordGeneratorPage />} />
+                <Route path="/json-formatter" element={<JsonFormatterPage />} />
+                <Route path="/stopwatch" element={<StopwatchPage />} />
+                <Route path="/countdown-timer" element={<CountdownTimerPage />} />
+                <Route path="/live-preview" element={<LivePreviewPage />} />
+                <Route path="/regex-tester" element={<RegexTesterPage />} />
+                <Route path="/javascript-minifier" element={<JavaScriptMinifierPage />} />
+                <Route path="/table-to-json" element={<TableToJsonConverterPage />} />
+                <Route path="/themes" element={<ThemesPage />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 
