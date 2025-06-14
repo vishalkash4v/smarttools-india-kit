@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import AppSidebar from '@/components/layout/AppSidebar';
+import { AppSidebar } from '@/components/layout/AppSidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 
 const MainLayout = () => {

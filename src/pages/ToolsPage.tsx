@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowsLeftRight, Search, Dropper, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, CurrencyDollar, Eye, Javascript, Table, PackagePlus, Globe } from "lucide-react";
+import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -70,7 +70,7 @@ const ToolsPage = () => {
       category: 'Text & Writing Tools', 
       description: 'Reverse text, words, or lines in your text.',
       path: '/text-reverser',
-      icon: ArrowsLeftRight
+      icon: ArrowLeftRight
     },
     { 
       id: 'regex-tester', 
@@ -120,7 +120,7 @@ const ToolsPage = () => {
       category: 'Utility Tools', 
       description: 'Pick colors from a palette or image.',
       path: '/color-picker-tool',
-      icon: Dropper
+      icon: Palette
     },
     { 
       id: 'todo-list', 
@@ -178,7 +178,7 @@ const ToolsPage = () => {
       category: 'Number Tools', 
       description: 'Convert between different currencies.',
       path: '/currency-converter',
-      icon: CurrencyDollar
+      icon: DollarSign
     },
     { 
       id: 'gst-calculator', 
@@ -194,7 +194,7 @@ const ToolsPage = () => {
       category: 'Number Tools', 
       description: 'Calculate Equated Monthly Installment (EMI) for loans.',
       path: '/emi-calculator',
-      icon: CurrencyDollar
+      icon: DollarSign
     },
     { 
       id: 'sip-calculator', 
@@ -226,7 +226,7 @@ const ToolsPage = () => {
       category: 'Number Tools', 
       description: 'Calculate your income tax liability.',
       path: '/income-tax-calculator',
-      icon: CurrencyDollar
+      icon: DollarSign
     },
 
     // Converter Tools
@@ -236,7 +236,7 @@ const ToolsPage = () => {
       category: 'Converter Tools', 
       description: 'Convert between Celsius and Fahrenheit.',
       path: '/temperature-converter',
-      icon: Dropper
+      icon: Palette
     },
     { 
       id: 'unit-converter', 
@@ -244,7 +244,7 @@ const ToolsPage = () => {
       category: 'Converter Tools', 
       description: 'Convert between different units of measurement.',
       path: '/unit-converter',
-      icon: Dropper
+      icon: Palette
     },
 
     // Development Tools
@@ -262,7 +262,7 @@ const ToolsPage = () => {
       category: 'Development Tools', 
       description: 'Minify JavaScript code to reduce file size.',
       path: '/javascript-minifier',
-      icon: Javascript
+      icon: FileCode
     },
     { 
       id: 'table-to-json-converter', 
