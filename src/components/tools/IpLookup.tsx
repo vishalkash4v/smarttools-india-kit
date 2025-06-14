@@ -145,8 +145,10 @@ const IpLookup = () => {
                     </Button>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Version:</span>
-                    <span className="text-sm font-medium">{ipData.version}</span>
+                    <span className="text-sm text-muted-foreground">IP Version:</span>
+                    <span className="text-sm font-medium bg-primary/10 text-primary px-2 py-1 rounded-md">
+                      {ipData.version}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Network:</span>
