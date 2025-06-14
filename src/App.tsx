@@ -150,7 +150,7 @@ function App() {
                         <Route path="/social-media-planner" element={<SocialMediaPlannerPage />} />
                         <Route path="/text-font-changer" element={<TextFontChangerPage />} />
                         <Route path="/url-wrapper" element={<UrlWrapperPage />} />
-                        <Route path="/redirect" element={<RedirectPage />} />
+                        <Route path="/r" element={<RedirectPage />} />
                       </Routes>
                     </Suspense>
                   </main>

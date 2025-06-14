@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -8,8 +7,9 @@ import { Hourglass } from 'lucide-react';
 const RedirectPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const appUrl = searchParams.get('appUrl');
-  const webUrl = searchParams.get('webUrl');
+  // Using shorter params a=appUrl, w=webUrl
+  const appUrl = searchParams.get('a');
+  const webUrl = searchParams.get('w');
 
   useEffect(() => {
     if (!appUrl || !webUrl) {

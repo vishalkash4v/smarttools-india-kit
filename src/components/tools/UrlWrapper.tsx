@@ -140,7 +140,8 @@ const UrlWrapper = () => {
     }
     
     const webUrl = inputUrl;
-    const smartLinkPath = `/redirect?webUrl=${encodeURIComponent(webUrl)}&appUrl=${encodeURIComponent(appUrl)}`;
+    // Using shorter path /r and shorter params w=webUrl, a=appUrl
+    const smartLinkPath = `/r?w=${encodeURIComponent(webUrl)}&a=${encodeURIComponent(appUrl)}`;
     const fullSmartLink = `${window.location.origin}${smartLinkPath}`;
 
     setGeneratedResult({ smartLink: fullSmartLink, platform });
