@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -13,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks } from 'lucide-react'; // Added new icons
+import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Bmi, ColorPicker } from 'lucide-react'; // Added Undo, Bmi, ColorPicker
 
 const toolCategories = [
   {
@@ -23,6 +22,7 @@ const toolCategories = [
       { title: 'Percentage Calculator', url: '/percentage-calculator', icon: Calculator, pageId: 'percentage-calculator' },
       { title: 'Age Calculator', url: '/age-calculator', icon: Gift, pageId: 'age-calculator' },
       { title: 'Date Difference Calculator', url: '/date-difference-calculator', icon: CalendarRange, pageId: 'date-difference-calculator' },
+      { title: 'BMI Calculator', url: '/bmi-calculator', icon: Bmi, pageId: 'bmi-calculator' }, // New
     ]
   },
   {
@@ -31,6 +31,7 @@ const toolCategories = [
       { title: 'Word Counter', url: '/word-counter', icon: FileText, pageId: 'word-counter' },
       { title: 'Text Case Converter', url: '/text-case-converter', icon: TextCursorInput, pageId: 'text-case-converter' },
       { title: 'Whitespace Remover', url: '/whitespace-remover', icon: Eraser, pageId: 'whitespace-remover' },
+      { title: 'Text Reverser', url: '/text-reverser', icon: Undo, pageId: 'text-reverser' }, // New
     ]
   },
   {
@@ -38,6 +39,12 @@ const toolCategories = [
     items: [
       { title: 'To-Do List', url: '/todo-list', icon: ListChecks, pageId: 'todo-list' },
       // Add more productivity tools here
+    ]
+  },
+  { // New Category
+    name: "Design & Visual Tools",
+    items: [
+      { title: 'Color Picker', url: '/color-picker', icon: ColorPicker, pageId: 'color-picker' },
     ]
   },
   // Add more categories here
