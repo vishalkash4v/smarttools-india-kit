@@ -206,39 +206,6 @@ const QRCodeGenerator: React.FC = () => {
     });
   };
 
-  const handleDownload = () => {
-    if (!qrValue) {
-      toast({
-        title: 'Nothing to Download',
-        description: 'Generate a QR code first.',
-        variant: 'destructive',
-      });
-      return;
-    }
-    const canvas = document.getElementById('qrcode-canvas') as HTMLCanvasElement;
-    if (canvas) {
-      const pngUrl = canvas
-        .toDataURL('image/png')
-        .replace('image/png', 'image/octet-stream');
-      let downloadLink = document.createElement('a');
-      downloadLink.href = pngUrl;
-      downloadLink.download = 'custom-qrcode.png';
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-      toast({
-        title: 'Download Started',
-        description: 'QR code image download has started.',
-      });
-    } else {
-       toast({
-        title: 'Download Failed',
-        description: 'Could not find QR code canvas element.',
-        variant: 'destructive',
-      });
-    }
-  };
-
   const imageSettings = logoSrc
     ? {
         src: logoSrc,
