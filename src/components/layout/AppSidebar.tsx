@@ -1,3 +1,4 @@
+
 import {
   LayoutDashboard,
   Settings,
@@ -26,6 +27,7 @@ import {
   Link2,
   Hash,
   CalendarDays as CalendarSchedule,
+  Type,
 } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -54,6 +56,7 @@ export function AppSidebar() {
       items: [
         { title: "Word Counter", url: "/word-counter", icon: FileText },
         { title: "Text Case Converter", url: "/text-case-converter", icon: TextIcon },
+        { title: "Text Font Changer", url: "/text-font-changer", icon: Type },
         { title: "JSON Formatter", url: "/json-formatter", icon: FileCode2 },
         { title: "Whitespace Remover", url: "/whitespace-remover", icon: TextIcon },
         { title: "Duplicate Line Remover", url: "/duplicate-line-remover", icon: FileText },

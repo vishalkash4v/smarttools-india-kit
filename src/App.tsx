@@ -63,6 +63,7 @@ import SocialMediaLinkGeneratorPage from "@/pages/tools/SocialMediaLinkGenerator
 import UrlShortenerPage from "@/pages/tools/UrlShortenerPage";
 import HashtagGeneratorPage from "@/pages/tools/HashtagGeneratorPage";
 import SocialMediaPlannerPage from "@/pages/tools/SocialMediaPlannerPage";
+import TextFontChangerPage from "@/pages/tools/TextFontChangerPage";
 
 // Scroll to top component
 function ScrollToTop() {
@@ -144,6 +145,7 @@ function App() {
                         <Route path="/url-shortener" element={<UrlShortenerPage />} />
                         <Route path="/hashtag-generator" element={<HashtagGeneratorPage />} />
                         <Route path="/social-media-planner" element={<SocialMediaPlannerPage />} />
+                        <Route path="/text-font-changer" element={<TextFontChangerPage />} />
                       </Routes>
                     </Suspense>
                   </main>

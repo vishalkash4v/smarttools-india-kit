@@ -1,11 +1,10 @@
-
 import React from 'react';
 import PageWrapper from '@/components/layout/PageWrapper';
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule } from "lucide-react";
+import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -32,6 +31,14 @@ const ToolsPage = () => {
       description: 'Convert text between uppercase, lowercase, and title case.',
       path: '/text-case-converter',
       icon: TextCursor
+    },
+    { 
+      id: 'text-font-changer', 
+      name: 'Text Font Changer', 
+      category: 'Text & Writing Tools', 
+      description: 'Transform plain text into fancy fonts and styles like bold, italic, bubble text, and more.',
+      path: '/text-font-changer',
+      icon: Type
     },
     { 
       id: 'ai-text-rewriter', 
