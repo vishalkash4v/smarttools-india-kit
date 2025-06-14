@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import QRCode from 'qrcode.react'; // Changed import
+import { QRCode } from 'qrcode.react'; // Changed to named import
 import { useToast } from '@/components/ui/use-toast';
 import { Download } from 'lucide-react';
 
@@ -61,7 +60,6 @@ const QRCodeGenerator: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        {/* In previous version, this was a simple <label>. It should remain as is. */}
         <label htmlFor="qrText" className="block text-sm font-medium text-gray-700">
           Enter Text or URL
         </label>
@@ -80,7 +78,7 @@ const QRCodeGenerator: React.FC = () => {
       {qrValue && (
         <Card className="mt-6">
           <CardContent className="p-6 flex flex-col items-center space-y-4">
-            <QRCode // Changed from QRCodeStyling
+            <QRCode // This usage should now work with the named import
               id="qrcode-canvas"
               value={qrValue}
               size={256}
@@ -98,4 +96,3 @@ const QRCodeGenerator: React.FC = () => {
 };
 
 export default QRCodeGenerator;
-
