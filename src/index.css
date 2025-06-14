@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -58,6 +57,33 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
+  .metallic {
+    --background: 210 40% 95%;
+    --foreground: 210 20% 10%;
+    --card: 210 40% 98%;
+    --card-foreground: 210 20% 10%;
+    --popover: 210 40% 98%;
+    --popover-foreground: 210 20% 10%;
+    --primary: 210 70% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 210 30% 85%;
+    --secondary-foreground: 210 20% 20%;
+    --muted: 210 30% 88%;
+    --muted-foreground: 210 15% 45%;
+    --accent: 210 50% 75%;
+    --accent-foreground: 210 20% 15%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 210 30% 80%;
+    --input: 210 30% 85%;
+    --ring: 210 70% 50%;
+    --chart-1: 210 70% 60%;
+    --chart-2: 220 60% 55%;
+    --chart-3: 200 65% 50%;
+    --chart-4: 230 55% 65%;
+    --chart-5: 240 60% 70%;
+  }
 }
 
 @layer base {
@@ -66,6 +92,44 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Metallic theme specific styles */
+  .metallic body {
+    background: linear-gradient(135deg, #e6f0ff 0%, #b3d9ff 25%, #80c7ff 50%, #4db5ff 75%, #1aa3ff 100%);
+    background-attachment: fixed;
+  }
+  
+  .metallic .card-enhanced {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 8px 32px rgba(26, 163, 255, 0.15);
+  }
+  
+  .metallic .glass-effect {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 16px rgba(26, 163, 255, 0.1);
+  }
+  
+  .metallic .btn-primary {
+    background: linear-gradient(135deg, #3D52A0 0%, #7091E6 50%, #8697C4 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba(61, 82, 160, 0.3);
+  }
+  
+  .metallic .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(61, 82, 160, 0.4);
+  }
+  
+  .metallic .heading-gradient {
+    background: linear-gradient(135deg, #3D52A0 0%, #7091E6 50%, #8697C4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 
