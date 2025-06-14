@@ -56,6 +56,8 @@ export function AppSidebar() {
         { title: "Lorem Ipsum Generator", url: "/lorem-ipsum-generator", icon: FileText },
         { title: "AI Text Rewriter", url: "/ai-text-rewriter", icon: TextIcon },
         { title: "Base64 Converter", url: "/base64-converter", icon: FileText },
+        { title: "Text to Handwriting", url: "/text-to-handwriting", icon: TextIcon },
+        { title: "URL Slug Generator", url: "/url-slug-generator", icon: TextIcon },
       ]
     },
     {
@@ -94,6 +96,8 @@ export function AppSidebar() {
         { title: "Live Preview", url: "/live-preview", icon: Layout },
         { title: "JavaScript Minifier", url: "/javascript-minifier", icon: FileCode2 },
         { title: "Table to JSON Converter", url: "/table-to-json-converter", icon: Table },
+        { title: "List Randomizer", url: "/list-randomizer", icon: Layout },
+        { title: "Barcode Generator", url: "/barcode-generator", icon: Layout },
       ]
     },
     {

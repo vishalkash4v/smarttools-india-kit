@@ -1,4 +1,3 @@
-
 import { Suspense, lazy } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -57,6 +56,12 @@ const UnitConverterPage = lazy(() => import("@/pages/tools/UnitConverterPage"));
 const LoremIpsumGeneratorPage = lazy(() => import("@/pages/tools/LoremIpsumGeneratorPage"));
 const AiTextRewriterPage = lazy(() => import("@/pages/tools/AiTextRewriterPage"));
 const IpLookupPage = lazy(() => import("@/pages/tools/IpLookupPage"));
+
+// Latest tool pages
+const ListRandomizerPage = lazy(() => import("@/pages/tools/ListRandomizerPage"));
+const UrlSlugGeneratorPage = lazy(() => import("@/pages/tools/UrlSlugGeneratorPage"));
+const BarcodeGeneratorPage = lazy(() => import("@/pages/tools/BarcodeGeneratorPage"));
+const TextToHandwritingPage = lazy(() => import("@/pages/tools/TextToHandwritingPage"));
 
 function App() {
   return (
@@ -119,6 +124,12 @@ function App() {
                         <Route path="/lorem-ipsum-generator" element={<LoremIpsumGeneratorPage />} />
                         <Route path="/ai-text-rewriter" element={<AiTextRewriterPage />} />
                         <Route path="/ip-lookup" element={<IpLookupPage />} />
+                        
+                        {/* Latest tool routes */}
+                        <Route path="/list-randomizer" element={<ListRandomizerPage />} />
+                        <Route path="/url-slug-generator" element={<UrlSlugGeneratorPage />} />
+                        <Route path="/barcode-generator" element={<BarcodeGeneratorPage />} />
+                        <Route path="/text-to-handwriting" element={<TextToHandwritingPage />} />
                       </Routes>
                     </Suspense>
                   </main>

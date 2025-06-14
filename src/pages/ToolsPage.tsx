@@ -1,10 +1,11 @@
+
 import React from 'react';
 import PageWrapper from '@/components/layout/PageWrapper';
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp } from "lucide-react";
+import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -88,6 +89,22 @@ const ToolsPage = () => {
       path: '/base64-converter',
       icon: Code
     },
+    { 
+      id: 'text-to-handwriting', 
+      name: 'Text to Handwriting', 
+      category: 'Text & Writing Tools', 
+      description: 'Convert typed text into handwritten-style text on lined paper.',
+      path: '/text-to-handwriting',
+      icon: PenTool
+    },
+    { 
+      id: 'url-slug-generator', 
+      name: 'URL Slug Generator', 
+      category: 'Text & Writing Tools', 
+      description: 'Convert text into SEO-friendly URL slugs.',
+      path: '/url-slug-generator',
+      icon: TextCursorIcon
+    },
 
     // Utility Tools
     { 
@@ -129,6 +146,22 @@ const ToolsPage = () => {
       description: 'Create and manage your to-do list.',
       path: '/todo-list',
       icon: ListChecks
+    },
+    { 
+      id: 'list-randomizer', 
+      name: 'List Randomizer', 
+      category: 'Utility Tools', 
+      description: 'Randomize the order of items in any list.',
+      path: '/list-randomizer',
+      icon: List
+    },
+    { 
+      id: 'barcode-generator', 
+      name: 'Barcode Generator', 
+      category: 'Utility Tools', 
+      description: 'Generate barcodes from text for various applications.',
+      path: '/barcode-generator',
+      icon: Barcode
     },
 
     // Number Tools
