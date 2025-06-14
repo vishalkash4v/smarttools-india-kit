@@ -22,6 +22,10 @@ import {
   TextIcon,
   Network,
   StickyNote,
+  Share2,
+  Link2,
+  Hash,
+  CalendarDays as CalendarSchedule,
 } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -100,6 +104,15 @@ export function AppSidebar() {
         { title: "Table to JSON Converter", url: "/table-to-json-converter", icon: Table },
         { title: "List Randomizer", url: "/list-randomizer", icon: Layout },
         { title: "Barcode Generator", url: "/barcode-generator", icon: Layout },
+      ]
+    },
+    {
+      title: "Social Media Tools",
+      items: [
+        { title: "Social Media Link Generator", url: "/social-media-link-generator", icon: Share2 },
+        { title: "URL Shortener", url: "/url-shortener", icon: Link2 },
+        { title: "Hashtag Generator", url: "/hashtag-generator", icon: Hash },
+        { title: "Content Planner", url: "/social-media-planner", icon: CalendarSchedule },
       ]
     },
     {

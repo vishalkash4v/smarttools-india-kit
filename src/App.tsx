@@ -59,6 +59,10 @@ import UrlSlugGeneratorPage from "@/pages/tools/UrlSlugGeneratorPage";
 import BarcodeGeneratorPage from "@/pages/tools/BarcodeGeneratorPage";
 import TextToHandwritingPage from "@/pages/tools/TextToHandwritingPage";
 import NotesPage from "@/pages/tools/NotesPage";
+import SocialMediaLinkGeneratorPage from "@/pages/tools/SocialMediaLinkGeneratorPage";
+import UrlShortenerPage from "@/pages/tools/UrlShortenerPage";
+import HashtagGeneratorPage from "@/pages/tools/HashtagGeneratorPage";
+import SocialMediaPlannerPage from "@/pages/tools/SocialMediaPlannerPage";
 
 // Scroll to top component
 function ScrollToTop() {
@@ -136,6 +140,10 @@ function App() {
                         <Route path="/barcode-generator" element={<BarcodeGeneratorPage />} />
                         <Route path="/text-to-handwriting" element={<TextToHandwritingPage />} />
                         <Route path="/notes" element={<NotesPage />} />
+                        <Route path="/social-media-link-generator" element={<SocialMediaLinkGeneratorPage />} />
+                        <Route path="/url-shortener" element={<UrlShortenerPage />} />
+                        <Route path="/hashtag-generator" element={<HashtagGeneratorPage />} />
+                        <Route path="/social-media-planner" element={<SocialMediaPlannerPage />} />
                       </Routes>
                     </Suspense>
                   </main>
