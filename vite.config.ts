@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { fileURLToPath } from "url";
 import { componentTagger } from "lovable-tagger";
-import { prerender } from "@prerenderer/rollup-plugin";
+import { prerender } from "vite-plugin-prerender";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -67,8 +67,7 @@ export default defineConfig(({ mode }) => ({
         '/url-shortener',
         '/hashtag-generator',
         '/social-media-planner'
-      ],
-      renderer: '@prerenderer/renderer-puppeteer'
+      ]
     })
   ].filter(Boolean),
   resolve: {
