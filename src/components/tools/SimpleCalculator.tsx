@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +7,7 @@ const SimpleCalculator = () => {
   const [previousValue, setPreviousValue] = useState<number | null>(null);
   const [operator, setOperator] = useState<string | null>(null);
   const [waitingForOperand, setWaitingForOperand] = useState(false);
+  const [history, setHistory] = useState<string[]>([]);
 
   const inputNumber = (num: string) => {
     if (waitingForOperand) {
@@ -19,6 +19,11 @@ const SimpleCalculator = () => {
   };
 
   const inputOperator = (nextOperator: string) => {
+    if (waitingForOperand && operator) {
+      setOperator(nextOperator);
+      return;
+    }
+
     const inputValue = parseFloat(display);
 
     if (previousValue === null) {
@@ -55,6 +60,9 @@ const SimpleCalculator = () => {
 
     if (previousValue !== null && operator) {
       const newValue = calculate(previousValue, inputValue, operator);
+      const historyEntry = `${previousValue.toLocaleString()} ${operator} ${inputValue.toLocaleString()} = ${newValue.toLocaleString()}`;
+      setHistory(prevHistory => [historyEntry, ...prevHistory]);
+
       setDisplay(String(newValue));
       setPreviousValue(null);
       setOperator(null);
@@ -67,6 +75,7 @@ const SimpleCalculator = () => {
     setPreviousValue(null);
     setOperator(null);
     setWaitingForOperand(false);
+    setHistory([]);
   };
 
   const clearEntry = () => {
@@ -82,14 +91,29 @@ const SimpleCalculator = () => {
     }
   };
 
+  const operationDisplay = previousValue !== null && operator ? `${previousValue.toLocaleString()} ${operator}` : '';
+
   return (
     <Card className="max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Simple Calculator</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="mb-4 p-4 bg-black text-white text-right text-2xl font-mono rounded border">
-          {display}
+        <div className="h-20 mb-2 p-2 bg-muted text-right text-sm text-muted-foreground rounded border overflow-y-auto">
+            {history.length > 0 ? (
+            history.map((item, index) => (
+                <div key={index} className="py-0.5">{item}</div>
+            ))
+            ) : (
+            <div className="flex justify-center items-center h-full opacity-50">History</div>
+            )}
+        </div>
+        
+        <div className="relative mb-4 p-4 bg-black text-white text-right text-2xl font-mono rounded border min-h-[72px] flex items-end justify-end flex-col">
+            <div className="text-sm text-gray-400 font-sans h-6">
+                {operationDisplay}
+            </div>
+            <div className="truncate w-full">{display}</div>
         </div>
         
         <div className="grid grid-cols-4 gap-2">
