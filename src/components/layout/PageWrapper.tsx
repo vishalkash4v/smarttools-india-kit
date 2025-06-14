@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import Header from './Header';
 
 interface PageWrapperProps {
   title: string;
@@ -20,9 +19,6 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
   title,
   description,
   keywords,
-  pageTitle,
-  showBackButton = true,
-  backTo = -1,
   children,
   toolCategory = "Online Tool",
   canonicalUrl,
@@ -82,12 +78,6 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
         
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none" />
-        
-        <Header 
-          title={pageTitle} 
-          showBackButton={showBackButton} 
-          backTo={typeof backTo === 'string' ? backTo : backTo.toString()} 
-        />
         
         <main className="py-12 relative">
           <div className="animate-fade-in-up">
