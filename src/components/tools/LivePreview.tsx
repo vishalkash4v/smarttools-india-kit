@@ -54,7 +54,7 @@ const LivePreview = () => {
       iframe.srcdoc = combinedCode;
     } else {
       // Method 2: Fallback for older browsers
-      const doc = iframe.contentDocument || iframe.contentWindow?.document;
+      const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
       if (doc) {
         doc.open();
         doc.write(combinedCode);
