@@ -1,88 +1,105 @@
+
+import { Suspense, lazy } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
-
-import MainLayout from "./components/layout/MainLayout";
-import LandingPage from "./pages/LandingPage";
-import ToolsPage from "./pages/ToolsPage";
-import GstCalculatorPage from "./pages/tools/GstCalculatorPage";
-import PercentageCalculatorPage from "./pages/tools/PercentageCalculatorPage";
-import AgeCalculatorPage from "./pages/tools/AgeCalculatorPage";
-import DateDifferenceCalculatorPage from "./pages/tools/DateDifferenceCalculatorPage";
-import WordCounterPage from "./pages/tools/WordCounterPage";
-import TextCaseConverterPage from "./pages/tools/TextCaseConverterPage";
-import WhitespaceRemoverPage from "./pages/tools/WhitespaceRemoverPage";
-import TodoListPage from "./pages/tools/TodoListPage";
-import TextReverserPage from "./pages/tools/TextReverserPage";
-import BmiCalculatorPage from "./pages/tools/BmiCalculatorPage";
-import ColorPickerToolPage from "./pages/tools/ColorPickerToolPage";
-import DuplicateLineRemoverPage from "./pages/tools/DuplicateLineRemoverPage";
-import EmiCalculatorPage from "./pages/tools/EmiCalculatorPage";
-import SimpleCalculatorPage from "./pages/tools/SimpleCalculatorPage";
-import CurrencyConverterPage from "./pages/tools/CurrencyConverterPage";
-import QRCodeGeneratorPage from "./pages/tools/QRCodeGeneratorPage";
-import PasswordGeneratorPage from "./pages/tools/PasswordGeneratorPage";
-import JsonFormatterPage from "./pages/tools/JsonFormatterPage";
-import StopwatchPage from "./pages/tools/StopwatchPage";
-import CountdownTimerPage from "./pages/tools/CountdownTimerPage";
-import LivePreviewPage from "./pages/tools/LivePreviewPage";
-import RegexTesterPage from "./pages/tools/RegexTesterPage";
-import JavaScriptMinifierPage from "./pages/tools/JavaScriptMinifierPage";
-import TableToJsonConverterPage from "./pages/tools/TableToJsonConverterPage";
-import ThemesPage from "./pages/tools/ThemesPage";
-import NotFound from "./pages/NotFound";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import "./App.css";
 
 const queryClient = new QueryClient();
 
-const App = () => {
-  console.log("App.tsx is rendering / re-evaluating. Current time:", new Date().toISOString());
+// Lazy load pages for better performance
+const LandingPage = lazy(() => import("@/pages/LandingPage"));
+const ToolsPage = lazy(() => import("@/pages/ToolsPage"));
+
+// Tool pages
+const SimpleCalculatorPage = lazy(() => import("@/pages/tools/SimpleCalculatorPage"));
+const WordCounterPage = lazy(() => import("@/pages/tools/WordCounterPage"));
+const QRCodeGeneratorPage = lazy(() => import("@/pages/tools/QRCodeGeneratorPage"));
+const TextCaseConverterPage = lazy(() => import("@/pages/tools/TextCaseConverterPage"));
+const PasswordGeneratorPage = lazy(() => import("@/pages/tools/PasswordGeneratorPage"));
+const JsonFormatterPage = lazy(() => import("@/pages/tools/JsonFormatterPage"));
+const WhitespaceRemoverPage = lazy(() => import("@/pages/tools/WhitespaceRemoverPage"));
+const DuplicateLineRemoverPage = lazy(() => import("@/pages/tools/DuplicateLineRemoverPage"));
+const TextReverserPage = lazy(() => import("@/pages/tools/TextReverserPage"));
+const RegexTesterPage = lazy(() => import("@/pages/tools/RegexTesterPage"));
+const ColorPickerToolPage = lazy(() => import("@/pages/tools/ColorPickerToolPage"));
+const TodoListPage = lazy(() => import("@/pages/tools/TodoListPage"));
+const StopwatchPage = lazy(() => import("@/pages/tools/StopwatchPage"));
+const CountdownTimerPage = lazy(() => import("@/pages/tools/CountdownTimerPage"));
+const AgeCalculatorPage = lazy(() => import("@/pages/tools/AgeCalculatorPage"));
+const DateDifferenceCalculatorPage = lazy(() => import("@/pages/tools/DateDifferenceCalculatorPage"));
+const BmiCalculatorPage = lazy(() => import("@/pages/tools/BmiCalculatorPage"));
+const PercentageCalculatorPage = lazy(() => import("@/pages/tools/PercentageCalculatorPage"));
+const CurrencyConverterPage = lazy(() => import("@/pages/tools/CurrencyConverterPage"));
+const LivePreviewPage = lazy(() => import("@/pages/tools/LivePreviewPage"));
+const JavaScriptMinifierPage = lazy(() => import("@/pages/tools/JavaScriptMinifierPage"));
+const TableToJsonConverterPage = lazy(() => import("@/pages/tools/TableToJsonConverterPage"));
+const GstCalculatorPage = lazy(() => import("@/pages/tools/GstCalculatorPage"));
+const EmiCalculatorPage = lazy(() => import("@/pages/tools/EmiCalculatorPage"));
+
+function App() {
   return (
     <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route element={<MainLayout />}>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/tools" element={<ToolsPage />} />
-                <Route path="/gst-calculator" element={<GstCalculatorPage />} />
-                <Route path="/percentage-calculator" element={<PercentageCalculatorPage />} />
-                <Route path="/age-calculator" element={<AgeCalculatorPage />} />
-                <Route path="/date-difference-calculator" element={<DateDifferenceCalculatorPage />} />
-                <Route path="/word-counter" element={<WordCounterPage />} />
-                <Route path="/text-case-converter" element={<TextCaseConverterPage />} />
-                <Route path="/whitespace-remover" element={<WhitespaceRemoverPage />} />
-                <Route path="/todo-list" element={<TodoListPage />} />
-                <Route path="/text-reverser" element={<TextReverserPage />} />
-                <Route path="/bmi-calculator" element={<BmiCalculatorPage />} />
-                <Route path="/color-picker" element={<ColorPickerToolPage />} />
-                <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
-                <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
-                <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
-                <Route path="/currency-converter" element={<CurrencyConverterPage />} />
-                <Route path="/qr-code-generator" element={<QRCodeGeneratorPage />} />
-                <Route path="/password-generator" element={<PasswordGeneratorPage />} />
-                <Route path="/json-formatter" element={<JsonFormatterPage />} />
-                <Route path="/stopwatch" element={<StopwatchPage />} />
-                <Route path="/countdown-timer" element={<CountdownTimerPage />} />
-                <Route path="/live-preview" element={<LivePreviewPage />} />
-                <Route path="/regex-tester" element={<RegexTesterPage />} />
-                <Route path="/javascript-minifier" element={<JavaScriptMinifierPage />} />
-                <Route path="/table-to-json" element={<TableToJsonConverterPage />} />
-                <Route path="/themes" element={<ThemesPage />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
+      <ThemeProvider defaultTheme="system" storageKey="smarttools-theme">
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <div className="min-h-screen flex flex-col bg-background">
+                <Header />
+                <main className="flex-1">
+                  <Suspense fallback={
+                    <div className="flex items-center justify-center min-h-[60vh]">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                    </div>
+                  }>
+                    <Routes>
+                      <Route path="/" element={<LandingPage />} />
+                      <Route path="/tools" element={<ToolsPage />} />
+                      
+                      {/* Tool routes */}
+                      <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
+                      <Route path="/word-counter" element={<WordCounterPage />} />
+                      <Route path="/qr-code-generator" element={<QRCodeGeneratorPage />} />
+                      <Route path="/text-case-converter" element={<TextCaseConverterPage />} />
+                      <Route path="/password-generator" element={<PasswordGeneratorPage />} />
+                      <Route path="/json-formatter" element={<JsonFormatterPage />} />
+                      <Route path="/whitespace-remover" element={<WhitespaceRemoverPage />} />
+                      <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
+                      <Route path="/text-reverser" element={<TextReverserPage />} />
+                      <Route path="/regex-tester" element={<RegexTesterPage />} />
+                      <Route path="/color-picker-tool" element={<ColorPickerToolPage />} />
+                      <Route path="/todo-list" element={<TodoListPage />} />
+                      <Route path="/stopwatch" element={<StopwatchPage />} />
+                      <Route path="/countdown-timer" element={<CountdownTimerPage />} />
+                      <Route path="/age-calculator" element={<AgeCalculatorPage />} />
+                      <Route path="/date-difference-calculator" element={<DateDifferenceCalculatorPage />} />
+                      <Route path="/bmi-calculator" element={<BmiCalculatorPage />} />
+                      <Route path="/percentage-calculator" element={<PercentageCalculatorPage />} />
+                      <Route path="/currency-converter" element={<CurrencyConverterPage />} />
+                      <Route path="/live-preview" element={<LivePreviewPage />} />
+                      <Route path="/javascript-minifier" element={<JavaScriptMinifierPage />} />
+                      <Route path="/table-to-json-converter" element={<TableToJsonConverterPage />} />
+                      <Route path="/gst-calculator" element={<GstCalculatorPage />} />
+                      <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
+                    </Routes>
+                  </Suspense>
+                </main>
+                <Footer />
+              </div>
+            </BrowserRouter>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </ThemeProvider>
     </HelmetProvider>
   );
-};
+}
 
 export default App;

@@ -1,71 +1,82 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { Wrench, Menu, X } from 'lucide-react';
+import { useState } from 'react';
 
-interface HeaderProps {
-  title?: string;
-  showBackButton?: boolean;
-  backTo?: string;
-}
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-const Header: React.FC<HeaderProps> = ({ 
-  title, 
-  showBackButton = true, 
-  backTo = -1 
-}) => {
-  const navigate = useNavigate();
-
-  const handleBack = () => {
-    if (typeof backTo === 'string') {
-      navigate(backTo);
-    } else {
-      navigate(backTo);
-    }
-  };
+  const navigationItems = [
+    { name: 'Home', href: '/' },
+    { name: 'Tools', href: '/tools' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
+  ];
 
   return (
-    <header className="bg-background/80 backdrop-blur-lg border-b border-border/50 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-4">
-            {showBackButton && (
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleBack}
-                className="hover-lift"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back
-              </Button>
-            )}
-            
-            <Link to="/" className="flex items-center gap-2 group">
-              <Sparkles className="h-6 w-6 text-primary group-hover:animate-pulse" />
-              <span className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">
-                SmartTools
-              </span>
-            </Link>
-            
-            {title && (
-              <div className="hidden md:block">
-                <span className="text-muted-foreground mx-2">•</span>
-                <span className="font-medium text-foreground">{title}</span>
-              </div>
-            )}
-          </div>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto px-4">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+            <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-secondary">
+              <Wrench className="h-6 w-6 text-white" />
+            </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              SmartTools India
+            </span>
+          </Link>
 
-          <nav className="hidden md:flex items-center gap-4">
-            <Button asChild variant="ghost" className="hover-lift">
-              <Link to="/tools">All Tools</Link>
-            </Button>
-            <Button asChild variant="ghost" className="hover-lift">
-              <Link to="/themes">Themes</Link>
-            </Button>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-6">
+            {navigationItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors relative group"
+              >
+                {item.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            ))}
           </nav>
+
+          {/* Right Side */}
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden border-t">
+            <nav className="flex flex-col space-y-4 py-4">
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors px-2 py-1"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
