@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Percent, Calculator as CalculatorIcon, Gift, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table } from 'lucide-react';
+import { ArrowLeft, Percent, Calculator as CalculatorIcon, Gift, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Binary, TrendingUp, PiggyBank, Landmark, Receipt, Thermometer, Ruler } from 'lucide-react';
 
 interface Tool {
   title: string;
@@ -25,6 +24,12 @@ const toolsByCategory: Record<string, Tool[]> = {
     { title: 'Date Difference Calculator', description: 'Calculate duration between two dates precisely.', url: '/date-difference-calculator', icon: CalendarRange, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'BMI Calculator', description: 'Calculate your Body Mass Index and health status.', url: '/bmi-calculator', icon: Scale, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'EMI Calculator', description: 'Calculate loan EMI with detailed payment schedule.', url: '/emi-calculator', icon: Banknote, comingSoon: false, category: "Calculation & Conversion Tools" },
+    { title: 'SIP Calculator', description: 'Calculate returns on your Systematic Investment Plan.', url: '/sip-calculator', icon: TrendingUp, comingSoon: false, category: "Calculation & Conversion Tools" },
+    { title: 'PPF Calculator', description: 'Calculate Public Provident Fund maturity amount.', url: '/ppf-calculator', icon: PiggyBank, comingSoon: false, category: "Calculation & Conversion Tools" },
+    { title: 'FD Calculator', description: 'Calculate Fixed Deposit returns and maturity amount.', url: '/fd-calculator', icon: Landmark, comingSoon: false, category: "Calculation & Conversion Tools" },
+    { title: 'Income Tax Calculator', description: 'Calculate income tax for India (old vs new regime).', url: '/income-tax-calculator', icon: Receipt, comingSoon: false, category: "Calculation & Conversion Tools" },
+    { title: 'Temperature Converter', description: 'Convert between Celsius, Fahrenheit, and Kelvin.', url: '/temperature-converter', icon: Thermometer, comingSoon: false, category: "Calculation & Conversion Tools" },
+    { title: 'Unit Converter', description: 'Convert length, weight, area and other units.', url: '/unit-converter', icon: Ruler, comingSoon: false, category: "Calculation & Conversion Tools" },
   ],
   "Text & Writing Tools": [
     { title: 'Word Counter', description: 'Count words, characters, and analyze text statistics.', url: '/word-counter', icon: FileText, comingSoon: false, category: "Text & Writing Tools" },
@@ -33,6 +38,7 @@ const toolsByCategory: Record<string, Tool[]> = {
     { title: 'Text Reverser', description: 'Reverse your text characters or words.', url: '/text-reverser', icon: Undo, comingSoon: false, category: "Text & Writing Tools" },
     { title: 'Duplicate Line Remover', description: 'Remove duplicate lines from large text blocks.', url: '/duplicate-line-remover', icon: ListX, comingSoon: false, category: "Text & Writing Tools" },
     { title: 'JSON Formatter', description: 'Format, validate, and beautify JSON data.', url: '/json-formatter', icon: Braces, comingSoon: false, category: "Text & Writing Tools" },
+    { title: 'Base64 Encoder/Decoder', description: 'Encode and decode Base64 strings easily.', url: '/base64-converter', icon: Binary, comingSoon: false, category: "Text & Writing Tools" },
   ],
   "Productivity Tools": [
     { title: 'To-Do List', description: 'Manage your tasks with persistent local storage.', url: '/todo-list', icon: ListChecks, comingSoon: false, category: "Productivity Tools" },

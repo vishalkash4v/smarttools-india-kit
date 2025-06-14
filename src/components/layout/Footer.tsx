@@ -13,7 +13,11 @@ const Footer = () => {
         { name: 'BMI Calculator', path: '/bmi-calculator' },
         { name: 'EMI Calculator', path: '/emi-calculator' },
         { name: 'GST Calculator', path: '/gst-calculator' },
-        { name: 'Age Calculator', path: '/age-calculator' }
+        { name: 'Age Calculator', path: '/age-calculator' },
+        { name: 'SIP Calculator', path: '/sip-calculator' },
+        { name: 'PPF Calculator', path: '/ppf-calculator' },
+        { name: 'FD Calculator', path: '/fd-calculator' },
+        { name: 'Income Tax Calculator', path: '/income-tax-calculator' }
       ] 
     },
     { 
@@ -22,7 +26,8 @@ const Footer = () => {
         { name: 'Word Counter', path: '/word-counter' },
         { name: 'Text Case Converter', path: '/text-case-converter' },
         { name: 'Duplicate Line Remover', path: '/duplicate-line-remover' },
-        { name: 'Whitespace Remover', path: '/whitespace-remover' }
+        { name: 'Whitespace Remover', path: '/whitespace-remover' },
+        { name: 'Base64 Converter', path: '/base64-converter' }
       ] 
     },
     { 
@@ -40,7 +45,9 @@ const Footer = () => {
         { name: 'QR Code Generator', path: '/qr-code-generator' },
         { name: 'Color Picker', path: '/color-picker-tool' },
         { name: 'Password Generator', path: '/password-generator' },
-        { name: 'Currency Converter', path: '/currency-converter' }
+        { name: 'Currency Converter', path: '/currency-converter' },
+        { name: 'Temperature Converter', path: '/temperature-converter' },
+        { name: 'Unit Converter', path: '/unit-converter' }
       ] 
     },
   ];

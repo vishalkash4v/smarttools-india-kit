@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator as CalculatorIcon, Gift, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Settings, Sparkles, ArrowLeft } from 'lucide-react';
+import { Home, Percent, Calculator as CalculatorIcon, Gift, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Settings, Sparkles, ArrowLeft, Binary, TrendingUp, PiggyBank, Landmark, Receipt, Thermometer, Ruler } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const toolCategories = [
@@ -27,6 +27,12 @@ const toolCategories = [
       { title: 'Date Difference Calculator', url: '/date-difference-calculator', icon: CalendarRange, pageId: 'date-difference-calculator' },
       { title: 'BMI Calculator', url: '/bmi-calculator', icon: Scale, pageId: 'bmi-calculator' },
       { title: 'EMI Calculator', url: '/emi-calculator', icon: Banknote, pageId: 'emi-calculator' },
+      { title: 'SIP Calculator', url: '/sip-calculator', icon: TrendingUp, pageId: 'sip-calculator' },
+      { title: 'PPF Calculator', url: '/ppf-calculator', icon: PiggyBank, pageId: 'ppf-calculator' },
+      { title: 'FD Calculator', url: '/fd-calculator', icon: Landmark, pageId: 'fd-calculator' },
+      { title: 'Income Tax Calculator', url: '/income-tax-calculator', icon: Receipt, pageId: 'income-tax-calculator' },
+      { title: 'Temperature Converter', url: '/temperature-converter', icon: Thermometer, pageId: 'temperature-converter' },
+      { title: 'Unit Converter', url: '/unit-converter', icon: Ruler, pageId: 'unit-converter' },
     ]
   },
   {
@@ -38,6 +44,7 @@ const toolCategories = [
       { title: 'Text Reverser', url: '/text-reverser', icon: Undo, pageId: 'text-reverser' },
       { title: 'Duplicate Line Remover', url: '/duplicate-line-remover', icon: ListX, pageId: 'duplicate-line-remover' },
       { title: 'JSON Formatter', url: '/json-formatter', icon: Braces, pageId: 'json-formatter' },
+      { title: 'Base64 Encoder/Decoder', url: '/base64-converter', icon: Binary, pageId: 'base64-converter' },
     ]
   },
   {

@@ -45,6 +45,15 @@ const TableToJsonConverterPage = lazy(() => import("@/pages/tools/TableToJsonCon
 const GstCalculatorPage = lazy(() => import("@/pages/tools/GstCalculatorPage"));
 const EmiCalculatorPage = lazy(() => import("@/pages/tools/EmiCalculatorPage"));
 
+// New tool pages
+const Base64ConverterPage = lazy(() => import("@/pages/tools/Base64ConverterPage"));
+const SipCalculatorPage = lazy(() => import("@/pages/tools/SipCalculatorPage"));
+const PpfCalculatorPage = lazy(() => import("@/pages/tools/PpfCalculatorPage"));
+const FdCalculatorPage = lazy(() => import("@/pages/tools/FdCalculatorPage"));
+const IncomeTaxCalculatorPage = lazy(() => import("@/pages/tools/IncomeTaxCalculatorPage"));
+const TemperatureConverterPage = lazy(() => import("@/pages/tools/TemperatureConverterPage"));
+const UnitConverterPage = lazy(() => import("@/pages/tools/UnitConverterPage"));
+
 function App() {
   return (
     <HelmetProvider>
@@ -93,6 +102,15 @@ function App() {
                       <Route path="/table-to-json-converter" element={<TableToJsonConverterPage />} />
                       <Route path="/gst-calculator" element={<GstCalculatorPage />} />
                       <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
+                      
+                      {/* New tool routes */}
+                      <Route path="/base64-converter" element={<Base64ConverterPage />} />
+                      <Route path="/sip-calculator" element={<SipCalculatorPage />} />
+                      <Route path="/ppf-calculator" element={<PpfCalculatorPage />} />
+                      <Route path="/fd-calculator" element={<FdCalculatorPage />} />
+                      <Route path="/income-tax-calculator" element={<IncomeTaxCalculatorPage />} />
+                      <Route path="/temperature-converter" element={<TemperatureConverterPage />} />
+                      <Route path="/unit-converter" element={<UnitConverterPage />} />
                     </Routes>
                   </Suspense>
                 </main>
