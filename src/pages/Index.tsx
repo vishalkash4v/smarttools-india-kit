@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from 'react-router-dom';
-import { Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Bmi, ColorPicker } from 'lucide-react';
+import { Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette } from 'lucide-react';
 
 interface Tool {
   title: string;
@@ -19,7 +19,7 @@ const toolsByCategory: Record<string, Tool[]> = {
     { title: 'Percentage Calculator', description: 'Calculate percentages effortlessly.', url: '/percentage-calculator', icon: Calculator, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'Age Calculator', description: 'Find out your exact age.', url: '/age-calculator', icon: Gift, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'Date Difference Calculator', description: 'Calculate duration between two dates.', url: '/date-difference-calculator', icon: CalendarRange, comingSoon: false, category: "Calculation & Conversion Tools" },
-    { title: 'BMI Calculator', description: 'Calculate your Body Mass Index.', url: '/bmi-calculator', icon: Bmi, comingSoon: false, category: "Calculation & Conversion Tools" },
+    { title: 'BMI Calculator', description: 'Calculate your Body Mass Index.', url: '/bmi-calculator', icon: Scale, comingSoon: false, category: "Calculation & Conversion Tools" },
   ],
   "Text & Writing Tools": [
     { title: 'Word Counter', description: 'Count words and characters in text.', url: '/word-counter', icon: FileText, comingSoon: false, category: "Text & Writing Tools" },
@@ -33,7 +33,7 @@ const toolsByCategory: Record<string, Tool[]> = {
     { title: 'Resume Builder', description: 'Build your perfect resume.', url: '#', icon: GanttChartSquare, comingSoon: true, category: "Productivity Tools" },
   ],
   "Design & Visual Tools": [
-    { title: 'Color Picker', description: 'Pick colors and get codes.', url: '/color-picker', icon: ColorPicker, comingSoon: false, category: "Design & Visual Tools" },
+    { title: 'Color Picker', description: 'Pick colors and get codes.', url: '/color-picker', icon: Palette, comingSoon: false, category: "Design & Visual Tools" },
   ]
   // Add more tools to appropriate categories or create new categories
 };

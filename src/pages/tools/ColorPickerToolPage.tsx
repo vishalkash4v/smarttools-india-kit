@@ -1,8 +1,8 @@
 
 import React from 'react';
-import ColorPickerToolComponent from '@/components/tools/ColorPickerTool'; // Renamed to avoid conflict
+import ColorPickerToolComponent from '@/components/tools/ColorPickerTool';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ColorPicker as ColorPickerIcon } from 'lucide-react';
+import { Palette as ColorPickerIcon } from 'lucide-react'; // Changed ColorPicker to Palette
 
 const ColorPickerToolPage = () => {
   return (

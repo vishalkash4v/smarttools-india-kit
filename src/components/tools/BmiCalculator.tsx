@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Bmi as BmiIcon } from 'lucide-react'; // Correctly renamed to avoid conflict
+import { Scale as BmiIcon } from 'lucide-react'; // Changed Bmi to Scale
 
 const BmiCalculator = () => {
   const [height, setHeight] = useState('');
@@ -67,7 +66,7 @@ const BmiCalculator = () => {
         <Alert variant={
           bmiCategory === 'Normal weight' ? 'default' : 
           bmiCategory === 'Underweight' ? 'destructive' :
-          bmiCategory === 'Overweight' ? 'destructive' : // Can be 'warning' if available or just destructive
+          bmiCategory === 'Overweight' ? 'destructive' :
           bmiCategory === 'Obesity' ? 'destructive' : 'default' 
         }>
           <BmiIcon className="h-4 w-4" />

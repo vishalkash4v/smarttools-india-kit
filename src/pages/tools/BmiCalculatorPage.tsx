@@ -1,8 +1,8 @@
 
 import React from 'react';
-import BmiCalculatorComponent from '@/components/tools/BmiCalculator'; // Renamed to avoid conflict
+import BmiCalculatorComponent from '@/components/tools/BmiCalculator';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bmi as BmiIcon } from 'lucide-react';
+import { Scale as BmiIcon } from 'lucide-react'; // Changed Bmi to Scale
 
 const BmiCalculatorPage = () => {
   return (
