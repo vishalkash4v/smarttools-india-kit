@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from 'react-router-dom';
-import { Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX } from 'lucide-react';
+import { Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote } from 'lucide-react';
 
 interface Tool {
   title: string;
@@ -20,6 +20,7 @@ const toolsByCategory: Record<string, Tool[]> = {
     { title: 'Age Calculator', description: 'Find out your exact age.', url: '/age-calculator', icon: Gift, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'Date Difference Calculator', description: 'Calculate duration between two dates.', url: '/date-difference-calculator', icon: CalendarRange, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'BMI Calculator', description: 'Calculate your Body Mass Index.', url: '/bmi-calculator', icon: Scale, comingSoon: false, category: "Calculation & Conversion Tools" },
+    { title: 'EMI Calculator', description: 'Calculate Equated Monthly Installments.', url: '/emi-calculator', icon: Banknote, comingSoon: false, category: "Calculation & Conversion Tools" },
   ],
   "Text & Writing Tools": [
     { title: 'Word Counter', description: 'Count words and characters in text.', url: '/word-counter', icon: FileText, comingSoon: false, category: "Text & Writing Tools" },

@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX } from 'lucide-react'; // Added ListX
+import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote } from 'lucide-react'; // Added Banknote
 
 const toolCategories = [
   {
@@ -23,6 +23,7 @@ const toolCategories = [
       { title: 'Age Calculator', url: '/age-calculator', icon: Gift, pageId: 'age-calculator' },
       { title: 'Date Difference Calculator', url: '/date-difference-calculator', icon: CalendarRange, pageId: 'date-difference-calculator' },
       { title: 'BMI Calculator', url: '/bmi-calculator', icon: Scale, pageId: 'bmi-calculator' },
+      { title: 'EMI Calculator', url: '/emi-calculator', icon: Banknote, pageId: 'emi-calculator' }, // New Tool
     ]
   },
   {
