@@ -1,17 +1,17 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from 'react-router-dom';
-import { Percent, Calculator, Gift, GanttChartSquare, CalendarRange } from 'lucide-react';
+import { Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText } from 'lucide-react';
 
 const tools = [
-  { title: 'GST Calculator', description: 'Calculate Goods and Services Tax.', url: '/gst-calculator', icon: Percent, comingSoon: false },
-  { title: 'Percentage Calculator', description: 'Calculate percentages effortlessly.', url: '/percentage-calculator', icon: Calculator, comingSoon: false },
-  { title: 'Age Calculator', description: 'Find out your exact age.', url: '/age-calculator', icon: Gift, comingSoon: false },
-  { title: 'Date Difference Calculator', description: 'Calculate duration between two dates.', url: '/date-difference-calculator', icon: CalendarRange, comingSoon: false },
-  { title: 'Invoice Generator', description: 'Create professional invoices.', url: '#', icon: GanttChartSquare, comingSoon: true },
-  { title: 'Resume Builder', description: 'Build your perfect resume.', url: '#', icon: GanttChartSquare, comingSoon: true },
+  { title: 'GST Calculator', description: 'Calculate Goods and Services Tax.', url: '/gst-calculator', icon: Percent, comingSoon: false, category: "Calculation & Conversion Tools" },
+  { title: 'Percentage Calculator', description: 'Calculate percentages effortlessly.', url: '/percentage-calculator', icon: Calculator, comingSoon: false, category: "Calculation & Conversion Tools" },
+  { title: 'Age Calculator', description: 'Find out your exact age.', url: '/age-calculator', icon: Gift, comingSoon: false, category: "Calculation & Conversion Tools" },
+  { title: 'Date Difference Calculator', description: 'Calculate duration between two dates.', url: '/date-difference-calculator', icon: CalendarRange, comingSoon: false, category: "Calculation & Conversion Tools" },
+  { title: 'Word Counter', description: 'Count words and characters in text.', url: '/word-counter', icon: FileText, comingSoon: false, category: "Text & Writing Tools" },
+  { title: 'Invoice Generator', description: 'Create professional invoices.', url: '#', icon: GanttChartSquare, comingSoon: true, category: "Productivity & Utility Tools" },
+  { title: 'Resume Builder', description: 'Build your perfect resume.', url: '#', icon: GanttChartSquare, comingSoon: true, category: "Productivity & Utility Tools" },
   // Add more tools here
 ];
 
@@ -27,8 +27,8 @@ const IndexPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {tools.map((tool) => (
-          <Card key={tool.title} className="hover:shadow-lg transition-shadow duration-300 ease-in-out">
-            <CardHeader>
+          <Card key={tool.title} className="hover:shadow-lg transition-shadow duration-300 ease-in-out flex flex-col">
+            <CardHeader className="flex-grow">
               <div className="flex items-center gap-4 mb-2">
                 <tool.icon className="h-10 w-10 text-primary" />
                 <CardTitle className="text-2xl">{tool.title}</CardTitle>

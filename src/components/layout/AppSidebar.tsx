@@ -13,15 +13,26 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange } from 'lucide-react';
+import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText } from 'lucide-react'; // Added FileText
 
-const menuItems = [
-  { title: 'Home', url: '/', icon: Home, pageId: 'home' },
-  { title: 'GST Calculator', url: '/gst-calculator', icon: Percent, pageId: 'gst-calculator' },
-  { title: 'Percentage Calculator', url: '/percentage-calculator', icon: Calculator, pageId: 'percentage-calculator' },
-  { title: 'Age Calculator', url: '/age-calculator', icon: Gift, pageId: 'age-calculator' },
-  { title: 'Date Difference Calculator', url: '/date-difference-calculator', icon: CalendarRange, pageId: 'date-difference-calculator' },
-  // Add more tools here as they are implemented
+const toolCategories = [
+  {
+    name: "Calculation & Conversion Tools",
+    items: [
+      { title: 'GST Calculator', url: '/gst-calculator', icon: Percent, pageId: 'gst-calculator' },
+      { title: 'Percentage Calculator', url: '/percentage-calculator', icon: Calculator, pageId: 'percentage-calculator' },
+      { title: 'Age Calculator', url: '/age-calculator', icon: Gift, pageId: 'age-calculator' },
+      { title: 'Date Difference Calculator', url: '/date-difference-calculator', icon: CalendarRange, pageId: 'date-difference-calculator' },
+    ]
+  },
+  {
+    name: "Text & Writing Tools",
+    items: [
+      { title: 'Word Counter', url: '/word-counter', icon: FileText, pageId: 'word-counter' },
+      // Add more text tools here
+    ]
+  },
+  // Add more categories here
 ];
 
 const AppSidebar = () => {
@@ -35,29 +46,49 @@ const AppSidebar = () => {
           <h1 className="text-2xl font-semibold text-foreground">SmartTools</h1>
         </Link>
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Tools</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    variant="default" // Use default variant
-                    isActive={location.pathname === item.url} // Set isActive prop
-                    className="w-full justify-start"
-                  >
-                    <Link to={item.url}>
-                      <item.icon className="h-5 w-5 mr-3" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+      <SidebarContent className="py-4"> {/* Added py-4 for some padding */}
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              variant="default"
+              isActive={location.pathname === '/'}
+              className="w-full justify-start"
+            >
+              <Link to="/">
+                <Home className="h-5 w-5 mr-3" />
+                <span>Home</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+
+        {toolCategories.map((category) => (
+          <SidebarGroup key={category.name} className="pt-4"> {/* Added pt-4 for spacing between groups */}
+            <SidebarGroupLabel className="px-2 mb-1 text-sm font-semibold text-muted-foreground"> {/* Adjusted styling */}
+              {category.name}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {category.items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      variant="default"
+                      isActive={location.pathname === item.url}
+                      className="w-full justify-start"
+                    >
+                      <Link to={item.url}>
+                        <item.icon className="h-5 w-5 mr-3" />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
       <SidebarFooter className="p-4 border-t">
         <div className="text-xs text-muted-foreground">

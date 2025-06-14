@@ -10,7 +10,8 @@ import IndexPage from "./pages/Index";
 import GstCalculatorPage from "./pages/tools/GstCalculatorPage";
 import PercentageCalculatorPage from "./pages/tools/PercentageCalculatorPage";
 import AgeCalculatorPage from "./pages/tools/AgeCalculatorPage";
-import DateDifferenceCalculatorPage from "./pages/tools/DateDifferenceCalculatorPage"; // New import
+import DateDifferenceCalculatorPage from "./pages/tools/DateDifferenceCalculatorPage";
+import WordCounterPage from "./pages/tools/WordCounterPage"; // New import
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,7 +28,8 @@ const App = () => (
             <Route path="/gst-calculator" element={<GstCalculatorPage />} />
             <Route path="/percentage-calculator" element={<PercentageCalculatorPage />} />
             <Route path="/age-calculator" element={<AgeCalculatorPage />} />
-            <Route path="/date-difference-calculator" element={<DateDifferenceCalculatorPage />} /> {/* New route */}
+            <Route path="/date-difference-calculator" element={<DateDifferenceCalculatorPage />} />
+            <Route path="/word-counter" element={<WordCounterPage />} /> {/* New route */}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Route>
