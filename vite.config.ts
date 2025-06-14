@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === 'development' && componentTagger(),
     mode === 'production' && prerender({
+      staticDir: path.join(__dirname, 'dist'),
       routes: [
         '/',
         '/tools',
