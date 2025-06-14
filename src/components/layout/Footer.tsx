@@ -7,17 +7,48 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const toolCategories = [
-    { name: 'Calculators', tools: ['BMI Calculator', 'EMI Calculator', 'GST Calculator', 'Age Calculator'] },
-    { name: 'Text Tools', tools: ['Word Counter', 'Text Case Converter', 'Duplicate Line Remover', 'Whitespace Remover'] },
-    { name: 'Developer Tools', tools: ['JSON Formatter', 'JavaScript Minifier', 'Live Preview', 'Regex Tester'] },
-    { name: 'Utilities', tools: ['QR Code Generator', 'Color Picker', 'Password Generator', 'Currency Converter'] },
+    { 
+      name: 'Calculators', 
+      tools: [
+        { name: 'BMI Calculator', path: '/bmi-calculator' },
+        { name: 'EMI Calculator', path: '/emi-calculator' },
+        { name: 'GST Calculator', path: '/gst-calculator' },
+        { name: 'Age Calculator', path: '/age-calculator' }
+      ] 
+    },
+    { 
+      name: 'Text Tools', 
+      tools: [
+        { name: 'Word Counter', path: '/word-counter' },
+        { name: 'Text Case Converter', path: '/text-case-converter' },
+        { name: 'Duplicate Line Remover', path: '/duplicate-line-remover' },
+        { name: 'Whitespace Remover', path: '/whitespace-remover' }
+      ] 
+    },
+    { 
+      name: 'Developer Tools', 
+      tools: [
+        { name: 'JSON Formatter', path: '/json-formatter' },
+        { name: 'JavaScript Minifier', path: '/javascript-minifier' },
+        { name: 'Live Preview', path: '/live-preview' },
+        { name: 'Regex Tester', path: '/regex-tester' }
+      ] 
+    },
+    { 
+      name: 'Utilities', 
+      tools: [
+        { name: 'QR Code Generator', path: '/qr-code-generator' },
+        { name: 'Color Picker', path: '/color-picker-tool' },
+        { name: 'Password Generator', path: '/password-generator' },
+        { name: 'Currency Converter', path: '/currency-converter' }
+      ] 
+    },
   ];
 
   const companyLinks = [
     { name: 'About Us', href: '/about' },
-    { name: 'Privacy Policy', href: '/privacy' },
-    { name: 'Terms of Service', href: '/terms' },
     { name: 'Contact', href: '/contact' },
+    { name: 'All Tools', href: '/tools' },
   ];
 
   return (
@@ -49,7 +80,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+91 98765 43210</span>
+                <span>+91 8350937959</span>
               </div>
             </div>
           </div>
@@ -60,12 +91,12 @@ const Footer = () => {
               <h3 className="font-semibold text-foreground mb-4">{category.name}</h3>
               <ul className="space-y-2">
                 {category.tools.map((tool) => (
-                  <li key={tool}>
+                  <li key={tool.name}>
                     <Link 
-                      to="#" 
+                      to={tool.path} 
                       className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center group"
                     >
-                      {tool}
+                      {tool.name}
                       <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </Link>
                   </li>

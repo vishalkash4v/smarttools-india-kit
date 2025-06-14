@@ -30,6 +30,27 @@ const Header: React.FC<HeaderProps> = ({
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  const scrollToSection = (sectionId: string) => {
+    // First navigate to home page if not already there
+    if (window.location.pathname !== '/') {
+      navigate('/');
+      // Wait for navigation to complete, then scroll
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      // Already on home page, just scroll
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
@@ -73,17 +94,29 @@ const Header: React.FC<HeaderProps> = ({
             >
               All Tools
             </Link>
-            <Link 
-              to="/#features" 
+            <button 
+              onClick={() => scrollToSection('features')}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               Features
-            </Link>
-            <Link 
-              to="/#faq" 
+            </button>
+            <button 
+              onClick={() => scrollToSection('faq')}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               FAQ
+            </button>
+            <Link 
+              to="/about" 
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              About
+            </Link>
+            <Link 
+              to="/contact" 
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Contact
             </Link>
           </nav>
 
@@ -114,19 +147,31 @@ const Header: React.FC<HeaderProps> = ({
               >
                 All Tools
               </Link>
-              <Link 
-                to="/#features"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-                onClick={() => setIsMenuOpen(false)}
+              <button 
+                onClick={() => scrollToSection('features')}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2 text-left"
               >
                 Features
-              </Link>
+              </button>
+              <button 
+                onClick={() => scrollToSection('faq')}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2 text-left"
+              >
+                FAQ
+              </button>
               <Link 
-                to="/#faq"
+                to="/about"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                FAQ
+                About
+              </Link>
+              <Link 
+                to="/contact"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
               </Link>
             </nav>
           </div>

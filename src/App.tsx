@@ -16,6 +16,8 @@ const queryClient = new QueryClient();
 // Lazy load pages for better performance
 const LandingPage = lazy(() => import("@/pages/LandingPage"));
 const ToolsPage = lazy(() => import("@/pages/ToolsPage"));
+const AboutPage = lazy(() => import("@/pages/AboutPage"));
+const ContactPage = lazy(() => import("@/pages/ContactPage"));
 
 // Tool pages
 const SimpleCalculatorPage = lazy(() => import("@/pages/tools/SimpleCalculatorPage"));
@@ -63,6 +65,8 @@ function App() {
                     <Routes>
                       <Route path="/" element={<LandingPage />} />
                       <Route path="/tools" element={<ToolsPage />} />
+                      <Route path="/about" element={<AboutPage />} />
+                      <Route path="/contact" element={<ContactPage />} />
                       
                       {/* Tool routes */}
                       <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
