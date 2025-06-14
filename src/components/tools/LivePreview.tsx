@@ -53,8 +53,9 @@ const LivePreview = () => {
     if ('srcdoc' in iframe) {
       iframe.srcdoc = combinedCode;
     } else {
-      // Method 2: Fallback for older browsers
-      const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+      // Method 2: Fallback for older browsers - properly type the iframe
+      const iframeElement = iframe as HTMLIFrameElement;
+      const doc = iframeElement.contentDocument || (iframeElement.contentWindow && iframeElement.contentWindow.document);
       if (doc) {
         doc.open();
         doc.write(combinedCode);
