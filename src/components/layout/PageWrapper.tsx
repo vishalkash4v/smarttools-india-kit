@@ -40,7 +40,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
         <Header 
           title={pageTitle} 
           showBackButton={showBackButton} 
-          backTo={backTo} 
+          backTo={typeof backTo === 'string' ? backTo : backTo.toString()} 
         />
         <main className="py-8">
           <div className="animate-fade-in-up">
