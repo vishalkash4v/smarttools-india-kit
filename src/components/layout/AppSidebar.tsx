@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -13,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table } from 'lucide-react';
+import { Home, Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table, Settings } from 'lucide-react';
 
 const toolCategories = [
   {
@@ -90,6 +89,19 @@ const AppSidebar = () => {
               <Link to="/">
                 <Home className="h-5 w-5 mr-3" />
                 <span>Home</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              variant="default"
+              isActive={location.pathname === '/themes'}
+              className="w-full justify-start"
+            >
+              <Link to="/themes">
+                <Settings className="h-5 w-5 mr-3" />
+                <span>Themes & Settings</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

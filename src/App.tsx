@@ -31,6 +31,7 @@ import LivePreviewPage from "./pages/tools/LivePreviewPage";
 import RegexTesterPage from "./pages/tools/RegexTesterPage";
 import JavaScriptMinifierPage from "./pages/tools/JavaScriptMinifierPage";
 import TableToJsonConverterPage from "./pages/tools/TableToJsonConverterPage";
+import ThemesPage from "./pages/tools/ThemesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -70,6 +71,7 @@ const App = () => {
               <Route path="/regex-tester" element={<RegexTesterPage />} />
               <Route path="/javascript-minifier" element={<JavaScriptMinifierPage />} />
               <Route path="/table-to-json" element={<TableToJsonConverterPage />} />
+              <Route path="/themes" element={<ThemesPage />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
