@@ -1,4 +1,3 @@
-
 import React from 'react';
 import PageWrapper from '@/components/layout/PageWrapper';
 import { AppSidebar } from "@/components/layout/AppSidebar";
@@ -103,7 +102,7 @@ const ToolsPage = () => {
       category: 'Text & Writing Tools', 
       description: 'Convert text into SEO-friendly URL slugs.',
       path: '/url-slug-generator',
-      icon: TextCursorIcon
+      icon: TextCursor
     },
 
     // Utility Tools
