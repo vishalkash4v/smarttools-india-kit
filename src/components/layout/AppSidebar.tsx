@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette } from 'lucide-react'; // Changed Bmi to Scale, ColorPicker to Palette
+import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX } from 'lucide-react'; // Added ListX
 
 const toolCategories = [
   {
@@ -22,7 +22,7 @@ const toolCategories = [
       { title: 'Percentage Calculator', url: '/percentage-calculator', icon: Calculator, pageId: 'percentage-calculator' },
       { title: 'Age Calculator', url: '/age-calculator', icon: Gift, pageId: 'age-calculator' },
       { title: 'Date Difference Calculator', url: '/date-difference-calculator', icon: CalendarRange, pageId: 'date-difference-calculator' },
-      { title: 'BMI Calculator', url: '/bmi-calculator', icon: Scale, pageId: 'bmi-calculator' }, // Changed icon
+      { title: 'BMI Calculator', url: '/bmi-calculator', icon: Scale, pageId: 'bmi-calculator' },
     ]
   },
   {
@@ -32,19 +32,19 @@ const toolCategories = [
       { title: 'Text Case Converter', url: '/text-case-converter', icon: TextCursorInput, pageId: 'text-case-converter' },
       { title: 'Whitespace Remover', url: '/whitespace-remover', icon: Eraser, pageId: 'whitespace-remover' },
       { title: 'Text Reverser', url: '/text-reverser', icon: Undo, pageId: 'text-reverser' },
+      { title: 'Duplicate Line Remover', url: '/duplicate-line-remover', icon: ListX, pageId: 'duplicate-line-remover' },
     ]
   },
   {
     name: "Productivity Tools",
     items: [
       { title: 'To-Do List', url: '/todo-list', icon: ListChecks, pageId: 'todo-list' },
-      // Add more productivity tools here
     ]
   },
   {
     name: "Design & Visual Tools",
     items: [
-      { title: 'Color Picker', url: '/color-picker', icon: Palette, pageId: 'color-picker' }, // Changed icon
+      { title: 'Color Picker', url: '/color-picker', icon: Palette, pageId: 'color-picker' },
     ]
   },
   // Add more categories here

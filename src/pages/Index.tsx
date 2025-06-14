@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from 'react-router-dom';
-import { Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette } from 'lucide-react';
+import { Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX } from 'lucide-react';
 
 interface Tool {
   title: string;
@@ -26,6 +26,7 @@ const toolsByCategory: Record<string, Tool[]> = {
     { title: 'Text Case Converter', description: 'Convert text to various cases.', url: '/text-case-converter', icon: TextCursorInput, comingSoon: false, category: "Text & Writing Tools" },
     { title: 'Whitespace Remover', description: 'Remove extra spaces from text.', url: '/whitespace-remover', icon: Eraser, comingSoon: false, category: "Text & Writing Tools" },
     { title: 'Text Reverser', description: 'Reverse your input text.', url: '/text-reverser', icon: Undo, comingSoon: false, category: "Text & Writing Tools" },
+    { title: 'Duplicate Line Remover', description: 'Remove duplicate lines from text.', url: '/duplicate-line-remover', icon: ListX, comingSoon: false, category: "Text & Writing Tools" },
   ],
   "Productivity Tools": [
     { title: 'To-Do List', description: 'Manage your tasks with localStorage.', url: '/todo-list', icon: ListChecks, comingSoon: false, category: "Productivity Tools" },

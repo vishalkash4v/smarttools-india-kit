@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +17,7 @@ import TodoListPage from "./pages/tools/TodoListPage";
 import TextReverserPage from "./pages/tools/TextReverserPage";
 import BmiCalculatorPage from "./pages/tools/BmiCalculatorPage";
 import ColorPickerToolPage from "./pages/tools/ColorPickerToolPage";
+import DuplicateLineRemoverPage from "./pages/tools/DuplicateLineRemoverPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,11 +41,10 @@ const App = () => {
               <Route path="/text-case-converter" element={<TextCaseConverterPage />} />
               <Route path="/whitespace-remover" element={<WhitespaceRemoverPage />} />
               <Route path="/todo-list" element={<TodoListPage />} />
-              {/* Re-typed paths for the new routes */}
               <Route path="/text-reverser" element={<TextReverserPage />} />
               <Route path="/bmi-calculator" element={<BmiCalculatorPage />} />
               <Route path="/color-picker" element={<ColorPickerToolPage />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
@@ -56,4 +55,3 @@ const App = () => {
 };
 
 export default App;
-
