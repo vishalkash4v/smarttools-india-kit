@@ -11,7 +11,10 @@ import GstCalculatorPage from "./pages/tools/GstCalculatorPage";
 import PercentageCalculatorPage from "./pages/tools/PercentageCalculatorPage";
 import AgeCalculatorPage from "./pages/tools/AgeCalculatorPage";
 import DateDifferenceCalculatorPage from "./pages/tools/DateDifferenceCalculatorPage";
-import WordCounterPage from "./pages/tools/WordCounterPage"; // New import
+import WordCounterPage from "./pages/tools/WordCounterPage";
+import TextCaseConverterPage from "./pages/tools/TextCaseConverterPage"; // New
+import WhitespaceRemoverPage from "./pages/tools/WhitespaceRemoverPage"; // New
+import TodoListPage from "./pages/tools/TodoListPage"; // New
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,7 +32,10 @@ const App = () => (
             <Route path="/percentage-calculator" element={<PercentageCalculatorPage />} />
             <Route path="/age-calculator" element={<AgeCalculatorPage />} />
             <Route path="/date-difference-calculator" element={<DateDifferenceCalculatorPage />} />
-            <Route path="/word-counter" element={<WordCounterPage />} /> {/* New route */}
+            <Route path="/word-counter" element={<WordCounterPage />} />
+            <Route path="/text-case-converter" element={<TextCaseConverterPage />} /> {/* New route */}
+            <Route path="/whitespace-remover" element={<WhitespaceRemoverPage />} /> {/* New route */}
+            <Route path="/todo-list" element={<TodoListPage />} /> {/* New route */}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Route>

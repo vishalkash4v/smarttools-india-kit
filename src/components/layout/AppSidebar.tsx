@@ -13,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText } from 'lucide-react'; // Added FileText
+import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks } from 'lucide-react'; // Added new icons
 
 const toolCategories = [
   {
@@ -29,7 +29,15 @@ const toolCategories = [
     name: "Text & Writing Tools",
     items: [
       { title: 'Word Counter', url: '/word-counter', icon: FileText, pageId: 'word-counter' },
-      // Add more text tools here
+      { title: 'Text Case Converter', url: '/text-case-converter', icon: TextCursorInput, pageId: 'text-case-converter' },
+      { title: 'Whitespace Remover', url: '/whitespace-remover', icon: Eraser, pageId: 'whitespace-remover' },
+    ]
+  },
+  {
+    name: "Productivity Tools",
+    items: [
+      { title: 'To-Do List', url: '/todo-list', icon: ListChecks, pageId: 'todo-list' },
+      // Add more productivity tools here
     ]
   },
   // Add more categories here
@@ -46,7 +54,7 @@ const AppSidebar = () => {
           <h1 className="text-2xl font-semibold text-foreground">SmartTools</h1>
         </Link>
       </SidebarHeader>
-      <SidebarContent className="py-4"> {/* Added py-4 for some padding */}
+      <SidebarContent className="py-4">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -64,8 +72,8 @@ const AppSidebar = () => {
         </SidebarMenu>
 
         {toolCategories.map((category) => (
-          <SidebarGroup key={category.name} className="pt-4"> {/* Added pt-4 for spacing between groups */}
-            <SidebarGroupLabel className="px-2 mb-1 text-sm font-semibold text-muted-foreground"> {/* Adjusted styling */}
+          <SidebarGroup key={category.name} className="pt-4">
+            <SidebarGroupLabel className="px-2 mb-1 text-sm font-semibold text-muted-foreground">
               {category.name}
             </SidebarGroupLabel>
             <SidebarGroupContent>
