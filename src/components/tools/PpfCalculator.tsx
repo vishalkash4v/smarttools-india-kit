@@ -4,12 +4,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PiggyBank, DollarSign, Calendar } from 'lucide-react';
+import { PiggyBank, DollarSign, Calendar, Minus } from 'lucide-react';
 
 interface PpfResult {
   totalInvestment: number;
   interestEarned: number;
   maturityAmount: number;
+  monthlyDeduction: number;
 }
 
 const PpfCalculator = () => {
@@ -33,11 +34,13 @@ const PpfCalculator = () => {
     }
 
     const interestEarned = totalAmount - totalInvestment;
+    const monthlyDeduction = P / 12; // Monthly equivalent
 
     setResult({
       totalInvestment,
       interestEarned,
       maturityAmount: totalAmount,
+      monthlyDeduction,
     });
   };
 
@@ -106,6 +109,21 @@ const PpfCalculator = () => {
             </div>
           </div>
 
+          {/* Monthly Deduction Display */}
+          {annualInvestment && (
+            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                <Minus className="h-4 w-4" />
+                <span className="font-medium">
+                  Monthly Deduction: {formatCurrency(parseFloat(annualInvestment) / 12)}
+                </span>
+              </div>
+              <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                This is the equivalent monthly amount you would need to save.
+              </div>
+            </div>
+          )}
+
           <div className="flex gap-2">
             <Button onClick={handleCalculate} disabled={!annualInvestment} className="flex-1">
               Calculate PPF Maturity
@@ -121,7 +139,7 @@ const PpfCalculator = () => {
                 <CardTitle className="text-lg">PPF Maturity Calculation</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="text-center p-4 bg-background rounded-lg border">
                     <div className="text-2xl font-bold text-blue-600">
                       {formatCurrency(result.totalInvestment)}
@@ -141,6 +159,13 @@ const PpfCalculator = () => {
                       {formatCurrency(result.maturityAmount)}
                     </div>
                     <div className="text-sm text-muted-foreground">Maturity Amount</div>
+                  </div>
+
+                  <div className="text-center p-4 bg-background rounded-lg border">
+                    <div className="text-2xl font-bold text-orange-600">
+                      {formatCurrency(result.monthlyDeduction)}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Monthly Deduction</div>
                   </div>
                 </div>
                 

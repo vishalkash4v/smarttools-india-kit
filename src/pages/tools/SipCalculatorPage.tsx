@@ -6,9 +6,9 @@ import SipCalculator from '@/components/tools/SipCalculator';
 const SipCalculatorPage = () => {
   return (
     <PageWrapper
-      title="SIP Calculator (India)"
-      description="Calculate returns on your Systematic Investment Plan (SIP) investments. Free SIP calculator for mutual fund investments in India."
-      keywords="sip calculator, systematic investment plan, mutual fund calculator, sip returns"
+      title="SIP & Lump Sum Calculator"
+      description="Calculate returns on your Systematic Investment Plan (SIP) or Lump Sum investments. Free investment calculator."
+      keywords="sip calculator, systematic investment plan, lump sum calculator, investment returns"
       toolCategory="Financial Tools"
     >
       <SipCalculator />
