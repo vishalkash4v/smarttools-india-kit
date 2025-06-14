@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from 'react-router-dom';
-import { Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote } from 'lucide-react';
+import { Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency } from 'lucide-react';
 
 interface Tool {
   title: string;
@@ -18,6 +18,7 @@ const toolsByCategory: Record<string, Tool[]> = {
     { title: 'GST Calculator', description: 'Calculate Goods and Services Tax.', url: '/gst-calculator', icon: Percent, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'Percentage Calculator', description: 'Calculate percentages effortlessly.', url: '/percentage-calculator', icon: CalculatorIcon, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'Simple Calculator', description: 'Perform basic arithmetic operations.', url: '/simple-calculator', icon: CalculatorIcon, comingSoon: false, category: "Calculation & Conversion Tools" },
+    { title: 'Currency Converter', description: 'Convert currencies with live rates.', url: '/currency-converter', icon: Currency, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'Age Calculator', description: 'Find out your exact age.', url: '/age-calculator', icon: Gift, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'Date Difference Calculator', description: 'Calculate duration between two dates.', url: '/date-difference-calculator', icon: CalendarRange, comingSoon: false, category: "Calculation & Conversion Tools" },
     { title: 'BMI Calculator', description: 'Calculate your Body Mass Index.', url: '/bmi-calculator', icon: Scale, comingSoon: false, category: "Calculation & Conversion Tools" },

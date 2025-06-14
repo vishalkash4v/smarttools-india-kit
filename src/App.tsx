@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,7 +20,8 @@ import BmiCalculatorPage from "./pages/tools/BmiCalculatorPage";
 import ColorPickerToolPage from "./pages/tools/ColorPickerToolPage";
 import DuplicateLineRemoverPage from "./pages/tools/DuplicateLineRemoverPage";
 import EmiCalculatorPage from "./pages/tools/EmiCalculatorPage";
-import SimpleCalculatorPage from "./pages/tools/SimpleCalculatorPage"; // New Import
+import SimpleCalculatorPage from "./pages/tools/SimpleCalculatorPage";
+import CurrencyConverterPage from "./pages/tools/CurrencyConverterPage"; // New Import
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,7 +50,8 @@ const App = () => {
               <Route path="/color-picker" element={<ColorPickerToolPage />} />
               <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
               <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
-              <Route path="/simple-calculator" element={<SimpleCalculatorPage />} /> {/* New Route */}
+              <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
+              <Route path="/currency-converter" element={<CurrencyConverterPage />} /> {/* New Route */}
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
