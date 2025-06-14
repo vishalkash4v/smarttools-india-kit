@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -12,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces } from 'lucide-react'; // Changed Json to Braces
+import { Home, Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table } from 'lucide-react';
 
 const toolCategories = [
   {
@@ -36,7 +37,7 @@ const toolCategories = [
       { title: 'Whitespace Remover', url: '/whitespace-remover', icon: Eraser, pageId: 'whitespace-remover' },
       { title: 'Text Reverser', url: '/text-reverser', icon: Undo, pageId: 'text-reverser' },
       { title: 'Duplicate Line Remover', url: '/duplicate-line-remover', icon: ListX, pageId: 'duplicate-line-remover' },
-      { title: 'JSON Formatter', url: '/json-formatter', icon: Braces, pageId: 'json-formatter' }, // Changed Json to Braces
+      { title: 'JSON Formatter', url: '/json-formatter', icon: Braces, pageId: 'json-formatter' },
     ]
   },
   {
@@ -45,6 +46,17 @@ const toolCategories = [
       { title: 'To-Do List', url: '/todo-list', icon: ListChecks, pageId: 'todo-list' },
       { title: 'QR Code Generator', url: '/qr-code-generator', icon: QrCode, pageId: 'qr-code-generator' },
       { title: 'Password Generator', url: '/password-generator', icon: KeyRound, pageId: 'password-generator' },
+      { title: 'Stopwatch', url: '/stopwatch', icon: Timer, pageId: 'stopwatch' },
+      { title: 'Countdown Timer', url: '/countdown-timer', icon: Clock, pageId: 'countdown-timer' },
+    ]
+  },
+  {
+    name: "Developer Tools",
+    items: [
+      { title: 'HTML/CSS/JS Live Preview', url: '/live-preview', icon: Code, pageId: 'live-preview' },
+      { title: 'Regex Tester', url: '/regex-tester', icon: Search, pageId: 'regex-tester' },
+      { title: 'JavaScript Minifier', url: '/javascript-minifier', icon: Minimize2, pageId: 'javascript-minifier' },
+      { title: 'HTML Table to JSON', url: '/table-to-json', icon: Table, pageId: 'table-to-json' },
     ]
   },
   {
@@ -53,7 +65,6 @@ const toolCategories = [
       { title: 'Color Picker', url: '/color-picker', icon: Palette, pageId: 'color-picker' },
     ]
   },
-  // Add more categories here
 ];
 
 const AppSidebar = () => {

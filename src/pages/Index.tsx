@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from 'react-router-dom';
-import { Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces } from 'lucide-react';
+import { Percent, Calculator as CalculatorIcon, Gift, GanttChartSquare, CalendarRange, FileText, TextCursorInput, Eraser, ListChecks, Undo, Scale, Palette, ListX, Banknote, Currency, QrCode, KeyRound, Braces, Timer, Clock, Code, Search, Minimize2, Table } from 'lucide-react';
 
 interface Tool {
   title: string;
@@ -36,8 +37,16 @@ const toolsByCategory: Record<string, Tool[]> = {
     { title: 'To-Do List', description: 'Manage your tasks with localStorage.', url: '/todo-list', icon: ListChecks, comingSoon: false, category: "Productivity Tools" },
     { title: 'QR Code Generator', description: 'Generate QR codes for text or URLs.', url: '/qr-code-generator', icon: QrCode, comingSoon: false, category: "Productivity Tools" },
     { title: 'Password Generator', description: 'Create strong, random passwords.', url: '/password-generator', icon: KeyRound, comingSoon: false, category: "Productivity Tools" },
+    { title: 'Stopwatch', description: 'Precise timing with millisecond accuracy.', url: '/stopwatch', icon: Timer, comingSoon: false, category: "Productivity Tools" },
+    { title: 'Countdown Timer', description: 'Set countdown timers for any duration.', url: '/countdown-timer', icon: Clock, comingSoon: false, category: "Productivity Tools" },
     { title: 'Invoice Generator', description: 'Create professional invoices.', url: '#', icon: GanttChartSquare, comingSoon: true, category: "Productivity Tools" },
     { title: 'Resume Builder', description: 'Build your perfect resume.', url: '#', icon: GanttChartSquare, comingSoon: true, category: "Productivity Tools" },
+  ],
+  "Developer Tools": [
+    { title: 'HTML/CSS/JS Live Preview', description: 'Live preview for web development.', url: '/live-preview', icon: Code, comingSoon: false, category: "Developer Tools" },
+    { title: 'Regex Tester', description: 'Test and validate regular expressions.', url: '/regex-tester', icon: Search, comingSoon: false, category: "Developer Tools" },
+    { title: 'JavaScript Minifier', description: 'Minify JS code to reduce file size.', url: '/javascript-minifier', icon: Minimize2, comingSoon: false, category: "Developer Tools" },
+    { title: 'HTML Table to JSON', description: 'Convert HTML tables to JSON format.', url: '/table-to-json', icon: Table, comingSoon: false, category: "Developer Tools" },
   ],
   "Design & Visual Tools": [
     { title: 'Color Picker', description: 'Pick colors and get codes.', url: '/color-picker', icon: Palette, comingSoon: false, category: "Design & Visual Tools" },

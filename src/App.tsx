@@ -22,9 +22,15 @@ import DuplicateLineRemoverPage from "./pages/tools/DuplicateLineRemoverPage";
 import EmiCalculatorPage from "./pages/tools/EmiCalculatorPage";
 import SimpleCalculatorPage from "./pages/tools/SimpleCalculatorPage";
 import CurrencyConverterPage from "./pages/tools/CurrencyConverterPage";
-import QRCodeGeneratorPage from "./pages/tools/QRCodeGeneratorPage"; // New Import
-import PasswordGeneratorPage from "./pages/tools/PasswordGeneratorPage"; // New Import
-import JsonFormatterPage from "./pages/tools/JsonFormatterPage"; // New Import
+import QRCodeGeneratorPage from "./pages/tools/QRCodeGeneratorPage";
+import PasswordGeneratorPage from "./pages/tools/PasswordGeneratorPage";
+import JsonFormatterPage from "./pages/tools/JsonFormatterPage";
+import StopwatchPage from "./pages/tools/StopwatchPage";
+import CountdownTimerPage from "./pages/tools/CountdownTimerPage";
+import LivePreviewPage from "./pages/tools/LivePreviewPage";
+import RegexTesterPage from "./pages/tools/RegexTesterPage";
+import JavaScriptMinifierPage from "./pages/tools/JavaScriptMinifierPage";
+import TableToJsonConverterPage from "./pages/tools/TableToJsonConverterPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -55,9 +61,15 @@ const App = () => {
               <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
               <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
               <Route path="/currency-converter" element={<CurrencyConverterPage />} />
-              <Route path="/qr-code-generator" element={<QRCodeGeneratorPage />} /> {/* New Route */}
-              <Route path="/password-generator" element={<PasswordGeneratorPage />} /> {/* New Route */}
-              <Route path="/json-formatter" element={<JsonFormatterPage />} /> {/* New Route */}
+              <Route path="/qr-code-generator" element={<QRCodeGeneratorPage />} />
+              <Route path="/password-generator" element={<PasswordGeneratorPage />} />
+              <Route path="/json-formatter" element={<JsonFormatterPage />} />
+              <Route path="/stopwatch" element={<StopwatchPage />} />
+              <Route path="/countdown-timer" element={<CountdownTimerPage />} />
+              <Route path="/live-preview" element={<LivePreviewPage />} />
+              <Route path="/regex-tester" element={<RegexTesterPage />} />
+              <Route path="/javascript-minifier" element={<JavaScriptMinifierPage />} />
+              <Route path="/table-to-json" element={<TableToJsonConverterPage />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
