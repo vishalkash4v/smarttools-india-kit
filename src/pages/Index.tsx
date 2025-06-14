@@ -3,12 +3,13 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from 'react-router-dom';
-import { Percent, Calculator, Gift, GanttChartSquare } from 'lucide-react';
+import { Percent, Calculator, Gift, GanttChartSquare, CalendarRange } from 'lucide-react';
 
 const tools = [
   { title: 'GST Calculator', description: 'Calculate Goods and Services Tax.', url: '/gst-calculator', icon: Percent, comingSoon: false },
   { title: 'Percentage Calculator', description: 'Calculate percentages effortlessly.', url: '/percentage-calculator', icon: Calculator, comingSoon: false },
   { title: 'Age Calculator', description: 'Find out your exact age.', url: '/age-calculator', icon: Gift, comingSoon: false },
+  { title: 'Date Difference Calculator', description: 'Calculate duration between two dates.', url: '/date-difference-calculator', icon: CalendarRange, comingSoon: false },
   { title: 'Invoice Generator', description: 'Create professional invoices.', url: '#', icon: GanttChartSquare, comingSoon: true },
   { title: 'Resume Builder', description: 'Build your perfect resume.', url: '#', icon: GanttChartSquare, comingSoon: true },
   // Add more tools here

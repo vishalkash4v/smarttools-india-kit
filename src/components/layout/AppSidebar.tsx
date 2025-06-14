@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -12,19 +12,21 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
-} from '@/components/ui/sidebar'; // Assuming these are correct paths for shadcn sidebar components
-import { Home, Percent, Calculator, Gift, GanttChartSquare, Users } from 'lucide-react'; // Using more relevant icons
+} from '@/components/ui/sidebar';
+import { Home, Percent, Calculator, Gift, GanttChartSquare, CalendarRange } from 'lucide-react';
 
 const menuItems = [
   { title: 'Home', url: '/', icon: Home, pageId: 'home' },
   { title: 'GST Calculator', url: '/gst-calculator', icon: Percent, pageId: 'gst-calculator' },
   { title: 'Percentage Calculator', url: '/percentage-calculator', icon: Calculator, pageId: 'percentage-calculator' },
   { title: 'Age Calculator', url: '/age-calculator', icon: Gift, pageId: 'age-calculator' },
+  { title: 'Date Difference Calculator', url: '/date-difference-calculator', icon: CalendarRange, pageId: 'date-difference-calculator' },
   // Add more tools here as they are implemented
 ];
 
 const AppSidebar = () => {
+  const location = useLocation();
+
   return (
     <Sidebar className="border-r">
       <SidebarHeader className="p-4 border-b">
@@ -40,7 +42,12 @@ const AppSidebar = () => {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild variant={location.pathname === item.url ? 'default' : 'ghost'} className="w-full justify-start">
+                  <SidebarMenuButton
+                    asChild
+                    variant="default" // Use default variant
+                    isActive={location.pathname === item.url} // Set isActive prop
+                    className="w-full justify-start"
+                  >
                     <Link to={item.url}>
                       <item.icon className="h-5 w-5 mr-3" />
                       <span>{item.title}</span>
