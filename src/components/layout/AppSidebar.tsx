@@ -21,6 +21,7 @@ import {
   Layout,
   TextIcon,
   Network,
+  StickyNote,
 } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -58,6 +59,7 @@ export function AppSidebar() {
         { title: "Base64 Converter", url: "/base64-converter", icon: FileText },
         { title: "Text to Handwriting", url: "/text-to-handwriting", icon: TextIcon },
         { title: "URL Slug Generator", url: "/url-slug-generator", icon: TextIcon },
+        { title: "Notes", url: "/notes", icon: StickyNote },
       ]
     },
     {

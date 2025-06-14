@@ -1,4 +1,3 @@
-
 import { Suspense, lazy, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -59,6 +58,7 @@ import ListRandomizerPage from "@/pages/tools/ListRandomizerPage";
 import UrlSlugGeneratorPage from "@/pages/tools/UrlSlugGeneratorPage";
 import BarcodeGeneratorPage from "@/pages/tools/BarcodeGeneratorPage";
 import TextToHandwritingPage from "@/pages/tools/TextToHandwritingPage";
+import NotesPage from "@/pages/tools/NotesPage";
 
 // Scroll to top component
 function ScrollToTop() {
@@ -135,6 +135,7 @@ function App() {
                         <Route path="/url-slug-generator" element={<UrlSlugGeneratorPage />} />
                         <Route path="/barcode-generator" element={<BarcodeGeneratorPage />} />
                         <Route path="/text-to-handwriting" element={<TextToHandwritingPage />} />
+                        <Route path="/notes" element={<NotesPage />} />
                       </Routes>
                     </Suspense>
                   </main>
