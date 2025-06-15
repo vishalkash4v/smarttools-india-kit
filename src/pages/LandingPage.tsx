@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -108,11 +109,12 @@ const LandingPage = () => {
   return (
     <>
       <Helmet>
-        <title>SmartTools India - Free Online Professional Tools</title>
-        <meta name="description" content="25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration." />
+        <title>SmartTools India - Free Online Tools for Professionals</title>
+        <meta name="description" content="Over 25 free, secure online tools for professionals. Includes calculators, converters, and generators. Instant results, no signup required." />
+        <meta name="google-site-verification" content="6m6RlCRJELjNWiT7LMInGyBaFl-VAUAgxTd9r3FZ42w" />
         <meta name="keywords" content="online tools, free calculators, text tools, developers tools, converters, generators, BMI calculator, JSON formatter, QR code generator, India" />
-        <meta property="og:title" content="SmartTools India - Free Online Professional Tools" />
-        <meta property="og:description" content="25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration." />
+        <meta property="og:title" content="SmartTools India - Free Online Tools for Professionals" />
+        <meta property="og:description" content="Over 25 free, secure online tools for professionals. Includes calculators, converters, and generators. Instant results, no signup required." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://smarttools-india.com" />
         <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop" />
