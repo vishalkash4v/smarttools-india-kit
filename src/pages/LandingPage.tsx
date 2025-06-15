@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -174,8 +173,8 @@ const LandingPage = () => {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="text-lg px-8 py-4 hover-lift">
-                  <Link to="#features">
-                    Learn More
+                  <Link to="/about">
+                    About Us
                   </Link>
                 </Button>
               </div>
@@ -297,6 +296,11 @@ const LandingPage = () => {
                 <Button asChild size="lg" className="btn-primary text-lg px-8 py-4">
                   <Link to="/tools">
                     Start Using Tools Now <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="text-lg px-8 py-4 hover-lift">
+                  <Link to="/contact">
+                    Contact Us
                   </Link>
                 </Button>
               </div>
