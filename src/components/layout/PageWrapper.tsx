@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -28,11 +27,11 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
 
   const fullTitle = isNonToolPage
     ? `${title} | SmartTools India`
-    : `${title} - Free Online Tool | SmartTools India`;
+    : `${title} - Free Online Tool`;
   
   const fullDescription = isNonToolPage
     ? description
-    : `${description} Use our professional ${title.toLowerCase()} tool for free with instant results. No registration required.`;
+    : `${description} Use our free ${title.toLowerCase()} tool for instant results. No registration needed.`;
   
   return (
     <>

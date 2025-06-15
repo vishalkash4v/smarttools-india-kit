@@ -9,7 +9,7 @@ const WordCounterPage = () => {
   return (
     <PageWrapper
       title="Word Counter"
-      description="Professional word and character counter tool. Analyze text statistics including word count, character count, sentences, paragraphs, and reading time."
+      description="Count words, characters, sentences, and paragraphs in your text. Analyze text stats and estimate reading time with this free online tool."
       keywords="word counter, character counter, text analyzer, word count tool, writing tools, text statistics, sentence counter, paragraph counter"
       pageTitle="Word & Character Counter"
       toolCategory="Text Analysis"

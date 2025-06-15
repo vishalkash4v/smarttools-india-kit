@@ -33,7 +33,7 @@ const AboutPage = () => {
   return (
     <PageWrapper
       title="About Us"
-      description="Learn about SmartTools India and our mission to provide free, secure, and user-friendly online tools for developers, students, and professionals."
+      description="Learn about SmartTools India's mission to provide free, secure, and user-friendly online tools for developers, students, and professionals."
       keywords="about smarttools india, online tools, free tools, mission, story"
       toolCategory="About"
     >

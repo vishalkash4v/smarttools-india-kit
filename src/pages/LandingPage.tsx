@@ -108,17 +108,17 @@ const LandingPage = () => {
   return (
     <>
       <Helmet>
-        <title>SmartTools India - Free Online Tools for Professionals</title>
-        <meta name="description" content="Unlock 25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration needed." />
+        <title>SmartTools India - Free Online Professional Tools</title>
+        <meta name="description" content="25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration." />
         <meta name="keywords" content="online tools, free calculators, text tools, developers tools, converters, generators, BMI calculator, JSON formatter, QR code generator, India" />
-        <meta property="og:title" content="SmartTools India - Free Online Tools for Professionals" />
-        <meta property="og:description" content="Unlock 25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration needed." />
+        <meta property="og:title" content="SmartTools India - Free Online Professional Tools" />
+        <meta property="og:description" content="25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://smarttools-india.com" />
         <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="SmartTools India - Free Online Tools for Professionals" />
-        <meta name="twitter:description" content="Unlock 25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration needed." />
+        <meta name="twitter:title" content="SmartTools India - Free Online Professional Tools" />
+        <meta name="twitter:description" content="25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration." />
         <link rel="canonical" href="https://smarttools-india.com" />
         
         {/* Structured Data */}
