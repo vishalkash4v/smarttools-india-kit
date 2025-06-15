@@ -24,8 +24,15 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
   canonicalUrl,
   heroImage = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop"
 }) => {
-  const fullTitle = `${title} - Free ${toolCategory} | SmartTools India`;
-  const fullDescription = `${description} Use our professional ${title.toLowerCase()} tool for free with instant results. No registration required.`;
+  const isNonToolPage = toolCategory === 'About' || toolCategory === 'Contact';
+
+  const fullTitle = isNonToolPage
+    ? `${title} | SmartTools India`
+    : `${title} - Free Online Tool | SmartTools India`;
+  
+  const fullDescription = isNonToolPage
+    ? description
+    : `${description} Use our professional ${title.toLowerCase()} tool for free with instant results. No registration required.`;
   
   return (
     <>

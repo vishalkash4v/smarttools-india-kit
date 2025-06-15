@@ -1,11 +1,11 @@
-
 import React from 'react';
 import PageWrapper from '@/components/layout/PageWrapper';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Mail, Phone, MapPin, Instagram, Twitter, Facebook } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram, Twitter, Facebook, Linkedin, Youtube } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const ContactPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
@@ -21,6 +21,29 @@ const ContactPage = () => {
       keywords="contact, support, help, smarttools india, online tools"
       toolCategory="Contact"
     >
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "SmartTools India",
+            "url": "https://smarttools-india.com",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+91-8350937959",
+              "contactType": "Customer Service",
+              "email": "contact@smarttools-india.com",
+              "areaServed": "IN"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Mumbai",
+              "addressRegion": "Maharashtra",
+              "addressCountry": "IN"
+            }
+          })}
+        </script>
+      </Helmet>
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -74,18 +97,36 @@ const ContactPage = () => {
                   <CardTitle>Follow Us</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex gap-4">
-                    <Button variant="outline" size="sm" className="flex items-center gap-2">
-                      <Instagram className="h-4 w-4" />
-                      smarttoolsig
+                  <div className="flex flex-wrap gap-4">
+                    <Button variant="outline" size="sm" asChild className="flex items-center gap-2">
+                      <a href="#" target="_blank" rel="noopener noreferrer">
+                        <Instagram className="h-4 w-4" />
+                        Instagram
+                      </a>
                     </Button>
-                    <Button variant="outline" size="sm" className="flex items-center gap-2">
-                      <Twitter className="h-4 w-4" />
-                      smarttoolsx
+                    <Button variant="outline" size="sm" asChild className="flex items-center gap-2">
+                       <a href="#" target="_blank" rel="noopener noreferrer">
+                        <Twitter className="h-4 w-4" />
+                        Twitter/X
+                      </a>
                     </Button>
-                    <Button variant="outline" size="sm" className="flex items-center gap-2">
-                      <Facebook className="h-4 w-4" />
-                      smarttoolsfb
+                    <Button variant="outline" size="sm" asChild className="flex items-center gap-2">
+                       <a href="#" target="_blank" rel="noopener noreferrer">
+                        <Facebook className="h-4 w-4" />
+                        Facebook
+                      </a>
+                    </Button>
+                     <Button variant="outline" size="sm" asChild className="flex items-center gap-2">
+                       <a href="#" target="_blank" rel="noopener noreferrer">
+                        <Linkedin className="h-4 w-4" />
+                        LinkedIn
+                      </a>
+                    </Button>
+                     <Button variant="outline" size="sm" asChild className="flex items-center gap-2">
+                       <a href="#" target="_blank" rel="noopener noreferrer">
+                        <Youtube className="h-4 w-4" />
+                        YouTube
+                      </a>
                     </Button>
                   </div>
                 </CardContent>
