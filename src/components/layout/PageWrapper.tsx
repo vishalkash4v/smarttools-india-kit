@@ -67,7 +67,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
             "provider": {
               "@type": "Organization",
               "name": "SmartTools India",
-              "url": "https://smarttools-india.com"
+              "url": "https://tools.best-smm.in"
             }
           })}
         </script>

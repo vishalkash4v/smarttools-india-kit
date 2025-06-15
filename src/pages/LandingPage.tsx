@@ -114,12 +114,12 @@ const LandingPage = () => {
         <meta property="og:title" content="SmartTools India - Free Online Professional Tools" />
         <meta property="og:description" content="25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://smarttools-india.com" />
+        <meta property="og:url" content="https://tools.best-smm.in" />
         <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="SmartTools India - Free Online Professional Tools" />
         <meta name="twitter:description" content="25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration." />
-        <link rel="canonical" href="https://smarttools-india.com" />
+        <link rel="canonical" href="https://tools.best-smm.in" />
         
         {/* Structured Data */}
         <script type="application/ld+json">
@@ -128,10 +128,10 @@ const LandingPage = () => {
             "@type": "WebSite",
             "name": "SmartTools India",
             "description": "Professional online tools for developers, businesses and individuals",
-            "url": "https://smarttools-india.com",
+            "url": "https://tools.best-smm.in",
             "potentialAction": {
               "@type": "SearchAction",
-              "target": "https://smarttools-india.com/tools?q={search_term_string}",
+              "target": "https://tools.best-smm.in/tools?q={search_term_string}",
               "query-input": "required name=search_term_string"
             }
           })}

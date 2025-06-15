@@ -14,4 +14,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://smarttools-india.com/sitemap.xml
+Sitemap: https://tools.best-smm.in/sitemap.xml

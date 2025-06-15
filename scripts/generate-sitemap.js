@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const baseUrl = 'https://smarttools-india.com';
+const baseUrl = 'https://tools.best-smm.in';
 
 const routes = [
   '/',
