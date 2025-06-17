@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,7 +20,7 @@ const TypingGames = () => {
   const [wordsCompleted, setWordsCompleted] = useState(0);
   const [gameSpeed, setGameSpeed] = useState(3000);
   const [isGameOver, setIsGameOver] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   const gameWords = {
     english: {
@@ -52,9 +51,6 @@ const TypingGames = () => {
     setTimeLeft(30);
     setWordsCompleted(0);
     setGameSpeed(3000);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
   };
 
   const resetGame = () => {
@@ -127,6 +123,16 @@ const TypingGames = () => {
     };
   }, [isGameActive, currentWord, gameSpeed, gameType]);
 
+  // Progress animation for survival mode
+  useEffect(() => {
+    if (gameType === 'survival' && isGameActive && progressRef.current) {
+      const progressElement = progressRef.current;
+      progressElement.style.animation = 'none';
+      progressElement.offsetHeight; // Trigger reflow
+      progressElement.style.animation = `shrinkProgress ${gameSpeed}ms linear`;
+    }
+  }, [currentWord, gameSpeed, gameType, isGameActive]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isGameActive || isGameOver) return;
 
@@ -164,6 +170,13 @@ const TypingGames = () => {
 
   return (
     <div className="space-y-6">
+      <style>{`
+        @keyframes shrinkProgress {
+          from { width: 100%; }
+          to { width: 0%; }
+        }
+      `}</style>
+
       {/* Game Settings */}
       <Card>
         <CardHeader>
@@ -347,13 +360,13 @@ const TypingGames = () => {
               {/* Progress bar for survival mode */}
               {gameType === 'survival' && isGameActive && (
                 <div className="max-w-md mx-auto">
-                  <Progress 
-                    value={100} 
-                    className="h-3 animate-pulse"
-                    style={{
-                      animation: `shrink ${gameSpeed}ms linear forwards`
-                    }}
-                  />
+                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div 
+                      ref={progressRef}
+                      className="bg-blue-600 h-3 rounded-full transition-all duration-100"
+                      style={{ width: '100%' }}
+                    />
+                  </div>
                   <p className="text-sm text-muted-foreground mt-2">Type before time runs out!</p>
                 </div>
               )}
@@ -362,11 +375,10 @@ const TypingGames = () => {
             {/* Input */}
             <div className="max-w-md mx-auto">
               <input
-                ref={inputRef}
                 type="text"
                 value={typedText}
                 onChange={handleInputChange}
-                className="w-full p-4 border rounded-lg text-xl text-center font-mono"
+                className="w-full p-4 border rounded-lg text-xl text-center font-mono focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder={isGameActive ? "Type the word..." : "Game Over"}
                 disabled={!isGameActive}
                 autoFocus={isGameActive}
@@ -413,13 +425,6 @@ const TypingGames = () => {
           </CardContent>
         </Card>
       )}
-
-      <style jsx>{`
-        @keyframes shrink {
-          from { width: 100%; }
-          to { width: 0%; }
-        }
-      `}</style>
     </div>
   );
 };
