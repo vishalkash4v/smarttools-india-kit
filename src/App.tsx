@@ -67,6 +67,10 @@ import SocialMediaPlannerPage from "@/pages/tools/SocialMediaPlannerPage";
 import TextFontChangerPage from "@/pages/tools/TextFontChangerPage";
 import UrlWrapperPage from "@/pages/tools/UrlWrapperPage";
 import RedirectPage from "@/pages/tools/RedirectPage";
+import TypingTutorPage from "@/pages/tools/TypingTutorPage";
+import TypingTestPage from "@/pages/tools/TypingTestPage";
+import TypingGamesPage from "@/pages/tools/TypingGamesPage";
+import TypingCompetitionPage from "@/pages/tools/TypingCompetitionPage";
 
 // Scroll to top component
 function ScrollToTop() {
@@ -151,6 +155,12 @@ function App() {
                         <Route path="/text-font-changer" element={<TextFontChangerPage />} />
                         <Route path="/url-wrapper" element={<UrlWrapperPage />} />
                         <Route path="/r" element={<RedirectPage />} />
+                        
+                        {/* Typing Tools */}
+                        <Route path="/typing-tutor" element={<TypingTutorPage />} />
+                        <Route path="/typing-test" element={<TypingTestPage />} />
+                        <Route path="/typing-games" element={<TypingGamesPage />} />
+                        <Route path="/typing-competition" element={<TypingCompetitionPage />} />
                       </Routes>
                     </Suspense>
                   </main>

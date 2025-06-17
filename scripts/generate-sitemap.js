@@ -51,7 +51,13 @@ const routes = [
   '/social-media-link-generator',
   '/url-shortener',
   '/hashtag-generator',
-  '/social-media-planner'
+  '/social-media-planner',
+  '/text-font-changer',
+  '/url-wrapper',
+  '/typing-tutor',
+  '/typing-test',
+  '/typing-games',
+  '/typing-competition'
 ];
 
 const generateSitemap = () => {

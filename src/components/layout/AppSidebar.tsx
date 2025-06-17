@@ -1,3 +1,4 @@
+
 import {
   LayoutDashboard,
   Settings,
@@ -27,6 +28,9 @@ import {
   Hash,
   CalendarDays as CalendarSchedule,
   Type,
+  Keyboard,
+  Trophy,
+  Gamepad2,
 } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -66,6 +70,15 @@ export function AppSidebar() {
         { title: "Text to Handwriting", url: "/text-to-handwriting", icon: TextIcon },
         { title: "URL Slug Generator", url: "/url-slug-generator", icon: TextIcon },
         { title: "Notes", url: "/notes", icon: StickyNote },
+      ]
+    },
+    {
+      title: "Typing Tools",
+      items: [
+        { title: "Typing Tutor", url: "/typing-tutor", icon: Keyboard },
+        { title: "Typing Test", url: "/typing-test", icon: Timer },
+        { title: "Typing Games", url: "/typing-games", icon: Gamepad2 },
+        { title: "Typing Competition", url: "/typing-competition", icon: Trophy },
       ]
     },
     {

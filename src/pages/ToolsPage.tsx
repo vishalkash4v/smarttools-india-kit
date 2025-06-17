@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone } from "lucide-react";
+import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone, Keyboard, Trophy, Gamepad2, Users } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -119,6 +119,40 @@ const ToolsPage = () => {
       description: 'Create, organize, and manage your personal notes with tags and colors.',
       path: '/notes',
       icon: StickyNote
+    },
+
+    // Typing Tools
+    { 
+      id: 'typing-tutor', 
+      name: 'Typing Tutor', 
+      category: 'Typing Tools', 
+      description: 'Learn touch typing with guided lessons in English and Hindi.',
+      path: '/typing-tutor',
+      icon: Keyboard
+    },
+    { 
+      id: 'typing-test', 
+      name: 'Typing Test', 
+      category: 'Typing Tools', 
+      description: 'Test your typing speed and accuracy with various text samples.',
+      path: '/typing-test',
+      icon: Timer
+    },
+    { 
+      id: 'typing-games', 
+      name: 'Typing Games', 
+      category: 'Typing Tools', 
+      description: 'Fun typing games to improve your skills while playing.',
+      path: '/typing-games',
+      icon: Gamepad2
+    },
+    { 
+      id: 'typing-competition', 
+      name: 'Typing Competition', 
+      category: 'Typing Tools', 
+      description: 'Compete with random players in real-time typing challenges.',
+      path: '/typing-competition',
+      icon: Trophy
     },
 
     // Utility Tools
@@ -362,6 +396,8 @@ const ToolsPage = () => {
     switch (category) {
       case 'Text & Writing Tools':
         return 'text-blue-500';
+      case 'Typing Tools':
+        return 'text-indigo-500';
       case 'Utility Tools':
         return 'text-green-500';
       case 'Number Tools':
@@ -383,6 +419,8 @@ const ToolsPage = () => {
     switch (category) {
       case 'Text & Writing Tools':
         return 'bg-blue-100 dark:bg-blue-900/20';
+      case 'Typing Tools':
+        return 'bg-indigo-100 dark:bg-indigo-900/20';
       case 'Utility Tools':
         return 'bg-green-100 dark:bg-green-900/20';
       case 'Number Tools':
