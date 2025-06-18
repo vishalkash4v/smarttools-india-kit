@@ -59,14 +59,6 @@ const ImageUpscaler = () => {
     }
   }, [toast]);
 
-  // Advanced upscaling algorithm with Lanczos-like interpolation
-  const lanczosKernel = (x: number) => {
-    if (x === 0) return 1;
-    if (Math.abs(x) >= 3) return 0;
-    const xPi = x * Math.PI;
-    return (3 * Math.sin(xPi) * Math.sin(xPi / 3)) / (xPi * xPi);
-  };
-
   const upscaleImage = useCallback(async () => {
     if (!selectedFile || !originalDimensions) return;
 
@@ -81,96 +73,107 @@ const ImageUpscaler = () => {
       const ctx = canvas.getContext('2d');
       const img = new Image();
 
-      img.onload = () => {
-        canvas.width = newWidth;
-        canvas.height = newHeight;
+      const processImage = () => {
+        return new Promise<void>((resolve) => {
+          img.onload = async () => {
+            canvas.width = newWidth;
+            canvas.height = newHeight;
 
-        if (ctx) {
-          // Enhanced upscaling with multiple passes for better quality
-          const tempCanvas = document.createElement('canvas');
-          const tempCtx = tempCanvas.getContext('2d');
-          
-          if (tempCtx) {
-            // Multi-pass upscaling for better quality
-            let currentWidth = originalDimensions.width;
-            let currentHeight = originalDimensions.height;
-            let currentImage = img;
-            
-            // Progressive upscaling in smaller steps
-            while (currentWidth < newWidth || currentHeight < newHeight) {
-              const stepScale = Math.min(2, Math.min(newWidth / currentWidth, newHeight / currentHeight));
-              const stepWidth = Math.floor(currentWidth * stepScale);
-              const stepHeight = Math.floor(currentHeight * stepScale);
+            if (ctx) {
+              // Enhanced upscaling with multiple passes for better quality
+              const tempCanvas = document.createElement('canvas');
+              const tempCtx = tempCanvas.getContext('2d');
               
-              tempCanvas.width = stepWidth;
-              tempCanvas.height = stepHeight;
-              
-              // Use high-quality interpolation
-              tempCtx.imageSmoothingEnabled = true;
-              tempCtx.imageSmoothingQuality = 'high';
-              
-              // Apply sharpening filter
-              tempCtx.filter = 'contrast(1.1) brightness(1.02) saturate(1.05)';
-              tempCtx.drawImage(currentImage, 0, 0, stepWidth, stepHeight);
-              
-              // Create new image for next iteration
-              const newImg = new Image();
-              newImg.src = tempCanvas.toDataURL();
-              await new Promise(resolve => {
-                newImg.onload = resolve;
-              });
-              
-              currentImage = newImg;
-              currentWidth = stepWidth;
-              currentHeight = stepHeight;
-              
-              if (stepWidth >= newWidth && stepHeight >= newHeight) break;
-            }
-            
-            // Final pass with edge enhancement
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.filter = 'contrast(1.05) brightness(1.01) saturate(1.02)';
-            ctx.drawImage(currentImage, 0, 0, newWidth, newHeight);
-            
-            // Apply unsharp mask effect for better clarity
-            const imageData = ctx.getImageData(0, 0, newWidth, newHeight);
-            const data = imageData.data;
-            
-            // Simple edge enhancement
-            for (let i = 0; i < data.length; i += 4) {
-              const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
-              const factor = brightness > 128 ? 1.02 : 0.98;
-              data[i] *= factor;     // Red
-              data[i + 1] *= factor; // Green
-              data[i + 2] *= factor; // Blue
-            }
-            
-            ctx.putImageData(imageData, 0, 0);
-          } else {
-            // Fallback to direct scaling
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(img, 0, 0, newWidth, newHeight);
-          }
+              if (tempCtx) {
+                // Multi-pass upscaling for better quality
+                let currentWidth = originalDimensions.width;
+                let currentHeight = originalDimensions.height;
+                let currentImage = img;
+                
+                // Progressive upscaling in smaller steps
+                while (currentWidth < newWidth || currentHeight < newHeight) {
+                  const stepScale = Math.min(2, Math.min(newWidth / currentWidth, newHeight / currentHeight));
+                  const stepWidth = Math.floor(currentWidth * stepScale);
+                  const stepHeight = Math.floor(currentHeight * stepScale);
+                  
+                  tempCanvas.width = stepWidth;
+                  tempCanvas.height = stepHeight;
+                  
+                  // Use high-quality interpolation
+                  tempCtx.imageSmoothingEnabled = true;
+                  tempCtx.imageSmoothingQuality = 'high';
+                  
+                  // Apply sharpening filter
+                  tempCtx.filter = 'contrast(1.1) brightness(1.02) saturate(1.05)';
+                  tempCtx.drawImage(currentImage, 0, 0, stepWidth, stepHeight);
+                  
+                  // Create new image for next iteration
+                  const newImg = new Image();
+                  newImg.src = tempCanvas.toDataURL();
+                  
+                  // Wait for image to load
+                  await new Promise<void>(imgResolve => {
+                    newImg.onload = () => imgResolve();
+                  });
+                  
+                  currentImage = newImg;
+                  currentWidth = stepWidth;
+                  currentHeight = stepHeight;
+                  
+                  if (stepWidth >= newWidth && stepHeight >= newHeight) break;
+                }
+                
+                // Final pass with edge enhancement
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.filter = 'contrast(1.05) brightness(1.01) saturate(1.02)';
+                ctx.drawImage(currentImage, 0, 0, newWidth, newHeight);
+                
+                // Apply unsharp mask effect for better clarity
+                const imageData = ctx.getImageData(0, 0, newWidth, newHeight);
+                const data = imageData.data;
+                
+                // Simple edge enhancement
+                for (let i = 0; i < data.length; i += 4) {
+                  const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                  const factor = brightness > 128 ? 1.02 : 0.98;
+                  data[i] *= factor;     // Red
+                  data[i + 1] *= factor; // Green
+                  data[i + 2] *= factor; // Blue
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+              } else {
+                // Fallback to direct scaling
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.drawImage(img, 0, 0, newWidth, newHeight);
+              }
 
-          // Convert to blob and create URL
-          canvas.toBlob((blob) => {
-            if (blob) {
-              const upscaledUrl = URL.createObjectURL(blob);
-              setUpscaledUrl(upscaledUrl);
-              
-              toast({
-                title: "Image upscaled successfully!",
-                description: `Enhanced from ${originalDimensions.width}×${originalDimensions.height} to ${newWidth}×${newHeight}`,
-              });
+              // Convert to blob and create URL
+              canvas.toBlob((blob) => {
+                if (blob) {
+                  const upscaledUrl = URL.createObjectURL(blob);
+                  setUpscaledUrl(upscaledUrl);
+                  
+                  toast({
+                    title: "Image upscaled successfully!",
+                    description: `Enhanced from ${originalDimensions.width}×${originalDimensions.height} to ${newWidth}×${newHeight}`,
+                  });
+                }
+                setIsUpscaling(false);
+                resolve();
+              }, 'image/png', 1.0);
+            } else {
+              setIsUpscaling(false);
+              resolve();
             }
-            setIsUpscaling(false);
-          }, 'image/png', 1.0);
-        }
+          };
+        });
       };
 
       img.src = URL.createObjectURL(selectedFile);
+      await processImage();
     } catch (error) {
       console.error('Upscaling error:', error);
       toast({
