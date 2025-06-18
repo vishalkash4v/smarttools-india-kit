@@ -1,4 +1,3 @@
-
 import { Suspense, lazy, useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -71,6 +70,11 @@ import TypingTutorPage from "@/pages/tools/TypingTutorPage";
 import TypingTestPage from "@/pages/tools/TypingTestPage";
 import TypingGamesPage from "@/pages/tools/TypingGamesPage";
 import TypingCompetitionPage from "@/pages/tools/TypingCompetitionPage";
+
+// Add the new image tool imports
+import ImageCompressorPage from "@/pages/tools/ImageCompressorPage";
+import LogoToFaviconPage from "@/pages/tools/LogoToFaviconPage";
+import ImageUpscalerPage from "@/pages/tools/ImageUpscalerPage";
 
 // Scroll to top component
 function ScrollToTop() {
@@ -161,6 +165,11 @@ function App() {
                         <Route path="/typing-test" element={<TypingTestPage />} />
                         <Route path="/typing-games" element={<TypingGamesPage />} />
                         <Route path="/typing-competition" element={<TypingCompetitionPage />} />
+                        
+                        {/* Image Tools */}
+                        <Route path="/image-compressor" element={<ImageCompressorPage />} />
+                        <Route path="/logo-to-favicon" element={<LogoToFaviconPage />} />
+                        <Route path="/image-upscaler" element={<ImageUpscalerPage />} />
                       </Routes>
                     </Suspense>
                   </main>

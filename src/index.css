@@ -288,23 +288,205 @@
 
 /* Mobile responsive improvements */
 @media (max-width: 640px) {
-  .hover-lift:hover {
-    transform: none;
+  .container {
+    @apply px-3;
+  }
+  
+  /* Better spacing on mobile */
+  .space-y-4 > * + * {
+    margin-top: 0.75rem !important;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 1rem !important;
+  }
+  
+  .space-y-8 > * + * {
+    margin-top: 1.5rem !important;
+  }
+  
+  /* Card padding adjustment */
+  .card {
+    @apply p-3;
+  }
+  
+  /* Button adjustments */
+  .btn-primary, .btn-secondary {
+    @apply text-sm px-3 py-2;
+  }
+  
+  /* Grid responsive improvements */
+  .grid-cols-2 {
+    @apply grid-cols-1;
+  }
+  
+  .grid-cols-3 {
+    @apply grid-cols-1;
+  }
+  
+  .grid-cols-4 {
+    @apply grid-cols-2;
+  }
+  
+  /* Typography mobile adjustments */
+  h1 {
+    @apply text-xl;
+  }
+  
+  h2 {
+    @apply text-lg;
+  }
+  
+  h3 {
+    @apply text-base;
+  }
+  
+  /* Form input improvements */
+  input, textarea, select {
+    @apply text-base; /* Prevents zoom on iOS */
+  }
+  
+  /* Table responsive */
+  .table-responsive {
+    @apply overflow-x-auto;
+  }
+  
+  table {
+    @apply text-sm;
+  }
+  
+  /* Dialog/Modal mobile fixes */
+  .dialog-content {
+    @apply w-[95vw] max-w-[95vw];
+  }
+  
+  /* Sidebar mobile fixes */
+  .sidebar {
+    @apply w-full;
   }
 }
 
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .animate-float,
-  .animate-pulse-glow,
-  .animate-shimmer,
-  .animate-bounce-in,
-  .animate-slide-up,
-  .animate-gradient {
-    animation: none;
+@media (max-width: 480px) {
+  /* Extra small mobile devices */
+  .container {
+    @apply px-2;
   }
   
-  .hover-lift {
-    transition: none;
+  .text-2xl {
+    @apply text-xl;
+  }
+  
+  .text-3xl {
+    @apply text-2xl;
+  }
+  
+  .text-4xl {
+    @apply text-3xl;
+  }
+  
+  /* Reduce padding further */
+  .p-6 {
+    @apply p-4;
+  }
+  
+  .p-8 {
+    @apply p-4;
+  }
+  
+  .py-12 {
+    @apply py-6;
+  }
+  
+  .py-8 {
+    @apply py-6;
+  }
+  
+  /* Button full width on very small screens */
+  .btn-responsive {
+    @apply w-full;
+  }
+}
+
+/* Tablet improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .container {
+    @apply px-4;
+  }
+  
+  /* Better grid spacing for tablets */
+  .grid-cols-4 {
+    @apply grid-cols-2;
+  }
+  
+  .grid-cols-6 {
+    @apply grid-cols-3;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  /* Touch devices */
+  button, .btn, .button {
+    @apply min-h-[44px] min-w-[44px]; /* Apple's recommended touch target size */
+  }
+  
+  /* Larger click targets */
+  .clickable {
+    @apply p-3;
+  }
+  
+  /* Remove hover effects on touch devices */
+  .hover-lift:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    @apply hidden;
+  }
+  
+  .print-break {
+    page-break-before: always;
+  }
+  
+  * {
+    @apply text-black bg-white;
+  }
+}
+
+/* Dark mode mobile improvements */
+@media (max-width: 640px) {
+  .dark {
+    /* Better contrast for mobile dark mode */
+    --muted: 240 3.7% 12%;
+    --card: 240 10% 6%;
+  }
+}
+
+/* Better focus indicators for accessibility */
+.focus-visible {
+  @apply outline-2 outline-primary outline-offset-2;
+}
+
+/* Animation performance improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card {
+    @apply border-2;
+  }
+  
+  button {
+    @apply border-2 border-current;
   }
 }
