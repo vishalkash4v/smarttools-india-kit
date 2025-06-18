@@ -3,8 +3,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Upload, Download, Image as ImageIcon, Crop, Scissors } from 'lucide-react';
+import { Upload, Download, Image as ImageIcon, Crop, Scissors, Move, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface CropPreset {
@@ -12,6 +11,8 @@ interface CropPreset {
   width: number;
   height: number;
   category: string;
+  description: string;
+  color: string;
 }
 
 const ImageCropper = () => {
@@ -21,41 +22,44 @@ const ImageCropper = () => {
   const [selectedPreset, setSelectedPreset] = useState<string>('');
   const [cropArea, setCropArea] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [originalDimensions, setOriginalDimensions] = useState<{ width: number; height: number } | null>(null);
+  const [previewScale, setPreviewScale] = useState(1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   const cropPresets: CropPreset[] = [
     // Instagram
-    { name: 'Instagram Square Post', width: 1080, height: 1080, category: 'Instagram' },
-    { name: 'Instagram Portrait Post', width: 1080, height: 1350, category: 'Instagram' },
-    { name: 'Instagram Story', width: 1080, height: 1920, category: 'Instagram' },
-    { name: 'Instagram Reels', width: 1080, height: 1920, category: 'Instagram' },
+    { name: 'Instagram Square Post', width: 1080, height: 1080, category: 'Instagram', description: 'Perfect square for feed posts', color: 'bg-gradient-to-br from-purple-500 to-pink-500' },
+    { name: 'Instagram Portrait Post', width: 1080, height: 1350, category: 'Instagram', description: 'Vertical posts for better engagement', color: 'bg-gradient-to-br from-purple-500 to-pink-500' },
+    { name: 'Instagram Story', width: 1080, height: 1920, category: 'Instagram', description: 'Full-screen mobile story', color: 'bg-gradient-to-br from-purple-500 to-pink-500' },
+    { name: 'Instagram Reels', width: 1080, height: 1920, category: 'Instagram', description: 'Vertical video content', color: 'bg-gradient-to-br from-purple-500 to-pink-500' },
     
     // Facebook
-    { name: 'Facebook Post', width: 1200, height: 630, category: 'Facebook' },
-    { name: 'Facebook Cover Photo', width: 1640, height: 859, category: 'Facebook' },
-    { name: 'Facebook Story', width: 1080, height: 1920, category: 'Facebook' },
-    { name: 'Facebook Event Cover', width: 1920, height: 1005, category: 'Facebook' },
+    { name: 'Facebook Post', width: 1200, height: 630, category: 'Facebook', description: 'Standard timeline post', color: 'bg-gradient-to-br from-blue-600 to-blue-700' },
+    { name: 'Facebook Cover Photo', width: 1640, height: 859, category: 'Facebook', description: 'Profile cover image', color: 'bg-gradient-to-br from-blue-600 to-blue-700' },
+    { name: 'Facebook Story', width: 1080, height: 1920, category: 'Facebook', description: 'Mobile story format', color: 'bg-gradient-to-br from-blue-600 to-blue-700' },
+    { name: 'Facebook Event Cover', width: 1920, height: 1005, category: 'Facebook', description: 'Event page banner', color: 'bg-gradient-to-br from-blue-600 to-blue-700' },
     
     // Twitter/X
-    { name: 'Twitter Post', width: 1200, height: 675, category: 'Twitter' },
-    { name: 'Twitter Header', width: 1500, height: 500, category: 'Twitter' },
+    { name: 'Twitter Post', width: 1200, height: 675, category: 'Twitter', description: 'Timeline image post', color: 'bg-gradient-to-br from-gray-800 to-black' },
+    { name: 'Twitter Header', width: 1500, height: 500, category: 'Twitter', description: 'Profile banner', color: 'bg-gradient-to-br from-gray-800 to-black' },
     
     // LinkedIn
-    { name: 'LinkedIn Post', width: 1200, height: 627, category: 'LinkedIn' },
-    { name: 'LinkedIn Cover', width: 1584, height: 396, category: 'LinkedIn' },
+    { name: 'LinkedIn Post', width: 1200, height: 627, category: 'LinkedIn', description: 'Professional post image', color: 'bg-gradient-to-br from-blue-700 to-blue-800' },
+    { name: 'LinkedIn Cover', width: 1584, height: 396, category: 'LinkedIn', description: 'Profile background', color: 'bg-gradient-to-br from-blue-700 to-blue-800' },
     
     // YouTube
-    { name: 'YouTube Thumbnail', width: 1280, height: 720, category: 'YouTube' },
-    { name: 'YouTube Channel Art', width: 2560, height: 1440, category: 'YouTube' },
+    { name: 'YouTube Thumbnail', width: 1280, height: 720, category: 'YouTube', description: 'Video preview image', color: 'bg-gradient-to-br from-red-600 to-red-700' },
+    { name: 'YouTube Channel Art', width: 2560, height: 1440, category: 'YouTube', description: 'Channel banner', color: 'bg-gradient-to-br from-red-600 to-red-700' },
     
     // Common Formats
-    { name: 'Square (1:1)', width: 1000, height: 1000, category: 'Common' },
-    { name: 'Landscape (16:9)', width: 1920, height: 1080, category: 'Common' },
-    { name: 'Portrait (4:5)', width: 1080, height: 1350, category: 'Common' },
-    { name: 'Widescreen (21:9)', width: 2560, height: 1080, category: 'Common' },
+    { name: 'Square (1:1)', width: 1000, height: 1000, category: 'Common', description: 'Perfect square ratio', color: 'bg-gradient-to-br from-gray-600 to-gray-700' },
+    { name: 'Landscape (16:9)', width: 1920, height: 1080, category: 'Common', description: 'Widescreen format', color: 'bg-gradient-to-br from-gray-600 to-gray-700' },
+    { name: 'Portrait (4:5)', width: 1080, height: 1350, category: 'Common', description: 'Mobile-friendly vertical', color: 'bg-gradient-to-br from-gray-600 to-gray-700' },
+    { name: 'Widescreen (21:9)', width: 2560, height: 1080, category: 'Common', description: 'Ultra-wide format', color: 'bg-gradient-to-br from-gray-600 to-gray-700' },
   ];
 
   const handleFileSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +97,7 @@ const ImageCropper = () => {
     }
   }, [toast]);
 
-  const handlePresetChange = useCallback((presetName: string) => {
+  const handlePresetSelect = useCallback((presetName: string) => {
     setSelectedPreset(presetName);
     const preset = cropPresets.find(p => p.name === presetName);
     if (preset && originalDimensions) {
@@ -116,6 +120,65 @@ const ImageCropper = () => {
       });
     }
   }, [originalDimensions]);
+
+  const adjustCropArea = useCallback((direction: 'up' | 'down' | 'left' | 'right', amount: number = 10) => {
+    if (!originalDimensions) return;
+    
+    setCropArea(prev => {
+      const newArea = { ...prev };
+      
+      switch (direction) {
+        case 'up':
+          newArea.y = Math.max(0, prev.y - amount);
+          break;
+        case 'down':
+          newArea.y = Math.min(originalDimensions.height - prev.height, prev.y + amount);
+          break;
+        case 'left':
+          newArea.x = Math.max(0, prev.x - amount);
+          break;
+        case 'right':
+          newArea.x = Math.min(originalDimensions.width - prev.width, prev.x + amount);
+          break;
+      }
+      
+      return newArea;
+    });
+  }, [originalDimensions]);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (!previewContainerRef.current || !originalDimensions) return;
+    
+    const rect = previewContainerRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / previewScale;
+    const y = (e.clientY - rect.top) / previewScale;
+    
+    setIsDragging(true);
+    setDragStart({ x, y });
+  }, [previewScale, originalDimensions]);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging || !previewContainerRef.current || !originalDimensions) return;
+    
+    const rect = previewContainerRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / previewScale;
+    const y = (e.clientY - rect.top) / previewScale;
+    
+    const deltaX = x - dragStart.x;
+    const deltaY = y - dragStart.y;
+    
+    setCropArea(prev => ({
+      ...prev,
+      x: Math.max(0, Math.min(originalDimensions.width - prev.width, prev.x + deltaX)),
+      y: Math.max(0, Math.min(originalDimensions.height - prev.height, prev.y + deltaY))
+    }));
+    
+    setDragStart({ x, y });
+  }, [isDragging, dragStart, previewScale, originalDimensions]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
   const cropImage = useCallback(async () => {
     if (!selectedFile || !originalDimensions || !canvasRef.current) return;
@@ -178,6 +241,16 @@ const ImageCropper = () => {
     }
   }, [croppedUrl, selectedFile, selectedPreset]);
 
+  useEffect(() => {
+    if (previewContainerRef.current && originalDimensions) {
+      const containerWidth = previewContainerRef.current.offsetWidth;
+      const containerHeight = 300;
+      const scaleX = containerWidth / originalDimensions.width;
+      const scaleY = containerHeight / originalDimensions.height;
+      setPreviewScale(Math.min(scaleX, scaleY, 1));
+    }
+  }, [originalDimensions]);
+
   const groupedPresets = cropPresets.reduce((acc, preset) => {
     if (!acc[preset.category]) {
       acc[preset.category] = [];
@@ -232,47 +305,154 @@ const ImageCropper = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Crop className="h-5 w-5" />
-                Cropping Options
+                Choose Social Media Format
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label htmlFor="preset-select" className="text-sm font-medium">
-                  Choose Preset Size
-                </Label>
-                <Select value={selectedPreset} onValueChange={handlePresetChange}>
-                  <SelectTrigger className="w-full mt-2">
-                    <SelectValue placeholder="Select preset or keep custom" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(groupedPresets).map(([category, presets]) => (
-                      <div key={category}>
-                        <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">
-                          {category}
+            <CardContent className="space-y-6">
+              {Object.entries(groupedPresets).map(([category, presets]) => (
+                <div key={category} className="space-y-4">
+                  <h3 className="text-lg font-semibold text-foreground">{category}</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {presets.map((preset) => (
+                      <div
+                        key={preset.name}
+                        className={`relative cursor-pointer transition-all duration-200 ${
+                          selectedPreset === preset.name
+                            ? 'ring-2 ring-primary ring-offset-2'
+                            : 'hover:scale-105'
+                        }`}
+                        onClick={() => handlePresetSelect(preset.name)}
+                      >
+                        <div className={`${preset.color} rounded-lg p-4 text-white`}>
+                          <div className="flex flex-col items-center space-y-2">
+                            <div 
+                              className="bg-white/20 rounded border border-white/30"
+                              style={{
+                                width: '60px',
+                                height: `${(60 * preset.height) / preset.width}px`,
+                                maxHeight: '60px'
+                              }}
+                            />
+                            <div className="text-center">
+                              <h4 className="font-medium text-sm">{preset.name}</h4>
+                              <p className="text-xs opacity-90">{preset.width}×{preset.height}</p>
+                              <p className="text-xs opacity-75 mt-1">{preset.description}</p>
+                            </div>
+                          </div>
                         </div>
-                        {presets.map((preset) => (
-                          <SelectItem key={preset.name} value={preset.name}>
-                            {preset.name} ({preset.width}×{preset.height})
-                          </SelectItem>
-                        ))}
                       </div>
                     ))}
-                  </SelectContent>
-                </Select>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {previewUrl && originalDimensions && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Move className="h-5 w-5" />
+                Adjust Crop Area
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex flex-col items-center space-y-4">
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => adjustCropArea('up')}
+                    className="p-2"
+                  >
+                    <ArrowUp className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => adjustCropArea('left')}
+                    className="p-2"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                  <div 
+                    ref={previewContainerRef}
+                    className="relative border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-move"
+                    style={{
+                      width: `${originalDimensions.width * previewScale}px`,
+                      height: `${originalDimensions.height * previewScale}px`,
+                      maxWidth: '400px',
+                      maxHeight: '300px'
+                    }}
+                    onMouseDown={handleMouseDown}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUp}
+                    onMouseLeave={handleMouseUp}
+                  >
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      className="absolute inset-0 w-full h-full object-cover"
+                      draggable={false}
+                    />
+                    <div
+                      className="absolute border-2 border-primary bg-primary/10"
+                      style={{
+                        left: `${cropArea.x * previewScale}px`,
+                        top: `${cropArea.y * previewScale}px`,
+                        width: `${cropArea.width * previewScale}px`,
+                        height: `${cropArea.height * previewScale}px`
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-black/30" />
+                    <div
+                      className="absolute bg-transparent"
+                      style={{
+                        left: `${cropArea.x * previewScale}px`,
+                        top: `${cropArea.y * previewScale}px`,
+                        width: `${cropArea.width * previewScale}px`,
+                        height: `${cropArea.height * previewScale}px`,
+                        boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.5)'
+                      }}
+                    />
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => adjustCropArea('right')}
+                    className="p-2"
+                  >
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => adjustCropArea('down')}
+                    className="p-2"
+                  >
+                    <ArrowDown className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
 
-              {originalDimensions && (
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
-                  <p className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                    Original: {originalDimensions.width}×{originalDimensions.height}px
+              <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
+                <p className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                  Original: {originalDimensions.width}×{originalDimensions.height}px
+                </p>
+                {selectedPreset && (
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    Output: {cropPresets.find(p => p.name === selectedPreset)?.width}×{cropPresets.find(p => p.name === selectedPreset)?.height}px
                   </p>
-                  {selectedPreset && (
-                    <p className="text-sm text-blue-700 dark:text-blue-300">
-                      Output: {cropPresets.find(p => p.name === selectedPreset)?.width}×{cropPresets.find(p => p.name === selectedPreset)?.height}px
-                    </p>
-                  )}
-                </div>
-              )}
+                )}
+                <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
+                  Use arrow buttons or drag the crop area to adjust position
+                </p>
+              </div>
 
               <Button 
                 onClick={cropImage} 
@@ -304,7 +484,6 @@ const ImageCropper = () => {
                   </div>
                   <div className="border rounded-lg overflow-hidden bg-gray-50">
                     <img 
-                      ref={imageRef}
                       src={previewUrl} 
                       alt="Original" 
                       className="w-full h-80 object-contain"
