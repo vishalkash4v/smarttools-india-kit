@@ -75,6 +75,7 @@ import TypingCompetitionPage from "@/pages/tools/TypingCompetitionPage";
 import ImageCompressorPage from "@/pages/tools/ImageCompressorPage";
 import LogoToFaviconPage from "@/pages/tools/LogoToFaviconPage";
 import ImageUpscalerPage from "@/pages/tools/ImageUpscalerPage";
+import ImageCropperPage from './pages/tools/ImageCropperPage';
 
 // Scroll to top component
 function ScrollToTop() {
@@ -170,6 +171,7 @@ function App() {
                         <Route path="/image-compressor" element={<ImageCompressorPage />} />
                         <Route path="/logo-to-favicon" element={<LogoToFaviconPage />} />
                         <Route path="/image-upscaler" element={<ImageUpscalerPage />} />
+                        <Route path="/image-cropper" element={<ImageCropperPage />} />
                       </Routes>
                     </Suspense>
                   </main>

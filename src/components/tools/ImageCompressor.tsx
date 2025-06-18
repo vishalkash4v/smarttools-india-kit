@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const ImageCompressor = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [originalPreview, setOriginalPreview] = useState<string | null>(null);
   const [compressedFile, setCompressedFile] = useState<string | null>(null);
   const [originalSize, setOriginalSize] = useState<number>(0);
   const [compressedSize, setCompressedSize] = useState<number>(0);
@@ -29,6 +31,8 @@ const ImageCompressor = () => {
       }
       setSelectedFile(file);
       setOriginalSize(file.size);
+      const previewUrl = URL.createObjectURL(file);
+      setOriginalPreview(previewUrl);
       setCompressedFile(null);
       setCompressedSize(0);
     }
@@ -120,7 +124,7 @@ const ImageCompressor = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
+    <div className="container mx-auto px-4 py-6 max-w-6xl">
       <div className="text-center mb-8">
         <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
           Image Compressor
@@ -217,40 +221,58 @@ const ImageCompressor = () => {
           </Card>
         )}
 
-        {compressedFile && (
+        {originalPreview && compressedFile && (
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Download className="h-5 w-5" />
-                Compressed Result
-              </CardTitle>
+              <CardTitle className="text-lg">Before & After Comparison</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-muted/50 rounded-lg p-4">
-                  <p className="text-sm font-medium">Original Size</p>
-                  <p className="text-lg font-bold text-destructive">
-                    {formatFileSize(originalSize)}
-                  </p>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <div className="text-center">
+                    <h3 className="font-semibold text-destructive">Before (Original)</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Size: {formatFileSize(originalSize)}
+                    </p>
+                  </div>
+                  <div className="border rounded-lg overflow-hidden">
+                    <img 
+                      src={originalPreview} 
+                      alt="Original" 
+                      className="w-full h-64 object-contain bg-gray-50"
+                    />
+                  </div>
                 </div>
-                <div className="bg-muted/50 rounded-lg p-4">
-                  <p className="text-sm font-medium">Compressed Size</p>
-                  <p className="text-lg font-bold text-green-600">
-                    {formatFileSize(compressedSize)}
-                  </p>
+                
+                <div className="space-y-3">
+                  <div className="text-center">
+                    <h3 className="font-semibold text-green-600">After (Compressed)</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Size: {formatFileSize(compressedSize)}
+                    </p>
+                  </div>
+                  <div className="border rounded-lg overflow-hidden">
+                    <img 
+                      src={compressedFile} 
+                      alt="Compressed" 
+                      className="w-full h-64 object-contain bg-gray-50"
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4">
-                <p className="text-sm font-medium text-green-800 dark:text-green-200">
-                  Size reduction: {((1 - compressedSize / originalSize) * 100).toFixed(1)}%
-                </p>
-              </div>
+              <div className="mt-6 space-y-4">
+                <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4">
+                  <p className="text-sm font-medium text-green-800 dark:text-green-200">
+                    Size reduction: {((1 - compressedSize / originalSize) * 100).toFixed(1)}%
+                  </p>
+                </div>
 
-              <Button onClick={downloadCompressed} className="w-full">
-                <Download className="h-4 w-4 mr-2" />
-                Download Compressed Image
-              </Button>
+                <Button onClick={downloadCompressed} className="w-full">
+                  <Download className="h-4 w-4 mr-2" />
+                  Download Compressed Image
+                </Button>
+              </div>
             </CardContent>
           </Card>
         )}

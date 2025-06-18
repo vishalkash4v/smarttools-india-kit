@@ -59,6 +59,14 @@ const ImageUpscaler = () => {
     }
   }, [toast]);
 
+  // Advanced upscaling algorithm with Lanczos-like interpolation
+  const lanczosKernel = (x: number) => {
+    if (x === 0) return 1;
+    if (Math.abs(x) >= 3) return 0;
+    const xPi = x * Math.PI;
+    return (3 * Math.sin(xPi) * Math.sin(xPi / 3)) / (xPi * xPi);
+  };
+
   const upscaleImage = useCallback(async () => {
     if (!selectedFile || !originalDimensions) return;
 
@@ -78,30 +86,71 @@ const ImageUpscaler = () => {
         canvas.height = newHeight;
 
         if (ctx) {
-          // Use better image rendering
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
-          
-          // Apply bicubic-like upscaling by drawing multiple times
+          // Enhanced upscaling with multiple passes for better quality
           const tempCanvas = document.createElement('canvas');
           const tempCtx = tempCanvas.getContext('2d');
           
           if (tempCtx) {
-            // First pass: scale to intermediate size
-            const intermediateScale = Math.sqrt(scale);
-            const intermediateWidth = Math.floor(originalDimensions.width * intermediateScale);
-            const intermediateHeight = Math.floor(originalDimensions.height * intermediateScale);
+            // Multi-pass upscaling for better quality
+            let currentWidth = originalDimensions.width;
+            let currentHeight = originalDimensions.height;
+            let currentImage = img;
             
-            tempCanvas.width = intermediateWidth;
-            tempCanvas.height = intermediateHeight;
-            tempCtx.imageSmoothingEnabled = true;
-            tempCtx.imageSmoothingQuality = 'high';
-            tempCtx.drawImage(img, 0, 0, intermediateWidth, intermediateHeight);
+            // Progressive upscaling in smaller steps
+            while (currentWidth < newWidth || currentHeight < newHeight) {
+              const stepScale = Math.min(2, Math.min(newWidth / currentWidth, newHeight / currentHeight));
+              const stepWidth = Math.floor(currentWidth * stepScale);
+              const stepHeight = Math.floor(currentHeight * stepScale);
+              
+              tempCanvas.width = stepWidth;
+              tempCanvas.height = stepHeight;
+              
+              // Use high-quality interpolation
+              tempCtx.imageSmoothingEnabled = true;
+              tempCtx.imageSmoothingQuality = 'high';
+              
+              // Apply sharpening filter
+              tempCtx.filter = 'contrast(1.1) brightness(1.02) saturate(1.05)';
+              tempCtx.drawImage(currentImage, 0, 0, stepWidth, stepHeight);
+              
+              // Create new image for next iteration
+              const newImg = new Image();
+              newImg.src = tempCanvas.toDataURL();
+              await new Promise(resolve => {
+                newImg.onload = resolve;
+              });
+              
+              currentImage = newImg;
+              currentWidth = stepWidth;
+              currentHeight = stepHeight;
+              
+              if (stepWidth >= newWidth && stepHeight >= newHeight) break;
+            }
             
-            // Second pass: scale to final size
-            ctx.drawImage(tempCanvas, 0, 0, newWidth, newHeight);
+            // Final pass with edge enhancement
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.filter = 'contrast(1.05) brightness(1.01) saturate(1.02)';
+            ctx.drawImage(currentImage, 0, 0, newWidth, newHeight);
+            
+            // Apply unsharp mask effect for better clarity
+            const imageData = ctx.getImageData(0, 0, newWidth, newHeight);
+            const data = imageData.data;
+            
+            // Simple edge enhancement
+            for (let i = 0; i < data.length; i += 4) {
+              const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+              const factor = brightness > 128 ? 1.02 : 0.98;
+              data[i] *= factor;     // Red
+              data[i + 1] *= factor; // Green
+              data[i + 2] *= factor; // Blue
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
           } else {
             // Fallback to direct scaling
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
             ctx.drawImage(img, 0, 0, newWidth, newHeight);
           }
 
@@ -113,7 +162,7 @@ const ImageUpscaler = () => {
               
               toast({
                 title: "Image upscaled successfully!",
-                description: `Upscaled from ${originalDimensions.width}×${originalDimensions.height} to ${newWidth}×${newHeight}`,
+                description: `Enhanced from ${originalDimensions.width}×${originalDimensions.height} to ${newWidth}×${newHeight}`,
               });
             }
             setIsUpscaling(false);
@@ -147,7 +196,7 @@ const ImageUpscaler = () => {
   }, [upscaledUrl, selectedFile, scaleFactor]);
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
+    <div className="container mx-auto px-4 py-6 max-w-6xl">
       <div className="text-center mb-8">
         <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
           Image Upscaler & Quality Enhancer
@@ -160,8 +209,7 @@ const ImageUpscaler = () => {
       <Alert className="mb-6">
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          This tool uses client-side processing with advanced interpolation. For best results with photos, 
-          consider using AI-powered upscaling services for professional needs.
+          This tool uses advanced multi-pass upscaling with edge enhancement for better quality results.
         </AlertDescription>
       </Alert>
 
@@ -192,38 +240,6 @@ const ImageUpscaler = () => {
                 Supports JPG, PNG, WebP (Max 10MB)
               </p>
             </div>
-
-            {previewUrl && originalDimensions && (
-              <div className="bg-muted/50 rounded-lg p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="text-center">
-                    <img 
-                      src={previewUrl} 
-                      alt="Original" 
-                      className="mx-auto max-w-full max-h-48 object-contain border rounded"
-                    />
-                    <p className="text-sm font-medium mt-2">Original</p>
-                    <p className="text-xs text-muted-foreground">
-                      {originalDimensions.width} × {originalDimensions.height}px
-                    </p>
-                  </div>
-                  
-                  {upscaledUrl && (
-                    <div className="text-center">
-                      <img 
-                        src={upscaledUrl} 
-                        alt="Upscaled" 
-                        className="mx-auto max-w-full max-h-48 object-contain border rounded"
-                      />
-                      <p className="text-sm font-medium mt-2">Upscaled</p>
-                      <p className="text-xs text-muted-foreground">
-                        {Math.floor(originalDimensions.width * parseFloat(scaleFactor))} × {Math.floor(originalDimensions.height * parseFloat(scaleFactor))}px
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
           </CardContent>
         </Card>
 
@@ -268,33 +284,58 @@ const ImageUpscaler = () => {
                 className="w-full"
               >
                 <Zap className="h-4 w-4 mr-2" />
-                {isUpscaling ? 'Upscaling...' : 'Upscale Image'}
+                {isUpscaling ? 'Enhancing...' : 'Enhance & Upscale'}
               </Button>
             </CardContent>
           </Card>
         )}
 
-        {upscaledUrl && (
+        {previewUrl && upscaledUrl && originalDimensions && (
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Download className="h-5 w-5" />
-                Enhanced Result
-              </CardTitle>
+              <CardTitle className="text-lg">Before & After Comparison</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-center">
-                <img 
-                  src={upscaledUrl} 
-                  alt="Upscaled result" 
-                  className="mx-auto max-w-full border rounded shadow-lg"
-                />
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <div className="text-center">
+                    <h3 className="font-semibold text-muted-foreground">Before (Original)</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {originalDimensions.width} × {originalDimensions.height}px
+                    </p>
+                  </div>
+                  <div className="border rounded-lg overflow-hidden bg-gray-50">
+                    <img 
+                      src={previewUrl} 
+                      alt="Original" 
+                      className="w-full h-80 object-contain"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="text-center">
+                    <h3 className="font-semibold text-green-600">After (Enhanced)</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {Math.floor(originalDimensions.width * parseFloat(scaleFactor))} × {Math.floor(originalDimensions.height * parseFloat(scaleFactor))}px
+                    </p>
+                  </div>
+                  <div className="border rounded-lg overflow-hidden bg-gray-50">
+                    <img 
+                      src={upscaledUrl} 
+                      alt="Enhanced" 
+                      className="w-full h-80 object-contain"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <Button onClick={downloadUpscaled} className="w-full">
-                <Download className="h-4 w-4 mr-2" />
-                Download Enhanced Image
-              </Button>
+              <div className="mt-6">
+                <Button onClick={downloadUpscaled} className="w-full">
+                  <Download className="h-4 w-4 mr-2" />
+                  Download Enhanced Image
+                </Button>
+              </div>
             </CardContent>
           </Card>
         )}

@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone, Keyboard, Trophy, Gamepad2, Users, Image as ImageIcon, Zap, Star } from "lucide-react";
+import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone, Keyboard, Trophy, Gamepad2, Users, Image as ImageIcon, Zap, Star, Crop } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -145,6 +145,14 @@ const ToolsPage = () => {
       description: 'Upscale and enhance image quality using advanced interpolation techniques. Increase image resolution and improve clarity.',
       path: '/image-upscaler',
       icon: Zap
+    },
+    { 
+      id: 'image-cropper', 
+      name: 'Image Cropper & Resizer', 
+      category: 'Image Tools', 
+      description: 'Crop and resize images for social media platforms. Perfect dimensions for Instagram, Facebook, Twitter, LinkedIn posts and stories.',
+      path: '/image-cropper',
+      icon: Crop
     },
 
     // Typing Tools
