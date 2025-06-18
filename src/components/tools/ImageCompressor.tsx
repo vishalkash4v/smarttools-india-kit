@@ -1,10 +1,9 @@
-
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
-import { Upload, Download, Image as ImageIcon, Compress } from 'lucide-react';
+import { Upload, Download, Image as ImageIcon, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const ImageCompressor = () => {
@@ -174,7 +173,7 @@ const ImageCompressor = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Compress className="h-5 w-5" />
+                <Settings className="h-5 w-5" />
                 Compression Settings
               </CardTitle>
             </CardHeader>
