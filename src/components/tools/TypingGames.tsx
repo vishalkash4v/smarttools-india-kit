@@ -1,11 +1,35 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Gamepad2, Target, Zap, Heart, Star, RotateCcw, Play, Trophy, Clock, Keyboard, Users, Brain, Rocket } from 'lucide-react';
+import { Gamepad2, Target, Zap, Heart, Star, RotateCcw, Play, Trophy, Clock, Keyboard, Users, Brain, Rocket, Bomb, Swords, Flame, Snowflake, Music, Code, BookOpen, Timer, Award } from 'lucide-react';
+
+interface FallingLetter {
+  id: number;
+  letter: string;
+  x: number;
+  y: number;
+  speed: number;
+}
+
+interface Bubble {
+  id: number;
+  word: string;
+  x: number;
+  y: number;
+  size: number;
+}
+
+interface Enemy {
+  id: number;
+  word: string;
+  x: number;
+  health: number;
+  maxHealth: number;
+}
 
 const TypingGames = () => {
   const [gameType, setGameType] = useState('word-race');
@@ -19,7 +43,6 @@ const TypingGames = () => {
   const [level, setLevel] = useState(1);
   const [timeLeft, setTimeLeft] = useState(60);
   const [wordsCompleted, setWordsCompleted] = useState(0);
-  const [gameSpeed, setGameSpeed] = useState(3000);
   const [isGameOver, setIsGameOver] = useState(false);
   const [accuracy, setAccuracy] = useState(100);
   const [grossAccuracy, setGrossAccuracy] = useState(100);
@@ -29,26 +52,42 @@ const TypingGames = () => {
   const [backspaceCount, setBackspaceCount] = useState(0);
   const [wpm, setWpm] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
+  
+  // Game-specific states
+  const [fallingLetters, setFallingLetters] = useState<FallingLetter[]>([]);
+  const [bubbles, setBubbles] = useState<Bubble[]>([]);
+  const [enemies, setEnemies] = useState<Enemy[]>([]);
+  const [combo, setCombo] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [multiplier, setMultiplier] = useState(1);
+  const [rhythm, setRhythm] = useState(0);
+  const [energy, setEnergy] = useState(100);
+  const [temperature, setTemperature] = useState(50);
+  const [currentPhrase, setCurrentPhrase] = useState('');
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [bombs, setBombs] = useState<FallingLetter[]>([]);
+  const [particles, setParticles] = useState<any[]>([]);
+
   const inputRef = useRef<HTMLInputElement>(null);
+  const gameAreaRef = useRef<HTMLDivElement>(null);
 
   const gameTypes = {
-    'word-race': { name: 'Word Race', icon: Rocket, desc: 'Race against time to type words' },
-    'speed-burst': { name: 'Speed Burst', icon: Zap, desc: '30-second speed challenge' },
-    'accuracy-master': { name: 'Accuracy Master', icon: Target, desc: 'Perfect typing challenge' },
-    'survival-mode': { name: 'Survival Mode', icon: Heart, desc: 'Type before time runs out' },
-    'word-hunter': { name: 'Word Hunter', icon: Target, desc: 'Find and type specific words' },
-    'letter-rain': { name: 'Letter Rain', icon: Brain, desc: 'Type falling letters' },
-    'phrase-master': { name: 'Phrase Master', icon: Star, desc: 'Complete common phrases' },
-    'number-ninja': { name: 'Number Ninja', icon: Keyboard, desc: 'Type numbers and symbols' },
-    'code-typer': { name: 'Code Typer', icon: Brain, desc: 'Type programming code snippets' },
-    'story-mode': { name: 'Story Mode', icon: Star, desc: 'Type complete stories' },
-    'rhythm-typing': { name: 'Rhythm Typing', icon: Zap, desc: 'Type to the beat' },
-    'blind-typing': { name: 'Blind Typing', icon: Brain, desc: 'Type without seeing text' },
-    'reverse-typing': { name: 'Reverse Typing', icon: RotateCcw, desc: 'Type words backwards' },
-    'endless-mode': { name: 'Endless Mode', icon: Rocket, desc: 'Never-ending typing challenge' },
-    'multiplayer-race': { name: 'Multiplayer Race', icon: Users, desc: 'Race against other players' },
-    'typing-olympics': { name: 'Typing Olympics', icon: Trophy, desc: 'Multiple mini-challenges' },
+    'word-race': { name: 'Word Race', icon: Rocket, desc: 'Classic word racing with speed boosts', color: 'from-blue-500 to-cyan-500' },
+    'letter-rain': { name: 'Letter Rain', icon: Zap, desc: 'Catch falling letters before they hit ground', color: 'from-purple-500 to-pink-500' },
+    'bubble-pop': { name: 'Bubble Pop', icon: Target, desc: 'Pop word bubbles floating around', color: 'from-green-500 to-teal-500' },
+    'typing-warrior': { name: 'Typing Warrior', icon: Swords, desc: 'Defeat enemies by typing their names', color: 'from-red-500 to-orange-500' },
+    'speed-burst': { name: 'Speed Burst', icon: Flame, desc: '30-second intense typing challenge', color: 'from-yellow-500 to-red-500' },
+    'accuracy-master': { name: 'Accuracy Master', icon: Target, desc: 'Perfect typing - zero mistakes allowed', color: 'from-indigo-500 to-purple-500' },
+    'survival-mode': { name: 'Survival Mode', icon: Heart, desc: 'Type to stay alive as long as possible', color: 'from-pink-500 to-rose-500' },
+    'rhythm-typing': { name: 'Rhythm Typing', icon: Music, desc: 'Type to the beat of the music', color: 'from-purple-500 to-blue-500' },
+    'bomb-defuser': { name: 'Bomb Defuser', icon: Bomb, desc: 'Defuse bombs by typing the code quickly', color: 'from-red-600 to-yellow-500' },
+    'ice-breaker': { name: 'Ice Breaker', icon: Snowflake, desc: 'Melt ice blocks with hot typing', color: 'from-blue-400 to-cyan-300' },
+    'code-ninja': { name: 'Code Ninja', icon: Code, desc: 'Type code snippets like a ninja', color: 'from-gray-700 to-gray-900' },
+    'story-weaver': { name: 'Story Weaver', icon: BookOpen, desc: 'Complete stories by typing missing words', color: 'from-amber-500 to-orange-500' },
+    'time-attack': { name: 'Time Attack', icon: Timer, desc: 'Race against countdown timer', color: 'from-red-500 to-pink-500' },
+    'combo-master': { name: 'Combo Master', icon: Award, desc: 'Build massive typing combos', color: 'from-violet-500 to-purple-500' },
+    'endless-runner': { name: 'Endless Runner', icon: Rocket, desc: 'Keep running by typing continuously', color: 'from-green-400 to-blue-500' },
+    'typing-olympics': { name: 'Typing Olympics', icon: Trophy, desc: 'Complete multiple typing events', color: 'from-yellow-400 to-yellow-600' }
   };
 
   const gameWords = {
@@ -64,64 +103,114 @@ const TypingGames = () => {
     }
   };
 
-  const phrases = {
-    english: [
-      'The quick brown fox jumps over the lazy dog',
-      'Practice makes perfect typing skills',
-      'Typing speed improves with consistent practice',
-      'Learn touch typing for better efficiency'
-    ],
-    hindi: [
-      'अभ्यास से टाइपिंग कुशलता बढ़ती है',
-      'तेज़ टाइपिंग से काम आसान हो जाता है',
-      'कंप्यूटर कौशल आज की आवश्यकता है'
-    ]
-  };
+  const storyParts = [
+    "Once upon a time, in a land far away,",
+    "there lived a brave knight who loved",
+    "to type faster than the speed of light.",
+    "Every day, the knight would practice",
+    "typing on an ancient magical keyboard",
+    "that could cast spells with every word."
+  ];
 
   const codeSnippets = [
     'function hello() { return "world"; }',
-    'const arr = [1, 2, 3, 4, 5];',
+    'const array = [1, 2, 3, 4, 5];',
     'if (condition) { execute(); }',
-    'for (let i = 0; i < 10; i++) {}'
+    'for (let i = 0; i < 10; i++) {}',
+    'const result = await fetch(url);',
+    'element.addEventListener("click", handler);'
   ];
 
-  const getGameText = () => {
+  const getGameText = useCallback(() => {
     const words = gameWords[language as keyof typeof gameWords][difficulty as keyof typeof gameWords.english];
     
     switch (gameType) {
-      case 'word-race':
-      case 'speed-burst':
-      case 'word-hunter':
+      case 'letter-rain':
+        return String.fromCharCode(65 + Math.floor(Math.random() * 26));
+      case 'bubble-pop':
         return words[Math.floor(Math.random() * words.length)];
-      case 'phrase-master':
-      case 'story-mode':
-        const phraseList = phrases[language as keyof typeof phrases];
-        return phraseList[Math.floor(Math.random() * phraseList.length)];
-      case 'code-typer':
+      case 'typing-warrior':
+        return words[Math.floor(Math.random() * words.length)];
+      case 'story-weaver':
+        return storyParts[phraseIndex] || storyParts[0];
+      case 'code-ninja':
         return codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
-      case 'number-ninja':
-        return Math.random().toString().substr(2, 6);
-      case 'reverse-typing':
-        return words[Math.floor(Math.random() * words.length)].split('').reverse().join('');
+      case 'bomb-defuser':
+        return Math.random().toString(36).substring(2, 8).toUpperCase();
       default:
         return words[Math.floor(Math.random() * words.length)];
     }
-  };
+  }, [gameType, language, difficulty, phraseIndex]);
 
-  const calculateAccuracy = () => {
-    if (totalKeystrokes === 0) return 100;
+  const spawnFallingLetter = useCallback(() => {
+    if (gameType === 'letter-rain') {
+      const newLetter: FallingLetter = {
+        id: Date.now() + Math.random(),
+        letter: String.fromCharCode(65 + Math.floor(Math.random() * 26)),
+        x: Math.random() * 90,
+        y: 0,
+        speed: 1 + Math.random() * 2
+      };
+      setFallingLetters(prev => [...prev, newLetter]);
+    }
+  }, [gameType]);
+
+  const spawnBubble = useCallback(() => {
+    if (gameType === 'bubble-pop') {
+      const words = gameWords[language as keyof typeof gameWords][difficulty as keyof typeof gameWords.english];
+      const newBubble: Bubble = {
+        id: Date.now() + Math.random(),
+        word: words[Math.floor(Math.random() * words.length)],
+        x: Math.random() * 80,
+        y: 20 + Math.random() * 60,
+        size: 60 + Math.random() * 40
+      };
+      setBubbles(prev => [...prev, newBubble]);
+    }
+  }, [gameType, language, difficulty]);
+
+  const spawnEnemy = useCallback(() => {
+    if (gameType === 'typing-warrior') {
+      const words = gameWords[language as keyof typeof gameWords][difficulty as keyof typeof gameWords.english];
+      const word = words[Math.floor(Math.random() * words.length)];
+      const newEnemy: Enemy = {
+        id: Date.now() + Math.random(),
+        word,
+        x: Math.random() * 80,
+        health: word.length,
+        maxHealth: word.length
+      };
+      setEnemies(prev => [...prev, newEnemy]);
+    }
+  }, [gameType, language, difficulty]);
+
+  const spawnBomb = useCallback(() => {
+    if (gameType === 'bomb-defuser') {
+      const newBomb: FallingLetter = {
+        id: Date.now() + Math.random(),
+        letter: Math.random().toString(36).substring(2, 6).toUpperCase(),
+        x: Math.random() * 90,
+        y: 0,
+        speed: 0.5 + Math.random()
+      };
+      setBombs(prev => [...prev, newBomb]);
+    }
+  }, [gameType]);
+
+  const calculateAccuracy = useCallback(() => {
+    if (totalKeystrokes === 0) return;
     const netAccuracy = ((correctKeystrokes) / totalKeystrokes) * 100;
     const grossAccuracy = ((correctKeystrokes) / (totalKeystrokes + backspaceCount)) * 100;
     setAccuracy(Math.max(0, netAccuracy));
     setGrossAccuracy(Math.max(0, grossAccuracy));
-  };
+  }, [totalKeystrokes, correctKeystrokes, backspaceCount]);
 
-  const calculateWPM = () => {
+  const calculateWPM = useCallback(() => {
     if (!startTime) return;
-    const timeElapsed = (Date.now() - startTime) / 1000 / 60; // minutes
-    const wordsTyped = correctKeystrokes / 5; // standard: 5 characters = 1 word
+    const timeElapsed = (Date.now() - startTime) / 1000 / 60;
+    const wordsTyped = correctKeystrokes / 5;
     setWpm(Math.round(wordsTyped / timeElapsed));
-  };
+  }, [startTime, correctKeystrokes]);
 
   const startGame = () => {
     setIsGameActive(true);
@@ -133,7 +222,6 @@ const TypingGames = () => {
     setLevel(1);
     setTimeLeft(gameType === 'speed-burst' ? 30 : 60);
     setWordsCompleted(0);
-    setGameSpeed(3000);
     setAccuracy(100);
     setGrossAccuracy(100);
     setTotalKeystrokes(0);
@@ -142,6 +230,20 @@ const TypingGames = () => {
     setBackspaceCount(0);
     setWpm(0);
     setStartTime(Date.now());
+    
+    // Reset game-specific states
+    setFallingLetters([]);
+    setBubbles([]);
+    setEnemies([]);
+    setCombo(0);
+    setStreak(0);
+    setMultiplier(1);
+    setRhythm(0);
+    setEnergy(100);
+    setTemperature(50);
+    setPhraseIndex(0);
+    setBombs([]);
+    setParticles([]);
     
     setTimeout(() => {
       if (inputRef.current) {
@@ -160,7 +262,6 @@ const TypingGames = () => {
     setLevel(1);
     setTimeLeft(60);
     setWordsCompleted(0);
-    setGameSpeed(3000);
     setAccuracy(100);
     setGrossAccuracy(100);
     setTotalKeystrokes(0);
@@ -169,17 +270,33 @@ const TypingGames = () => {
     setBackspaceCount(0);
     setWpm(0);
     setStartTime(null);
+    
+    // Reset game-specific states
+    setFallingLetters([]);
+    setBubbles([]);
+    setEnemies([]);
+    setCombo(0);
+    setStreak(0);
+    setMultiplier(1);
+    setRhythm(0);
+    setEnergy(100);
+    setTemperature(50);
+    setPhraseIndex(0);
+    setBombs([]);
+    setParticles([]);
   };
 
   const nextText = () => {
+    if (gameType === 'story-weaver') {
+      setPhraseIndex(prev => (prev + 1) % storyParts.length);
+    }
     setCurrentText(getGameText());
     setTypedText('');
     setWordsCompleted(prev => prev + 1);
     
-    // Increase difficulty every 10 words
     if ((wordsCompleted + 1) % 10 === 0) {
       setLevel(prev => prev + 1);
-      setGameSpeed(prev => Math.max(prev - 200, 1000));
+      setMultiplier(prev => prev + 0.5);
     }
   };
 
@@ -207,21 +324,52 @@ const TypingGames = () => {
     };
   }, [isGameActive, timeLeft]);
 
+  // Game animations and spawning
+  useEffect(() => {
+    if (!isGameActive) return;
+
+    const spawnInterval = setInterval(() => {
+      if (gameType === 'letter-rain') spawnFallingLetter();
+      if (gameType === 'bubble-pop') spawnBubble();
+      if (gameType === 'typing-warrior') spawnEnemy();
+      if (gameType === 'bomb-defuser') spawnBomb();
+    }, 2000);
+
+    const animationInterval = setInterval(() => {
+      // Update falling letters
+      setFallingLetters(prev => prev.map(letter => ({
+        ...letter,
+        y: letter.y + letter.speed
+      })).filter(letter => letter.y < 100));
+
+      // Update bombs
+      setBombs(prev => prev.map(bomb => ({
+        ...bomb,
+        y: bomb.y + bomb.speed
+      })).filter(bomb => bomb.y < 100));
+
+      // Update rhythm
+      if (gameType === 'rhythm-typing') {
+        setRhythm(prev => (prev + 1) % 100);
+      }
+
+      // Update temperature
+      if (gameType === 'ice-breaker') {
+        setTemperature(prev => Math.max(0, prev - 0.5));
+      }
+    }, 100);
+
+    return () => {
+      clearInterval(spawnInterval);
+      clearInterval(animationInterval);
+    };
+  }, [isGameActive, gameType, spawnFallingLetter, spawnBubble, spawnEnemy, spawnBomb]);
+
   // Calculate metrics
   useEffect(() => {
     calculateAccuracy();
     calculateWPM();
-  }, [totalKeystrokes, correctKeystrokes, backspaceCount, startTime]);
-
-  // Progress animation for survival mode
-  useEffect(() => {
-    if ((gameType === 'survival-mode' || gameType === 'letter-rain') && isGameActive && progressRef.current) {
-      const progressElement = progressRef.current;
-      progressElement.style.animation = 'none';
-      progressElement.offsetHeight; // Trigger reflow
-      progressElement.style.animation = `shrinkProgress ${gameSpeed}ms linear`;
-    }
-  }, [currentText, gameSpeed, gameType, isGameActive]);
+  }, [calculateAccuracy, calculateWPM]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isGameActive || isGameOver) return;
@@ -229,14 +377,12 @@ const TypingGames = () => {
     const value = e.target.value;
     const prevLength = typedText.length;
     
-    // Handle backspace
     if (value.length < prevLength) {
       setBackspaceCount(prev => prev + 1);
       setTypedText(value);
       return;
     }
 
-    // New character typed
     const newChar = value[value.length - 1];
     const expectedChar = currentText[value.length - 1];
     
@@ -244,20 +390,22 @@ const TypingGames = () => {
     
     if (newChar === expectedChar) {
       setCorrectKeystrokes(prev => prev + 1);
+      setStreak(prev => prev + 1);
+      setCombo(prev => prev + 1);
+      
+      // Game-specific effects
+      if (gameType === 'ice-breaker') {
+        setTemperature(prev => Math.min(100, prev + 2));
+      }
+      if (gameType === 'rhythm-typing') {
+        setEnergy(prev => Math.min(100, prev + 1));
+      }
     } else {
       setErrors(prev => prev + 1);
-    }
-    
-    setTypedText(value);
-
-    if (value === currentText) {
-      const points = currentText.length * level * (accuracy / 100);
-      setScore(prev => prev + Math.round(points));
-      nextText();
-    } else if (value.length > currentText.length) {
-      // Wrong input - reset for some game modes
+      setStreak(0);
+      setCombo(0);
+      
       if (gameType === 'accuracy-master') {
-        setTypedText('');
         setLives(prev => {
           const newLives = prev - 1;
           if (newLives <= 0) {
@@ -268,6 +416,31 @@ const TypingGames = () => {
         });
       }
     }
+    
+    setTypedText(value);
+
+    // Handle game completion
+    if (value === currentText) {
+      const points = currentText.length * level * multiplier * (accuracy / 100);
+      setScore(prev => prev + Math.round(points));
+      
+      // Game-specific completions
+      if (gameType === 'letter-rain') {
+        setFallingLetters(prev => prev.filter(letter => letter.letter !== currentText));
+      } else if (gameType === 'bubble-pop') {
+        setBubbles(prev => prev.filter(bubble => bubble.word !== currentText));
+      } else if (gameType === 'typing-warrior') {
+        setEnemies(prev => prev.map(enemy => 
+          enemy.word === currentText 
+            ? { ...enemy, health: enemy.health - 1 }
+            : enemy
+        ).filter(enemy => enemy.health > 0));
+      } else if (gameType === 'bomb-defuser') {
+        setBombs(prev => prev.filter(bomb => bomb.letter !== currentText));
+      }
+      
+      nextText();
+    }
   };
 
   const getCharacterClass = (index: number) => {
@@ -275,7 +448,7 @@ const TypingGames = () => {
       return typedText[index] === currentText[index] ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
     }
     if (index === typedText.length) {
-      return 'bg-blue-200 animate-pulse'; // Current cursor position
+      return 'bg-blue-200 animate-pulse';
     }
     return 'text-gray-600';
   };
@@ -284,10 +457,10 @@ const TypingGames = () => {
     switch (gameType) {
       case 'speed-burst':
         return ((30 - timeLeft) / 30) * 100;
-      case 'word-race':
-        return ((60 - timeLeft) / 60) * 100;
-      case 'accuracy-master':
-        return (accuracy);
+      case 'rhythm-typing':
+        return energy;
+      case 'ice-breaker':
+        return temperature;
       case 'survival-mode':
         return (lives / 3) * 100;
       default:
@@ -295,24 +468,153 @@ const TypingGames = () => {
     }
   };
 
+  const renderGameArea = () => {
+    const currentGame = gameTypes[gameType as keyof typeof gameTypes];
+    
+    return (
+      <div className={`relative overflow-hidden rounded-lg min-h-[400px] bg-gradient-to-br ${currentGame.color} p-6`}>
+        {/* Game-specific UI elements */}
+        {gameType === 'letter-rain' && (
+          <div className="absolute inset-0">
+            {fallingLetters.map(letter => (
+              <div
+                key={letter.id}
+                className="absolute text-white text-3xl font-bold animate-pulse"
+                style={{
+                  left: `${letter.x}%`,
+                  top: `${letter.y}%`,
+                  transform: 'translate(-50%, -50%)'
+                }}
+              >
+                {letter.letter}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {gameType === 'bubble-pop' && (
+          <div className="absolute inset-0">
+            {bubbles.map(bubble => (
+              <div
+                key={bubble.id}
+                className="absolute bg-white bg-opacity-30 rounded-full flex items-center justify-center text-white font-bold animate-bounce"
+                style={{
+                  left: `${bubble.x}%`,
+                  top: `${bubble.y}%`,
+                  width: `${bubble.size}px`,
+                  height: `${bubble.size}px`,
+                  transform: 'translate(-50%, -50%)'
+                }}
+              >
+                {bubble.word}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {gameType === 'typing-warrior' && (
+          <div className="absolute inset-0">
+            {enemies.map(enemy => (
+              <div
+                key={enemy.id}
+                className="absolute bg-red-600 rounded-lg p-4 text-white font-bold"
+                style={{
+                  left: `${enemy.x}%`,
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)'
+                }}
+              >
+                <div className="text-center">{enemy.word}</div>
+                <div className="w-full bg-red-300 rounded-full h-2 mt-2">
+                  <div
+                    className="bg-red-600 h-2 rounded-full"
+                    style={{ width: `${(enemy.health / enemy.maxHealth) * 100}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {gameType === 'bomb-defuser' && (
+          <div className="absolute inset-0">
+            {bombs.map(bomb => (
+              <div
+                key={bomb.id}
+                className="absolute text-red-600 text-2xl font-bold animate-pulse"
+                style={{
+                  left: `${bomb.x}%`,
+                  top: `${bomb.y}%`,
+                  transform: 'translate(-50%, -50%)'
+                }}
+              >
+                💣 {bomb.letter}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {gameType === 'rhythm-typing' && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div
+              className="w-32 h-32 rounded-full border-4 border-white animate-pulse"
+              style={{
+                transform: `scale(${1 + Math.sin(rhythm * 0.1) * 0.2})`,
+                borderColor: energy > 50 ? '#10b981' : '#ef4444'
+              }}
+            />
+          </div>
+        )}
+
+        {gameType === 'ice-breaker' && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className={`text-6xl ${temperature > 50 ? 'animate-bounce' : ''}`}>
+              {temperature > 50 ? '🔥' : '🧊'}
+            </div>
+          </div>
+        )}
+
+        {/* Main text display - always shown */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full">
+          <div className="text-2xl md:text-4xl font-mono font-bold mb-4 p-4 bg-black bg-opacity-20 rounded-lg backdrop-blur-sm">
+            {currentText.split('').map((char, index) => (
+              <span
+                key={index}
+                className={`${getCharacterClass(index)} px-1 py-0.5 rounded text-white`}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))}
+          </div>
+          
+          {/* Game-specific indicators */}
+          {combo > 5 && (
+            <div className="text-yellow-300 font-bold text-xl animate-pulse">
+              COMBO x{combo}!
+            </div>
+          )}
+          
+          {streak > 10 && (
+            <div className="text-green-300 font-bold text-lg">
+              STREAK: {streak}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6">
-      <style>{`
-        @keyframes shrinkProgress {
-          from { width: 100%; }
-          to { width: 0%; }
-        }
-      `}</style>
-
       {/* Game Selection */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Gamepad2 className="h-5 w-5" />
-            15+ Fun Typing Games
+            15+ Unique Typing Games
           </CardTitle>
           <CardDescription>
-            Choose from various typing games to improve your skills
+            Each game offers a completely different typing experience
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -373,12 +675,12 @@ const TypingGames = () => {
 
           {/* Game Description */}
           {gameType && (
-            <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20">
-              <div className="flex items-center gap-2 mb-1">
-                {React.createElement(gameTypes[gameType as keyof typeof gameTypes].icon, { className: "h-4 w-4" })}
-                <h4 className="font-medium">{gameTypes[gameType as keyof typeof gameTypes].name}</h4>
+            <div className={`p-4 rounded-lg bg-gradient-to-r ${gameTypes[gameType as keyof typeof gameTypes].color} text-white`}>
+              <div className="flex items-center gap-2 mb-2">
+                {React.createElement(gameTypes[gameType as keyof typeof gameTypes].icon, { className: "h-5 w-5" })}
+                <h4 className="font-bold text-lg">{gameTypes[gameType as keyof typeof gameTypes].name}</h4>
               </div>
-              <p className="text-sm text-muted-foreground">{gameTypes[gameType as keyof typeof gameTypes].desc}</p>
+              <p className="text-white/90">{gameTypes[gameType as keyof typeof gameTypes].desc}</p>
             </div>
           )}
         </CardContent>
@@ -442,8 +744,8 @@ const TypingGames = () => {
           <Card>
             <CardContent className="p-4">
               <div>
-                <p className="text-xl font-bold">{errors}</p>
-                <p className="text-xs text-muted-foreground">Errors</p>
+                <p className="text-xl font-bold">{combo}</p>
+                <p className="text-xs text-muted-foreground">Combo</p>
               </div>
             </CardContent>
           </Card>
@@ -472,7 +774,7 @@ const TypingGames = () => {
         <Card>
           <CardHeader>
             <div className="flex justify-between items-center">
-              <CardTitle>Game Area</CardTitle>
+              <CardTitle>Game Arena</CardTitle>
               <div className="flex gap-2">
                 {isGameOver && (
                   <Badge variant="destructive">Game Over</Badge>
@@ -487,45 +789,15 @@ const TypingGames = () => {
                     ))}
                   </div>
                 )}
+                <Badge variant="outline">Level {level}</Badge>
+                <Badge variant="outline">x{multiplier.toFixed(1)}</Badge>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Current Text Display */}
-            <div className="text-center">
-              <div className="text-2xl md:text-4xl font-mono font-bold mb-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                {currentText.split('').map((char, index) => (
-                  <span
-                    key={index}
-                    className={`${getCharacterClass(index)} px-1 py-0.5 rounded`}
-                  >
-                    {char === ' ' ? '\u00A0' : char}
-                  </span>
-                ))}
-              </div>
-              
-              {/* Game-specific progress bars */}
-              {(gameType === 'survival-mode' || gameType === 'letter-rain') && isGameActive && (
-                <div className="max-w-md mx-auto mb-4">
-                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                    <div 
-                      ref={progressRef}
-                      className="bg-red-600 h-3 rounded-full transition-all duration-100"
-                      style={{ width: '100%' }}
-                    />
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-2">Type before time runs out!</p>
-                </div>
-              )}
-
-              {/* Overall progress */}
-              <div className="max-w-md mx-auto">
-                <div className="flex justify-between text-sm text-muted-foreground mb-2">
-                  <span>Progress</span>
-                  <span>{typedText.length}/{currentText.length}</span>
-                </div>
-                <Progress value={(typedText.length / currentText.length) * 100} className="h-2" />
-              </div>
+            {/* Game Area */}
+            <div ref={gameAreaRef}>
+              {renderGameArea()}
             </div>
 
             {/* Input */}
@@ -542,17 +814,12 @@ const TypingGames = () => {
                 autoComplete="off"
                 spellCheck="false"
               />
-              {/* Real-time feedback */}
-              <div className="flex justify-between text-sm text-muted-foreground mt-2">
-                <span>Keystrokes: {totalKeystrokes}</span>
-                <span>Backspaces: {backspaceCount}</span>
-              </div>
             </div>
 
             {/* Game Over Results */}
             {isGameOver && (
               <div className="text-center p-6 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <h3 className="text-2xl font-bold mb-4">Game Over!</h3>
+                <h3 className="text-2xl font-bold mb-4">Game Complete!</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm max-w-2xl mx-auto mb-6">
                   <div>
                     <p className="text-muted-foreground">Final Score</p>
@@ -571,20 +838,20 @@ const TypingGames = () => {
                     <p className="text-xl font-bold">{grossAccuracy.toFixed(1)}%</p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">Words Completed</p>
-                    <p className="text-xl font-bold">{wordsCompleted}</p>
+                    <p className="text-muted-foreground">Max Combo</p>
+                    <p className="text-xl font-bold">{combo}</p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">Total Errors</p>
-                    <p className="text-xl font-bold">{errors}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Corrections</p>
-                    <p className="text-xl font-bold">{backspaceCount}</p>
+                    <p className="text-muted-foreground">Max Streak</p>
+                    <p className="text-xl font-bold">{streak}</p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Level Reached</p>
                     <p className="text-xl font-bold">{level}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Multiplier</p>
+                    <p className="text-xl font-bold">x{multiplier.toFixed(1)}</p>
                   </div>
                 </div>
                 <Button onClick={startGame} className="mt-4">
@@ -598,15 +865,15 @@ const TypingGames = () => {
         <Card className="text-center py-12">
           <CardContent>
             <Gamepad2 className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">Ready to Play?</h3>
+            <h3 className="text-lg font-semibold mb-2">Choose Your Adventure!</h3>
             <p className="text-muted-foreground mb-4">
-              Choose your game type, language, and difficulty level, then click "Start Game"
+              Each game offers a unique typing experience with different mechanics and visuals
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-w-md mx-auto text-xs text-muted-foreground">
-              <div>• 15+ Game Modes</div>
-              <div>• Speed Tests</div>
-              <div>• Accuracy Training</div>
-              <div>• Progress Tracking</div>
+              <div>• Unique Gameplay</div>
+              <div>• Visual Effects</div>
+              <div>• Score Multipliers</div>
+              <div>• Combo Systems</div>
             </div>
           </CardContent>
         </Card>
@@ -615,20 +882,26 @@ const TypingGames = () => {
       {/* Accuracy Explanation */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Understanding Accuracy Metrics</CardTitle>
+          <CardTitle className="text-lg">Understanding Game Mechanics</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 gap-4 text-sm">
+          <div className="grid md:grid-cols-3 gap-4 text-sm">
             <div className="p-3 rounded-lg bg-green-50 dark:bg-green-900/20">
               <h4 className="font-medium mb-2 text-green-700 dark:text-green-300">Net Accuracy</h4>
               <p className="text-muted-foreground">
-                Calculated as correct keystrokes ÷ total keystrokes. This doesn't count corrections you made with backspace.
+                Raw typing accuracy without counting corrections. Shows your pure typing skill.
               </p>
             </div>
             <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20">
               <h4 className="font-medium mb-2 text-blue-700 dark:text-blue-300">Gross Accuracy</h4>
               <p className="text-muted-foreground">
-                Includes corrections in the calculation. Shows your accuracy including the time spent correcting mistakes.
+                Includes time spent on corrections. More realistic measure of practical typing speed.
+              </p>
+            </div>
+            <div className="p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+              <h4 className="font-medium mb-2 text-purple-700 dark:text-purple-300">Combo System</h4>
+              <p className="text-muted-foreground">
+                Build streaks for score multipliers. Each correct keystroke increases your combo!
               </p>
             </div>
           </div>
