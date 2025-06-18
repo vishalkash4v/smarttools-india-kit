@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone, Keyboard, Trophy, Gamepad2, Users } from "lucide-react";
+import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone, Keyboard, Trophy, Gamepad2, Users, Image as ImageIcon, Zap, Star } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -119,6 +119,32 @@ const ToolsPage = () => {
       description: 'Create, organize, and manage your personal notes with tags and colors.',
       path: '/notes',
       icon: StickyNote
+    },
+
+    // Image Tools
+    { 
+      id: 'image-compressor', 
+      name: 'Image Compressor', 
+      category: 'Image Tools', 
+      description: 'Compress images to reduce file size while maintaining quality. Convert MB images to KB for document uploads.',
+      path: '/image-compressor',
+      icon: ImageIcon
+    },
+    { 
+      id: 'logo-to-favicon', 
+      name: 'Logo to Favicon Converter', 
+      category: 'Image Tools', 
+      description: 'Convert your logo into multiple favicon sizes for websites and apps. Generate 16x16, 32x32, 180x180 and more favicon formats.',
+      path: '/logo-to-favicon',
+      icon: Star
+    },
+    { 
+      id: 'image-upscaler', 
+      name: 'Image Upscaler', 
+      category: 'Image Tools', 
+      description: 'Upscale and enhance image quality using advanced interpolation techniques. Increase image resolution and improve clarity.',
+      path: '/image-upscaler',
+      icon: Zap
     },
 
     // Typing Tools
@@ -396,6 +422,8 @@ const ToolsPage = () => {
     switch (category) {
       case 'Text & Writing Tools':
         return 'text-blue-500';
+      case 'Image Tools':
+        return 'text-pink-500';
       case 'Typing Tools':
         return 'text-indigo-500';
       case 'Utility Tools':
@@ -419,6 +447,8 @@ const ToolsPage = () => {
     switch (category) {
       case 'Text & Writing Tools':
         return 'bg-blue-100 dark:bg-blue-900/20';
+      case 'Image Tools':
+        return 'bg-pink-100 dark:bg-pink-900/20';
       case 'Typing Tools':
         return 'bg-indigo-100 dark:bg-indigo-900/20';
       case 'Utility Tools':
@@ -439,15 +469,12 @@ const ToolsPage = () => {
   };
 
   useEffect(() => {
-    // Set initial filtered tools to all tools
     setFilteredTools(allTools);
 
-    // Apply search term if it exists in the URL
     const params = new URLSearchParams(location.search);
     const urlSearchTerm = params.get('search') || '';
     setSearchTerm(urlSearchTerm);
 
-    // If there's a search term in the URL, filter the tools
     if (urlSearchTerm) {
       const filtered = allTools.filter(tool =>
         tool.name.toLowerCase().includes(urlSearchTerm.toLowerCase()) ||
@@ -462,7 +489,6 @@ const ToolsPage = () => {
     const newSearchTerm = e.target.value;
     setSearchTerm(newSearchTerm);
 
-    // Update the URL with the new search term
     const params = new URLSearchParams(location.search);
     if (newSearchTerm) {
       params.set('search', newSearchTerm);
@@ -471,7 +497,6 @@ const ToolsPage = () => {
     }
     navigate(`${location.pathname}?${params.toString()}`, { replace: true });
 
-    // Filter the tools based on the new search term
     const filtered = allTools.filter(tool =>
       tool.name.toLowerCase().includes(newSearchTerm.toLowerCase()) ||
       tool.description.toLowerCase().includes(newSearchTerm.toLowerCase()) ||
