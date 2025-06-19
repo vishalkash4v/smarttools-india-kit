@@ -5,15 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Image as ImageIcon, Download, Copy, Palette } from "lucide-react";
 import { toast } from "sonner";
 
 const PlaceholderImageGenerator = () => {
   const [width, setWidth] = useState(400);
-  const [height,setHeight] = useState(300);
+  const [height, setHeight] = useState(300);
+  const [backgroundType, setBackgroundType] = useState<'solid' | 'gradient'>('solid');
   const [backgroundColor, setBackgroundColor] = useState('#cccccc');
+  const [gradientColor1, setGradientColor1] = useState('#667eea');
+  const [gradientColor2, setGradientColor2] = useState('#764ba2');
+  const [gradientDirection, setGradientDirection] = useState('45deg');
   const [textColor, setTextColor] = useState('#666666');
   const [text, setText] = useState('');
   const [format, setFormat] = useState<'png' | 'jpeg' | 'webp'>('png');
@@ -30,6 +33,17 @@ const PlaceholderImageGenerator = () => {
     { name: 'Mobile', width: 375, height: 812 },
   ];
 
+  const gradientPresets = [
+    { name: 'Ocean Blue', color1: '#667eea', color2: '#764ba2', direction: '45deg' },
+    { name: 'Sunset', color1: '#ff7e5f', color2: '#feb47b', direction: '45deg' },
+    { name: 'Purple Rain', color1: '#aa4b6b', color2: '#6b6b83', direction: '135deg' },
+    { name: 'Green Tea', color1: '#11998e', color2: '#38ef7d', direction: '90deg' },
+    { name: 'Cherry', color1: '#eb3349', color2: '#f45c43', direction: '180deg' },
+    { name: 'Sky', color1: '#74b9ff', color2: '#0984e3', direction: '0deg' },
+    { name: 'Mint', color1: '#00b894', color2: '#00cec9', direction: '45deg' },
+    { name: 'Fire', color1: '#fd79a8', color2: '#fdcb6e', direction: '135deg' },
+  ];
+
   const generateImage = useCallback(() => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -42,8 +56,15 @@ const PlaceholderImageGenerator = () => {
     canvas.width = width;
     canvas.height = height;
 
-    // Fill background
-    ctx.fillStyle = backgroundColor;
+    // Create background
+    if (backgroundType === 'gradient') {
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, gradientColor1);
+      gradient.addColorStop(1, gradientColor2);
+      ctx.fillStyle = gradient;
+    } else {
+      ctx.fillStyle = backgroundColor;
+    }
     ctx.fillRect(0, 0, width, height);
 
     // Add border
@@ -67,7 +88,7 @@ const PlaceholderImageGenerator = () => {
     const textHeight = fontSize;
     
     // Semi-transparent background for text
-    ctx.fillStyle = backgroundColor === '#ffffff' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
     ctx.fillRect(
       (width - textWidth) / 2 - 10,
       (height - textHeight) / 2 - 5,
@@ -90,7 +111,7 @@ const PlaceholderImageGenerator = () => {
         toast.success('Placeholder image generated!');
       }
     }, mimeType, quality);
-  }, [width, height, backgroundColor, textColor, text, format]);
+  }, [width, height, backgroundType, backgroundColor, gradientColor1, gradientColor2, textColor, text, format]);
 
   const downloadImage = useCallback(() => {
     if (!generatedUrl) return;
@@ -112,8 +133,15 @@ const PlaceholderImageGenerator = () => {
     setHeight(size.height);
   }, []);
 
+  const applyGradientPreset = useCallback((preset: { color1: string; color2: string; direction: string }) => {
+    setGradientColor1(preset.color1);
+    setGradientColor2(preset.color2);
+    setGradientDirection(preset.direction);
+    setBackgroundType('gradient');
+  }, []);
+
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6">
+    <div className="w-full max-w-6xl mx-auto space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
@@ -164,7 +192,20 @@ const PlaceholderImageGenerator = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label>Background Type</Label>
+              <Select value={backgroundType} onValueChange={(value: 'solid' | 'gradient') => setBackgroundType(value)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="solid">Solid Color</SelectItem>
+                  <SelectItem value="gradient">Gradient</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {backgroundType === 'solid' ? (
               <div>
                 <Label htmlFor="bg-color">Background Color</Label>
                 <div className="flex gap-2">
@@ -182,22 +223,81 @@ const PlaceholderImageGenerator = () => {
                   />
                 </div>
               </div>
-              <div>
-                <Label htmlFor="text-color">Text Color</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="text-color"
-                    type="color"
-                    value={textColor}
-                    onChange={(e) => setTextColor(e.target.value)}
-                    className="w-12 h-10 p-1"
-                  />
-                  <Input
-                    value={textColor}
-                    onChange={(e) => setTextColor(e.target.value)}
-                    placeholder="#666666"
-                  />
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <Label>Gradient Presets</Label>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {gradientPresets.map((preset) => (
+                      <Badge
+                        key={preset.name}
+                        variant="outline"
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => applyGradientPreset(preset)}
+                        style={{
+                          background: `linear-gradient(${preset.direction}, ${preset.color1}, ${preset.color2})`,
+                          color: 'white'
+                        }}
+                      >
+                        {preset.name}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="grad-color1">Color 1</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="grad-color1"
+                        type="color"
+                        value={gradientColor1}
+                        onChange={(e) => setGradientColor1(e.target.value)}
+                        className="w-12 h-10 p-1"
+                      />
+                      <Input
+                        value={gradientColor1}
+                        onChange={(e) => setGradientColor1(e.target.value)}
+                        placeholder="#667eea"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="grad-color2">Color 2</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="grad-color2"
+                        type="color"
+                        value={gradientColor2}
+                        onChange={(e) => setGradientColor2(e.target.value)}
+                        className="w-12 h-10 p-1"
+                      />
+                      <Input
+                        value={gradientColor2}
+                        onChange={(e) => setGradientColor2(e.target.value)}
+                        placeholder="#764ba2"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <Label htmlFor="text-color">Text Color</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="text-color"
+                  type="color"
+                  value={textColor}
+                  onChange={(e) => setTextColor(e.target.value)}
+                  className="w-12 h-10 p-1"
+                />
+                <Input
+                  value={textColor}
+                  onChange={(e) => setTextColor(e.target.value)}
+                  placeholder="#666666"
+                />
               </div>
             </div>
 
@@ -260,7 +360,8 @@ const PlaceholderImageGenerator = () => {
                 <div className="text-xs text-gray-600 space-y-1">
                   <p>Size: {width} × {height} pixels</p>
                   <p>Format: {format.toUpperCase()}</p>
-                  <p>Colors: {backgroundColor} / {textColor}</p>
+                  <p>Background: {backgroundType === 'gradient' ? `${gradientColor1} → ${gradientColor2}` : backgroundColor}</p>
+                  <p>Text Color: {textColor}</p>
                 </div>
               </div>
             ) : (

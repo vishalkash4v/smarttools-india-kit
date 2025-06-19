@@ -411,30 +411,38 @@ const ToolsPage = () => {
       icon: Palette
     },
 
-    // Development Tools
+    // Developer Tools
     { 
-      id: 'live-preview', 
-      name: 'Live Preview', 
+      id: 'hash-generator', 
+      name: 'Hash Generator', 
       category: 'Development Tools', 
-      description: 'Preview HTML, CSS, and JavaScript code live.',
-      path: '/live-preview',
+      description: 'Generate cryptographic hashes using MD5, SHA-1, SHA-256, and SHA-512 algorithms.',
+      path: '/hash-generator',
+      icon: Hash
+    },
+    { 
+      id: 'jwt-decoder', 
+      name: 'JWT Token Decoder', 
+      category: 'Development Tools', 
+      description: 'Decode and parse JWT (JSON Web Token) headers, payloads, and signatures.',
+      path: '/jwt-decoder',
+      icon: Key
+    },
+    { 
+      id: 'meta-tag-previewer', 
+      name: 'Meta Tag Previewer', 
+      category: 'Development Tools', 
+      description: 'Preview how your website appears in search results and generate SEO meta tags.',
+      path: '/meta-tag-previewer',
       icon: Eye
     },
     { 
-      id: 'javascript-minifier', 
-      name: 'JavaScript Minifier', 
-      category: 'Development Tools', 
-      description: 'Minify JavaScript code to reduce file size.',
-      path: '/javascript-minifier',
-      icon: FileCode
-    },
-    { 
-      id: 'table-to-json-converter', 
-      name: 'Table to JSON Converter', 
-      category: 'Development Tools', 
-      description: 'Convert HTML tables to JSON format.',
-      path: '/table-to-json-converter',
-      icon: Table
+      id: 'enhanced-unit-converter', 
+      name: 'Enhanced Unit Converter', 
+      category: 'Converter Tools', 
+      description: 'Convert between various units including length, weight, temperature, time, data size, and speed.',
+      path: '/enhanced-unit-converter',
+      icon: ArrowLeftRight
     },
 
     // Timer Tools
