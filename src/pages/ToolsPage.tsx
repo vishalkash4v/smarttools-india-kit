@@ -1,6 +1,5 @@
 import React from 'react';
 import PageWrapper from '@/components/layout/PageWrapper';
-import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -562,56 +561,53 @@ const ToolsPage = () => {
   };
 
   return (
-    <PageWrapper
-      title="All Tools"
-      description="Explore a variety of free online tools for various tasks."
-      keywords="online tools, free tools, utilities, converters, calculators"
-    >
-      <div className="container grid grid-cols-1 md:grid-cols-[250px_1fr] gap-6">
-        <aside className="hidden md:block">
-          <AppSidebar />
-        </aside>
-        <main>
-          <div className="mb-6">
-            <Input
-              type="search"
-              placeholder="Search tools..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredTools.map((tool) => (
-              <Card key={tool.id} className="h-full flex flex-col hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className={`p-3 rounded-xl ${getBackgroundColor(tool.category)}`}>
-                      {React.createElement(tool.icon, { 
-                        className: `h-8 w-8 ${getIconColor(tool.category)}` 
-                      })}
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg leading-tight">{tool.name}</CardTitle>
-                      <p className="text-xs text-muted-foreground mt-1">{tool.category}</p>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex-grow pt-0">
-                  <CardDescription className="text-sm leading-relaxed">{tool.description}</CardDescription>
-                  <Button 
-                    onClick={() => navigate(tool.path)} 
-                    className="w-full mt-4"
-                    variant="outline"
-                  >
-                    Use Tool
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </main>
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4">All Tools</h1>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Explore a variety of free online tools for various tasks.
+        </p>
       </div>
-    </PageWrapper>
+      
+      <div className="mb-6">
+        <Input
+          type="search"
+          placeholder="Search tools..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {filteredTools.map((tool) => (
+          <Card key={tool.id} className="h-full flex flex-col hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-3">
+                <div className={`p-3 rounded-xl ${getBackgroundColor(tool.category)}`}>
+                  {React.createElement(tool.icon, { 
+                    className: `h-8 w-8 ${getIconColor(tool.category)}` 
+                  })}
+                </div>
+                <div>
+                  <CardTitle className="text-lg leading-tight">{tool.name}</CardTitle>
+                  <p className="text-xs text-muted-foreground mt-1">{tool.category}</p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-grow pt-0">
+              <CardDescription className="text-sm leading-relaxed">{tool.description}</CardDescription>
+              <Button 
+                onClick={() => navigate(tool.path)} 
+                className="w-full mt-4"
+                variant="outline"
+              >
+                Use Tool
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 };
 
