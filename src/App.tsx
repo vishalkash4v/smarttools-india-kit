@@ -1,15 +1,14 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 
-import HomePage from '@/pages/HomePage';
+import LandingPage from '@/pages/LandingPage';
 import AboutPage from '@/pages/AboutPage';
 import ContactPage from '@/pages/ContactPage';
 import ToolsPage from '@/pages/ToolsPage';
-import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
-import TermsOfServicePage from '@/pages/TermsOfServicePage';
-import NotFoundPage from '@/pages/NotFoundPage';
+import NotFoundPage from '@/pages/NotFound';
 
 import WordCounterPage from '@/pages/tools/WordCounterPage';
 import TextCaseConverterPage from '@/pages/tools/TextCaseConverterPage';
@@ -17,12 +16,10 @@ import ImageCompressorPage from '@/pages/tools/ImageCompressorPage';
 import UrlShortenerPage from '@/pages/tools/UrlShortenerPage';
 import Base64ConverterPage from '@/pages/tools/Base64ConverterPage';
 import LoremIpsumGeneratorPage from '@/pages/tools/LoremIpsumGeneratorPage';
-import QrCodeGeneratorPage from '@/pages/tools/QrCodeGeneratorPage';
+import QrCodeGeneratorPage from '@/pages/tools/QRCodeGeneratorPage';
 import PasswordGeneratorPage from '@/pages/tools/PasswordGeneratorPage';
-import TextToSpeechPage from '@/pages/tools/TextToSpeechPage';
 import JsonFormatterPage from '@/pages/tools/JsonFormatterPage';
 import ColorPickerToolPage from '@/pages/tools/ColorPickerToolPage';
-import ImageToBase64Page from '@/pages/tools/ImageToBase64Page';
 import WhitespaceRemoverPage from '@/pages/tools/WhitespaceRemoverPage';
 import DuplicateLineRemoverPage from '@/pages/tools/DuplicateLineRemoverPage';
 import TextReverserPage from '@/pages/tools/TextReverserPage';
@@ -56,7 +53,7 @@ import IncomeTaxCalculatorPage from '@/pages/tools/IncomeTaxCalculatorPage';
 import TemperatureConverterPage from '@/pages/tools/TemperatureConverterPage';
 import UnitConverterPage from '@/pages/tools/UnitConverterPage';
 import LivePreviewPage from '@/pages/tools/LivePreviewPage';
-import JavascriptMinifierPage from '@/pages/tools/JavascriptMinifierPage';
+import JavaScriptMinifierPage from '@/pages/tools/JavaScriptMinifierPage';
 import TableToJsonConverterPage from '@/pages/tools/TableToJsonConverterPage';
 import StopwatchPage from '@/pages/tools/StopwatchPage';
 import CountdownTimerPage from '@/pages/tools/CountdownTimerPage';
@@ -82,12 +79,10 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Toaster />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/tools" element={<ToolsPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-          <Route path="/terms-of-service" element={<TermsOfServicePage />} />
           <Route path="*" element={<NotFoundPage />} />
 
           {/* Tool Routes */}
@@ -99,10 +94,8 @@ function App() {
           <Route path="/lorem-ipsum-generator" element={<LoremIpsumGeneratorPage />} />
           <Route path="/qr-code-generator" element={<QrCodeGeneratorPage />} />
           <Route path="/password-generator" element={<PasswordGeneratorPage />} />
-          <Route path="/text-to-speech" element={<TextToSpeechPage />} />
           <Route path="/json-formatter" element={<JsonFormatterPage />} />
           <Route path="/color-picker-tool" element={<ColorPickerToolPage />} />
-          <Route path="/image-to-base64" element={<ImageToBase64Page />} />
           <Route path="/whitespace-remover" element={<WhitespaceRemoverPage />} />
           <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
           <Route path="/text-reverser" element={<TextReverserPage />} />
@@ -136,7 +129,7 @@ function App() {
           <Route path="/temperature-converter" element={<TemperatureConverterPage />} />
           <Route path="/unit-converter" element={<UnitConverterPage />} />
           <Route path="/live-preview" element={<LivePreviewPage />} />
-          <Route path="/javascript-minifier" element={<JavascriptMinifierPage />} />
+          <Route path="/javascript-minifier" element={<JavaScriptMinifierPage />} />
           <Route path="/table-to-json-converter" element={<TableToJsonConverterPage />} />
           <Route path="/stopwatch" element={<StopwatchPage />} />
           <Route path="/countdown-timer" element={<CountdownTimerPage />} />

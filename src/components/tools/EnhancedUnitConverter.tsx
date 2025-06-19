@@ -7,6 +7,19 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeftRight, Clock, HardDrive, Zap } from "lucide-react";
 
+type ConversionUnit = {
+  name: string;
+  factor: number;
+};
+
+type ConversionCategory = {
+  name: string;
+  icon: typeof ArrowLeftRight;
+  units: Record<string, ConversionUnit>;
+};
+
+type ConversionsType = Record<string, ConversionCategory>;
+
 const EnhancedUnitConverter = () => {
   const [category, setCategory] = useState('length');
   const [fromUnit, setFromUnit] = useState('');
@@ -14,7 +27,7 @@ const EnhancedUnitConverter = () => {
   const [fromValue, setFromValue] = useState('');
   const [result, setResult] = useState('');
 
-  const conversions = {
+  const conversions: ConversionsType = {
     length: {
       name: 'Length',
       icon: ArrowLeftRight,
@@ -121,9 +134,9 @@ const EnhancedUnitConverter = () => {
     if (category === 'temperature') {
       convertedValue = convertTemperature(value, fromUnit, toUnit);
     } else {
-      const categoryData = conversions[category as keyof typeof conversions];
-      const fromFactor = categoryData.units[fromUnit as keyof typeof categoryData.units].factor;
-      const toFactor = categoryData.units[toUnit as keyof typeof categoryData.units].factor;
+      const categoryData = conversions[category];
+      const fromFactor = categoryData.units[fromUnit].factor;
+      const toFactor = categoryData.units[toUnit].factor;
       
       // Convert to base unit, then to target unit
       const baseValue = value * fromFactor;
@@ -148,6 +161,8 @@ const EnhancedUnitConverter = () => {
     setFromValue(result);
     setResult(fromValue);
   };
+
+  const currentCategory = conversions[category];
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6">
@@ -183,7 +198,7 @@ const EnhancedUnitConverter = () => {
                   <SelectValue placeholder="Select unit" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(conversions[category as keyof typeof conversions].units).map(([key, unit]) => (
+                  {Object.entries(currentCategory.units).map(([key, unit]) => (
                     <SelectItem key={key} value={key}>
                       {unit.name}
                     </SelectItem>
@@ -199,7 +214,7 @@ const EnhancedUnitConverter = () => {
                   <SelectValue placeholder="Select unit" />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(conversions[category as keyof typeof conversions].units).map(([key, unit]) => (
+                  {Object.entries(currentCategory.units).map(([key, unit]) => (
                     <SelectItem key={key} value={key}>
                       {unit.name}
                     </SelectItem>
@@ -247,8 +262,8 @@ const EnhancedUnitConverter = () => {
           {fromValue && result && fromUnit && toUnit && (
             <div className="p-4 bg-muted rounded-lg">
               <p className="text-sm">
-                <strong>{fromValue}</strong> {conversions[category as keyof typeof conversions].units[fromUnit as keyof typeof conversions[typeof category]['units']].name} = 
-                <strong className="ml-1">{parseFloat(result).toLocaleString()}</strong> {conversions[category as keyof typeof conversions].units[toUnit as keyof typeof conversions[typeof category]['units']].name}
+                <strong>{fromValue}</strong> {currentCategory.units[fromUnit].name} = 
+                <strong className="ml-1">{parseFloat(result).toLocaleString()}</strong> {currentCategory.units[toUnit].name}
               </p>
             </div>
           )}
