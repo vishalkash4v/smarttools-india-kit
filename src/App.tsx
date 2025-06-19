@@ -76,6 +76,11 @@ import ImageCompressorPage from "@/pages/tools/ImageCompressorPage";
 import LogoToFaviconPage from "@/pages/tools/LogoToFaviconPage";
 import ImageUpscalerPage from "@/pages/tools/ImageUpscalerPage";
 import ImageCropperPage from './pages/tools/ImageCropperPage';
+import ImageFormatConverterPage from "@/pages/tools/ImageFormatConverterPage";
+import SvgOptimizerPage from "@/pages/tools/SvgOptimizerPage";
+import ImageMetadataViewerPage from "@/pages/tools/ImageMetadataViewerPage";
+import PdfTextExtractorPage from "@/pages/tools/PdfTextExtractorPage";
+import PlaceholderImageGeneratorPage from "@/pages/tools/PlaceholderImageGeneratorPage";
 
 // Scroll to top component
 function ScrollToTop() {
@@ -172,6 +177,11 @@ function App() {
                         <Route path="/logo-to-favicon" element={<LogoToFaviconPage />} />
                         <Route path="/image-upscaler" element={<ImageUpscalerPage />} />
                         <Route path="/image-cropper" element={<ImageCropperPage />} />
+                        <Route path="/image-format-converter" element={<ImageFormatConverterPage />} />
+                        <Route path="/svg-optimizer" element={<SvgOptimizerPage />} />
+                        <Route path="/image-metadata-viewer" element={<ImageMetadataViewerPage />} />
+                        <Route path="/pdf-text-extractor" element={<PdfTextExtractorPage />} />
+                        <Route path="/placeholder-image-generator" element={<PlaceholderImageGeneratorPage />} />
                       </Routes>
                     </Suspense>
                   </main>

@@ -1,4 +1,3 @@
-
 import {
   LayoutDashboard,
   Settings,
@@ -31,6 +30,14 @@ import {
   Keyboard,
   Trophy,
   Gamepad2,
+  Image as ImageIcon,
+  Zap,
+  Star,
+  Crop,
+  RotateCcw,
+  Camera,
+  FileArchive,
+  FileImage,
 } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -135,6 +142,20 @@ export function AppSidebar() {
       title: "Network Tools",
       items: [
         { title: "What's My IP", url: "/ip-lookup", icon: Globe },
+      ]
+    },
+    {
+      title: "Image & File Tools",
+      items: [
+        { title: "Image Compressor", url: "/image-compressor", icon: ImageIcon },
+        { title: "Logo to Favicon", url: "/logo-to-favicon", icon: Star },
+        { title: "Image Upscaler", url: "/image-upscaler", icon: Zap },
+        { title: "Image Cropper", url: "/image-cropper", icon: Crop },
+        { title: "Image Format Converter", url: "/image-format-converter", icon: RotateCcw },
+        { title: "SVG Optimizer", url: "/svg-optimizer", icon: FileCode2 },
+        { title: "Image Metadata Viewer", url: "/image-metadata-viewer", icon: Camera },
+        { title: "PDF Text Extractor", url: "/pdf-text-extractor", icon: FileArchive },
+        { title: "Placeholder Generator", url: "/placeholder-image-generator", icon: FileImage },
       ]
     },
   ];

@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone, Keyboard, Trophy, Gamepad2, Users, Image as ImageIcon, Zap, Star, Crop } from "lucide-react";
+import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone, Keyboard, Trophy, Gamepad2, Users, Image as ImageIcon, Zap, Star, Crop, RotateCcw, Camera, FileImage, FileArchive } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -153,6 +153,46 @@ const ToolsPage = () => {
       description: 'Crop and resize images for social media platforms. Perfect dimensions for Instagram, Facebook, Twitter, LinkedIn posts and stories.',
       path: '/image-cropper',
       icon: Crop
+    },
+    { 
+      id: 'image-format-converter', 
+      name: 'Image Format Converter', 
+      category: 'Image Tools', 
+      description: 'Convert images between JPG, PNG, WebP formats with quality control. Fast and secure online image converter.',
+      path: '/image-format-converter',
+      icon: RotateCcw
+    },
+    { 
+      id: 'svg-optimizer', 
+      name: 'SVG Optimizer', 
+      category: 'Image Tools', 
+      description: 'Optimize SVG files by removing unused attributes, comments, and metadata. Reduce file size while maintaining quality.',
+      path: '/svg-optimizer',
+      icon: FileCode
+    },
+    { 
+      id: 'image-metadata-viewer', 
+      name: 'Image Metadata Viewer', 
+      category: 'Image Tools', 
+      description: 'View and extract EXIF data and metadata from images. See camera settings, GPS location, and technical details.',
+      path: '/image-metadata-viewer',
+      icon: Camera
+    },
+    { 
+      id: 'pdf-text-extractor', 
+      name: 'PDF Text Extractor', 
+      category: 'Image Tools', 
+      description: 'Extract text content from PDF files. Convert PDF documents to plain text format for easy editing and copying.',
+      path: '/pdf-text-extractor',
+      icon: FileArchive
+    },
+    { 
+      id: 'placeholder-image-generator', 
+      name: 'Placeholder Image Generator', 
+      category: 'Image Tools', 
+      description: 'Generate custom placeholder images with specified dimensions, colors, and text. Perfect for web design mockups.',
+      path: '/placeholder-image-generator',
+      icon: FileImage
     },
 
     // Typing Tools
