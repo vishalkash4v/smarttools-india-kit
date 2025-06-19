@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'sonner';
 
 import LandingPage from '@/pages/LandingPage';
@@ -75,82 +76,84 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <Toaster />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/tools" element={<ToolsPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+    <HelmetProvider>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <Toaster />
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/tools" element={<ToolsPage />} />
+            <Route path="*" element={<NotFoundPage />} />
 
-          {/* Tool Routes */}
-          <Route path="/word-counter" element={<WordCounterPage />} />
-          <Route path="/text-case-converter" element={<TextCaseConverterPage />} />
-          <Route path="/image-compressor" element={<ImageCompressorPage />} />
-          <Route path="/url-shortener" element={<UrlShortenerPage />} />
-          <Route path="/base64-converter" element={<Base64ConverterPage />} />
-          <Route path="/lorem-ipsum-generator" element={<LoremIpsumGeneratorPage />} />
-          <Route path="/qr-code-generator" element={<QrCodeGeneratorPage />} />
-          <Route path="/password-generator" element={<PasswordGeneratorPage />} />
-          <Route path="/json-formatter" element={<JsonFormatterPage />} />
-          <Route path="/color-picker-tool" element={<ColorPickerToolPage />} />
-          <Route path="/whitespace-remover" element={<WhitespaceRemoverPage />} />
-          <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
-          <Route path="/text-reverser" element={<TextReverserPage />} />
-          <Route path="/logo-to-favicon" element={<LogoToFaviconPage />} />
-          <Route path="/image-upscaler" element={<ImageUpscalerPage />} />
-          <Route path="/image-cropper" element={<ImageCropperPage />} />
-          <Route path="/regex-tester" element={<RegexTesterPage />} />
-          <Route path="/text-font-changer" element={<TextFontChangerPage />} />
-          <Route path="/ai-text-rewriter" element={<AiTextRewriterPage />} />
-          <Route path="/image-format-converter" element={<ImageFormatConverterPage />} />
-          <Route path="/svg-optimizer" element={<SvgOptimizerPage />} />
-          <Route path="/image-metadata-viewer" element={<ImageMetadataViewerPage />} />
-          <Route path="/pdf-text-extractor" element={<PdfTextExtractorPage />} />
-          <Route path="/placeholder-image-generator" element={<PlaceholderImageGeneratorPage />} />
-          <Route path="/typing-tutor" element={<TypingTutorPage />} />
-          <Route path="/typing-test" element={<TypingTestPage />} />
-          <Route path="/typing-games" element={<TypingGamesPage />} />
-          <Route path="/typing-competition" element={<TypingCompetitionPage />} />
-          <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
-          <Route path="/age-calculator" element={<AgeCalculatorPage />} />
-          <Route path="/date-difference-calculator" element={<DateDifferenceCalculatorPage />} />
-          <Route path="/bmi-calculator" element={<BmiCalculatorPage />} />
-          <Route path="/percentage-calculator" element={<PercentageCalculatorPage />} />
-          <Route path="/currency-converter" element={<CurrencyConverterPage />} />
-          <Route path="/gst-calculator" element={<GstCalculatorPage />} />
-          <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
-          <Route path="/sip-calculator" element={<SipCalculatorPage />} />
-          <Route path="/ppf-calculator" element={<PpfCalculatorPage />} />
-          <Route path="/fd-calculator" element={<FdCalculatorPage />} />
-          <Route path="/income-tax-calculator" element={<IncomeTaxCalculatorPage />} />
-          <Route path="/temperature-converter" element={<TemperatureConverterPage />} />
-          <Route path="/unit-converter" element={<UnitConverterPage />} />
-          <Route path="/live-preview" element={<LivePreviewPage />} />
-          <Route path="/javascript-minifier" element={<JavaScriptMinifierPage />} />
-          <Route path="/table-to-json-converter" element={<TableToJsonConverterPage />} />
-          <Route path="/stopwatch" element={<StopwatchPage />} />
-          <Route path="/countdown-timer" element={<CountdownTimerPage />} />
-          <Route path="/list-randomizer" element={<ListRandomizerPage />} />
-          <Route path="/barcode-generator" element={<BarcodeGeneratorPage />} />
-          <Route path="/url-slug-generator" element={<UrlSlugGeneratorPage />} />
-          <Route path="/text-to-handwriting" element={<TextToHandwritingPage />} />
-          <Route path="/notes" element={<NotesPage />} />
-          <Route path="/url-wrapper" element={<UrlWrapperPage />} />
-          <Route path="/ip-lookup" element={<IpLookupPage />} />
-          <Route path="/todo-list" element={<TodoListPage />} />
-          
-          {/* New Developer Tools Routes */}
-          <Route path="/hash-generator" element={<HashGeneratorPage />} />
-          <Route path="/jwt-decoder" element={<JwtDecoderPage />} />
-          <Route path="/meta-tag-previewer" element={<MetaTagPreviewerPage />} />
-          <Route path="/enhanced-unit-converter" element={<EnhancedUnitConverterPage />} />
-          
-        </Routes>
-      </QueryClientProvider>
-    </BrowserRouter>
+            {/* Tool Routes */}
+            <Route path="/word-counter" element={<WordCounterPage />} />
+            <Route path="/text-case-converter" element={<TextCaseConverterPage />} />
+            <Route path="/image-compressor" element={<ImageCompressorPage />} />
+            <Route path="/url-shortener" element={<UrlShortenerPage />} />
+            <Route path="/base64-converter" element={<Base64ConverterPage />} />
+            <Route path="/lorem-ipsum-generator" element={<LoremIpsumGeneratorPage />} />
+            <Route path="/qr-code-generator" element={<QrCodeGeneratorPage />} />
+            <Route path="/password-generator" element={<PasswordGeneratorPage />} />
+            <Route path="/json-formatter" element={<JsonFormatterPage />} />
+            <Route path="/color-picker-tool" element={<ColorPickerToolPage />} />
+            <Route path="/whitespace-remover" element={<WhitespaceRemoverPage />} />
+            <Route path="/duplicate-line-remover" element={<DuplicateLineRemoverPage />} />
+            <Route path="/text-reverser" element={<TextReverserPage />} />
+            <Route path="/logo-to-favicon" element={<LogoToFaviconPage />} />
+            <Route path="/image-upscaler" element={<ImageUpscalerPage />} />
+            <Route path="/image-cropper" element={<ImageCropperPage />} />
+            <Route path="/regex-tester" element={<RegexTesterPage />} />
+            <Route path="/text-font-changer" element={<TextFontChangerPage />} />
+            <Route path="/ai-text-rewriter" element={<AiTextRewriterPage />} />
+            <Route path="/image-format-converter" element={<ImageFormatConverterPage />} />
+            <Route path="/svg-optimizer" element={<SvgOptimizerPage />} />
+            <Route path="/image-metadata-viewer" element={<ImageMetadataViewerPage />} />
+            <Route path="/pdf-text-extractor" element={<PdfTextExtractorPage />} />
+            <Route path="/placeholder-image-generator" element={<PlaceholderImageGeneratorPage />} />
+            <Route path="/typing-tutor" element={<TypingTutorPage />} />
+            <Route path="/typing-test" element={<TypingTestPage />} />
+            <Route path="/typing-games" element={<TypingGamesPage />} />
+            <Route path="/typing-competition" element={<TypingCompetitionPage />} />
+            <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
+            <Route path="/age-calculator" element={<AgeCalculatorPage />} />
+            <Route path="/date-difference-calculator" element={<DateDifferenceCalculatorPage />} />
+            <Route path="/bmi-calculator" element={<BmiCalculatorPage />} />
+            <Route path="/percentage-calculator" element={<PercentageCalculatorPage />} />
+            <Route path="/currency-converter" element={<CurrencyConverterPage />} />
+            <Route path="/gst-calculator" element={<GstCalculatorPage />} />
+            <Route path="/emi-calculator" element={<EmiCalculatorPage />} />
+            <Route path="/sip-calculator" element={<SipCalculatorPage />} />
+            <Route path="/ppf-calculator" element={<PpfCalculatorPage />} />
+            <Route path="/fd-calculator" element={<FdCalculatorPage />} />
+            <Route path="/income-tax-calculator" element={<IncomeTaxCalculatorPage />} />
+            <Route path="/temperature-converter" element={<TemperatureConverterPage />} />
+            <Route path="/unit-converter" element={<UnitConverterPage />} />
+            <Route path="/live-preview" element={<LivePreviewPage />} />
+            <Route path="/javascript-minifier" element={<JavaScriptMinifierPage />} />
+            <Route path="/table-to-json-converter" element={<TableToJsonConverterPage />} />
+            <Route path="/stopwatch" element={<StopwatchPage />} />
+            <Route path="/countdown-timer" element={<CountdownTimerPage />} />
+            <Route path="/list-randomizer" element={<ListRandomizerPage />} />
+            <Route path="/barcode-generator" element={<BarcodeGeneratorPage />} />
+            <Route path="/url-slug-generator" element={<UrlSlugGeneratorPage />} />
+            <Route path="/text-to-handwriting" element={<TextToHandwritingPage />} />
+            <Route path="/notes" element={<NotesPage />} />
+            <Route path="/url-wrapper" element={<UrlWrapperPage />} />
+            <Route path="/ip-lookup" element={<IpLookupPage />} />
+            <Route path="/todo-list" element={<TodoListPage />} />
+            
+            {/* New Developer Tools Routes */}
+            <Route path="/hash-generator" element={<HashGeneratorPage />} />
+            <Route path="/jwt-decoder" element={<JwtDecoderPage />} />
+            <Route path="/meta-tag-previewer" element={<MetaTagPreviewerPage />} />
+            <Route path="/enhanced-unit-converter" element={<EnhancedUnitConverterPage />} />
+            
+          </Routes>
+        </QueryClientProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
 
