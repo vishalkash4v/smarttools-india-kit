@@ -5,28 +5,82 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Download, Link, Video, Image, Music, AlertCircle } from 'lucide-react';
+import { Download, Link, Video, Image, Music, AlertCircle, ExternalLink, Info } from 'lucide-react';
 
 const SocialMediaDownloader = () => {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
-  const [downloadData, setDownloadData] = useState(null);
+  const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState('reels');
 
-  const handleDownload = async (type) => {
-    if (!url.trim()) return;
+  const validateSocialMediaUrl = (url: string, type: string) => {
+    const patterns = {
+      instagram: /^(https?:\/\/)?(www\.)?(instagram\.com|instagr\.am)\/(p|reel|stories)\/[A-Za-z0-9_-]+/,
+      facebook: /^(https?:\/\/)?(www\.)?(facebook\.com|fb\.com)\/(watch|reel|stories|photo)/,
+      general: /^(https?:\/\/)?(www\.)?(instagram\.com|instagr\.am|facebook\.com|fb\.com)/
+    };
     
+    return patterns.general.test(url);
+  };
+
+  const handleAnalyze = async (type: string) => {
+    if (!url.trim()) {
+      setError('Please enter a valid social media URL');
+      return;
+    }
+    
+    if (!validateSocialMediaUrl(url, type)) {
+      setError('Please enter a valid Instagram or Facebook URL');
+      return;
+    }
+
+    setError('');
     setLoading(true);
-    // Simulate processing
+    
+    // Simulate processing - in reality, this would require backend services
     setTimeout(() => {
-      setDownloadData({
-        title: 'Sample Content',
-        thumbnail: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=300&fit=crop',
-        duration: '0:30',
-        quality: ['HD 1080p', '720p', '480p'],
-        type: type
-      });
       setLoading(false);
-    }, 3000);
+    }, 1000);
+  };
+
+  const renderContentInfo = () => {
+    if (!url || !validateSocialMediaUrl(url, activeTab) || loading) return null;
+
+    return (
+      <Card className="mt-4">
+        <CardContent className="p-6">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Info className="h-5 w-5 text-blue-500" />
+              <h4 className="font-semibold">Content Information</h4>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">URL:</p>
+                <p className="text-sm break-all">{url}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Platform:</p>
+                <p className="text-sm">
+                  {url.includes('instagram') ? 'Instagram' : 'Facebook'}
+                </p>
+              </div>
+            </div>
+
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => window.open(url, '_blank')}
+              className="flex items-center gap-2"
+            >
+              <ExternalLink className="h-4 w-4" />
+              Open Original Post
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
   };
 
   return (
@@ -35,21 +89,21 @@ const SocialMediaDownloader = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Download className="h-6 w-6" />
-            Social Media Content Downloader
+            Social Media Content Information
           </CardTitle>
           <CardDescription>
-            Download videos, reels, posts, and stories from Instagram and Facebook
+            Get information about Instagram and Facebook content
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Alert className="mb-4">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              This tool is for educational purposes. Respect copyright and privacy laws. Only download content you have permission to use.
+              <strong>Important:</strong> This tool provides information about social media content. Downloading content may require permission from the original creator and compliance with platform terms of service.
             </AlertDescription>
           </Alert>
           
-          <Tabs defaultValue="reels" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="reels">Reels</TabsTrigger>
               <TabsTrigger value="posts">Posts</TabsTrigger>
@@ -63,39 +117,31 @@ const SocialMediaDownloader = () => {
                   <Input
                     placeholder="Paste Instagram/Facebook Reel URL here..."
                     value={url}
-                    onChange={(e) => setUrl(e.target.value)}
+                    onChange={(e) => {
+                      setUrl(e.target.value);
+                      setError('');
+                    }}
                   />
-                  <Button onClick={() => handleDownload('reel')} disabled={loading}>
+                  <Button onClick={() => handleAnalyze('reel')} disabled={loading}>
                     <Video className="h-4 w-4 mr-2" />
-                    {loading ? 'Processing...' : 'Download'}
+                    {loading ? 'Analyzing...' : 'Analyze'}
                   </Button>
                 </div>
                 
-                {downloadData && downloadData.type === 'reel' && (
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="flex gap-4">
-                        <img 
-                          src={downloadData.thumbnail} 
-                          alt="Thumbnail" 
-                          className="w-32 h-24 object-cover rounded"
-                        />
-                        <div className="flex-1">
-                          <h4 className="font-semibold mb-2">{downloadData.title}</h4>
-                          <p className="text-sm text-muted-foreground mb-3">Duration: {downloadData.duration}</p>
-                          <div className="space-y-2">
-                            {downloadData.quality.map((q, i) => (
-                              <Button key={i} variant="outline" size="sm" className="mr-2">
-                                <Download className="h-4 w-4 mr-2" />
-                                {q}
-                              </Button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
                 )}
+                
+                {renderContentInfo()}
+                
+                <Alert>
+                  <AlertDescription>
+                    <strong>For Reels:</strong> Most social media platforms have built-in sharing options. Look for the share button and "Copy Link" option to share content legally.
+                  </AlertDescription>
+                </Alert>
               </div>
             </TabsContent>
             
@@ -105,17 +151,29 @@ const SocialMediaDownloader = () => {
                   <Input
                     placeholder="Paste Instagram/Facebook Post URL here..."
                     value={url}
-                    onChange={(e) => setUrl(e.target.value)}
+                    onChange={(e) => {
+                      setUrl(e.target.value);
+                      setError('');
+                    }}
                   />
-                  <Button onClick={() => handleDownload('post')} disabled={loading}>
+                  <Button onClick={() => handleAnalyze('post')} disabled={loading}>
                     <Image className="h-4 w-4 mr-2" />
-                    {loading ? 'Processing...' : 'Download'}
+                    {loading ? 'Analyzing...' : 'Analyze'}
                   </Button>
                 </div>
                 
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                
+                {renderContentInfo()}
+                
                 <Alert>
                   <AlertDescription>
-                    Supports single images, carousels, and video posts from public accounts.
+                    <strong>For Posts:</strong> Screenshots are often the most appropriate way to save posts for personal reference. Always respect creator rights and privacy settings.
                   </AlertDescription>
                 </Alert>
               </div>
@@ -127,17 +185,29 @@ const SocialMediaDownloader = () => {
                   <Input
                     placeholder="Paste Instagram/Facebook Story URL here..."
                     value={url}
-                    onChange={(e) => setUrl(e.target.value)}
+                    onChange={(e) => {
+                      setUrl(e.target.value);
+                      setError('');
+                    }}
                   />
-                  <Button onClick={() => handleDownload('story')} disabled={loading}>
+                  <Button onClick={() => handleAnalyze('story')} disabled={loading}>
                     <Video className="h-4 w-4 mr-2" />
-                    {loading ? 'Processing...' : 'Download'}
+                    {loading ? 'Analyzing...' : 'Analyze'}
                   </Button>
                 </div>
                 
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                
+                {renderContentInfo()}
+                
                 <Alert>
                   <AlertDescription>
-                    Stories are only available for 24 hours and must be from public accounts.
+                    <strong>For Stories:</strong> Stories are temporary content (24 hours). Most platforms provide built-in options to save your own stories or share others' stories through official channels.
                   </AlertDescription>
                 </Alert>
               </div>
@@ -149,17 +219,29 @@ const SocialMediaDownloader = () => {
                   <Input
                     placeholder="Paste Instagram Highlights URL here..."
                     value={url}
-                    onChange={(e) => setUrl(e.target.value)}
+                    onChange={(e) => {
+                      setUrl(e.target.value);
+                      setError('');
+                    }}
                   />
-                  <Button onClick={() => handleDownload('highlight')} disabled={loading}>
+                  <Button onClick={() => handleAnalyze('highlight')} disabled={loading}>
                     <Download className="h-4 w-4 mr-2" />
-                    {loading ? 'Processing...' : 'Download'}
+                    {loading ? 'Analyzing..' : 'Analyze'}
                   </Button>
                 </div>
                 
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                
+                {renderContentInfo()}
+                
                 <Alert>
                   <AlertDescription>
-                    Download entire highlight collections or individual stories from highlights.
+                    <strong>For Highlights:</strong> Highlights are curated collections of stories. Use platform-provided sharing options or screenshots for personal reference.
                   </AlertDescription>
                 </Alert>
               </div>

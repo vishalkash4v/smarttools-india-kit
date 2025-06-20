@@ -6,36 +6,90 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Search, User, Calendar, Eye, Heart, MessageCircle, Share, ExternalLink } from 'lucide-react';
+import { Search, User, Calendar, Eye, Heart, MessageCircle, Share, ExternalLink, AlertCircle, Info } from 'lucide-react';
 
 const SocialMediaDbViewer = () => {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState('');
+  const [platform, setPlatform] = useState('instagram');
+
+  const validateUsername = (username: string) => {
+    const usernameRegex = /^[a-zA-Z0-9._]+$/;
+    return username.length > 0 && username.length <= 30 && usernameRegex.test(username);
+  };
 
   const handleSearch = async () => {
-    if (!username.trim()) return;
+    if (!username.trim()) {
+      setError('Please enter a username');
+      return;
+    }
     
+    if (!validateUsername(username)) {
+      setError('Please enter a valid username (letters, numbers, dots, and underscores only)');
+      return;
+    }
+
+    setError('');
     setLoading(true);
-    // Simulate API call
+    
     setTimeout(() => {
-      setUserData({
-        username: username,
-        fullName: 'Sample User',
-        followers: '1.2M',
-        following: '543',
-        posts: '127',
-        verified: true,
-        bio: 'Digital creator • Photography enthusiast',
-        profilePic: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop',
-        recentPosts: [
-          { id: 1, image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop', likes: '2.1K', comments: '45' },
-          { id: 2, image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=300&fit=crop', likes: '1.8K', comments: '32' },
-          { id: 3, image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&h=300&fit=crop', likes: '3.2K', comments: '78' }
-        ]
-      });
       setLoading(false);
-    }, 2000);
+    }, 1000);
+  };
+
+  const getProfileUrl = (platform: string, username: string) => {
+    const urls = {
+      instagram: `https://instagram.com/${username}`,
+      facebook: `https://facebook.com/${username}`
+    };
+    return urls[platform as keyof typeof urls];
+  };
+
+  const renderProfileInfo = () => {
+    if (!username || !validateUsername(username) || loading) return null;
+
+    return (
+      <Card className="mt-4">
+        <CardContent className="p-6">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Info className="h-5 w-5 text-blue-500" />
+              <h4 className="font-semibold">Profile Information</h4>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Username:</p>
+                <p className="text-sm font-medium">@{username}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">Platform:</p>
+                <p className="text-sm capitalize">{platform}</p>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => window.open(getProfileUrl(platform, username), '_blank')}
+                className="flex items-center gap-2"
+              >
+                <ExternalLink className="h-4 w-4" />
+                View Profile
+              </Button>
+            </div>
+
+            <Alert>
+              <AlertDescription>
+                <strong>Privacy Note:</strong> Only publicly available information can be viewed. Private accounts and personal data are protected by platform privacy settings.
+              </AlertDescription>
+            </Alert>
+          </div>
+        </CardContent>
+      </Card>
+    );
   };
 
   return (
@@ -44,20 +98,21 @@ const SocialMediaDbViewer = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Search className="h-6 w-6" />
-            Social Media Database Viewer
+            Social Media Profile Lookup
           </CardTitle>
           <CardDescription>
-            View public profile information from Instagram and Facebook accounts
+            Look up public profile information from social media platforms
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Alert>
+            <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              This tool only displays publicly available information. Private accounts and content are not accessible.
+              <strong>Privacy Respect:</strong> This tool only provides links to publicly available profiles. It respects privacy settings and does not access private or restricted content.
             </AlertDescription>
           </Alert>
           
-          <Tabs defaultValue="instagram" className="w-full">
+          <Tabs value={platform} onValueChange={setPlatform} className="w-full">
             <TabsList>
               <TabsTrigger value="instagram">Instagram</TabsTrigger>
               <TabsTrigger value="facebook">Facebook</TabsTrigger>
@@ -68,7 +123,10 @@ const SocialMediaDbViewer = () => {
                 <Input
                   placeholder="Enter Instagram username (without @)"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => {
+                    setUsername(e.target.value.replace('@', ''));
+                    setError('');
+                  }}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                 />
                 <Button onClick={handleSearch} disabled={loading}>
@@ -76,67 +134,31 @@ const SocialMediaDbViewer = () => {
                 </Button>
               </div>
               
-              {userData && (
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4 mb-6">
-                      <img 
-                        src={userData.profilePic} 
-                        alt="Profile" 
-                        className="w-20 h-20 rounded-full object-cover"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="text-xl font-bold">{userData.fullName}</h3>
-                          {userData.verified && <Badge variant="secondary">Verified</Badge>}
-                        </div>
-                        <p className="text-muted-foreground mb-3">@{userData.username}</p>
-                        <p className="text-sm mb-4">{userData.bio}</p>
-                        <div className="flex gap-6 text-sm">
-                          <span><strong>{userData.posts}</strong> posts</span>
-                          <span><strong>{userData.followers}</strong> followers</span>
-                          <span><strong>{userData.following}</strong> following</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-semibold mb-3">Recent Posts</h4>
-                      <div className="grid grid-cols-3 gap-4">
-                        {userData.recentPosts.map((post) => (
-                          <div key={post.id} className="relative group">
-                            <img 
-                              src={post.image} 
-                              alt="Post" 
-                              className="w-full aspect-square object-cover rounded-lg"
-                            />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                              <div className="flex items-center gap-4 text-white text-sm">
-                                <span className="flex items-center gap-1">
-                                  <Heart className="h-4 w-4" />
-                                  {post.likes}
-                                </span>
-                                <span className="flex items-center gap-1">
-                                  <MessageCircle className="h-4 w-4" />
-                                  {post.comments}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+              {error && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
               )}
+              
+              {renderProfileInfo()}
+              
+              <Alert>
+                <AlertDescription>
+                  <strong>Instagram Profiles:</strong> You can view public Instagram profiles directly on Instagram. Private profiles require following approval from the account owner.
+                </AlertDescription>
+              </Alert>
             </TabsContent>
             
             <TabsContent value="facebook" className="space-y-4">
               <div className="flex gap-2">
                 <Input
-                  placeholder="Enter Facebook username or profile ID"
+                  placeholder="Enter Facebook username or profile name"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                    setError('');
+                  }}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                 />
                 <Button onClick={handleSearch} disabled={loading}>
@@ -144,9 +166,18 @@ const SocialMediaDbViewer = () => {
                 </Button>
               </div>
               
+              {error && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+              
+              {renderProfileInfo()}
+              
               <Alert>
                 <AlertDescription>
-                  Facebook profiles have stricter privacy settings. Only basic public information may be available.
+                  <strong>Facebook Profiles:</strong> Facebook has strict privacy controls. Most profile information is only visible to friends or connections. Public pages and profiles with public settings can be viewed by anyone.
                 </AlertDescription>
               </Alert>
             </TabsContent>
