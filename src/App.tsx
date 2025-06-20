@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -72,6 +71,10 @@ import HashGeneratorPage from '@/pages/tools/HashGeneratorPage';
 import JwtDecoderPage from '@/pages/tools/JwtDecoderPage';
 import MetaTagPreviewerPage from '@/pages/tools/MetaTagPreviewerPage';
 import EnhancedUnitConverterPage from '@/pages/tools/EnhancedUnitConverterPage';
+
+import SocialMediaDbViewerPage from '@/pages/tools/SocialMediaDbViewerPage';
+import SocialMediaDownloaderPage from '@/pages/tools/SocialMediaDownloaderPage';
+import YoutubeDownloaderPage from '@/pages/tools/YoutubeDownloaderPage';
 
 const queryClient = new QueryClient();
 
@@ -151,6 +154,11 @@ function App() {
               <Route path="/jwt-decoder" element={<JwtDecoderPage />} />
               <Route path="/meta-tag-previewer" element={<MetaTagPreviewerPage />} />
               <Route path="/enhanced-unit-converter" element={<EnhancedUnitConverterPage />} />
+              
+              {/* New Video Tools Routes */}
+              <Route path="/social-media-db-viewer" element={<SocialMediaDbViewerPage />} />
+              <Route path="/social-media-downloader" element={<SocialMediaDownloaderPage />} />
+              <Route path="/youtube-downloader" element={<YoutubeDownloaderPage />} />
               
             </Routes>
           </MainLayout>

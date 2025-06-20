@@ -38,6 +38,8 @@ import {
   Camera,
   FileArchive,
   FileImage,
+  Download,
+  Video,
 } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -156,6 +158,14 @@ export function AppSidebar() {
         { title: "Image Metadata Viewer", url: "/image-metadata-viewer", icon: Camera },
         { title: "PDF Text Extractor", url: "/pdf-text-extractor", icon: FileArchive },
         { title: "Placeholder Generator", url: "/placeholder-image-generator", icon: FileImage },
+      ]
+    },
+    {
+      title: "Video & Social Media Tools",
+      items: [
+        { title: "Social Media DB Viewer", url: "/social-media-db-viewer", icon: Globe },
+        { title: "Instagram & Facebook Downloader", url: "/social-media-downloader", icon: Download },
+        { title: "YouTube Downloader", url: "/youtube-downloader", icon: Video },
       ]
     },
   ];

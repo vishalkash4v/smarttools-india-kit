@@ -3,7 +3,7 @@ import PageWrapper from '@/components/layout/PageWrapper';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone, Keyboard, Trophy, Gamepad2, Users, Image as ImageIcon, Zap, Star, Crop, RotateCcw, Camera, FileImage, FileArchive } from "lucide-react";
+import { FileText, Calculator, QrCode, TextCursor, Key, Code, Eraser, CopyCheck, ArrowLeftRight, Search, Palette, ListChecks, Clock, Timer, User, CalendarDays, Weight, Percent, DollarSign, Eye, FileCode, Table, PackagePlus, Globe, TrendingUp, List, Barcode, PenTool, StickyNote, Share2, Link2, Hash, Calendar as CalendarSchedule, Type, Smartphone, Keyboard, Trophy, Gamepad2, Users, Image as ImageIcon, Zap, Star, Crop, RotateCcw, Camera, FileImage, FileArchive, Download, Video } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -471,6 +471,31 @@ const ToolsPage = () => {
       path: '/ip-lookup',
       icon: Globe 
     },
+    // Video & Social Media Tools
+    { 
+      id: 'social-media-db-viewer', 
+      name: 'Social Media DB Viewer', 
+      category: 'Video & Social Media Tools', 
+      description: 'View public profile information from Instagram and Facebook accounts.',
+      path: '/social-media-db-viewer',
+      icon: Globe
+    },
+    { 
+      id: 'social-media-downloader', 
+      name: 'Instagram & Facebook Downloader', 
+      category: 'Video & Social Media Tools', 
+      description: 'Download reels, posts, stories, and highlights from Instagram and Facebook.',
+      path: '/social-media-downloader',
+      icon: Download
+    },
+    { 
+      id: 'youtube-downloader', 
+      name: 'YouTube Video & MP3 Downloader', 
+      category: 'Video & Social Media Tools', 
+      description: 'Download YouTube videos in various qualities or extract audio as MP3.',
+      path: '/youtube-downloader',
+      icon: Video
+    },
   ];
 
   const getIconColor = (category: string) => {
@@ -493,6 +518,8 @@ const ToolsPage = () => {
         return 'text-yellow-500';
       case 'Network Tools':
         return 'text-cyan-500';
+      case 'Video & Social Media Tools':
+        return 'text-rose-500';
       default:
         return 'text-gray-500';
     }
@@ -518,6 +545,8 @@ const ToolsPage = () => {
         return 'bg-yellow-100 dark:bg-yellow-900/20';
       case 'Network Tools':
         return 'bg-cyan-100 dark:bg-cyan-900/20';
+      case 'Video & Social Media Tools':
+        return 'bg-rose-100 dark:bg-rose-900/20';
       default:
         return 'bg-gray-100 dark:bg-gray-900/20';
     }
