@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -73,6 +72,14 @@ const UsernameGenerator = () => {
     toast.success('Username copied to clipboard!');
   };
 
+  const handleNumbersChange = (checked: boolean | "indeterminate") => {
+    setIncludeNumbers(checked === true);
+  };
+
+  const handleSymbolsChange = (checked: boolean | "indeterminate") => {
+    setIncludeSymbols(checked === true);
+  };
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <Card>
@@ -124,7 +131,7 @@ const UsernameGenerator = () => {
                 <Checkbox
                   id="numbers"
                   checked={includeNumbers}
-                  onCheckedChange={setIncludeNumbers}
+                  onCheckedChange={handleNumbersChange}
                 />
                 <label htmlFor="numbers" className="text-sm">Include Numbers</label>
               </div>
@@ -132,7 +139,7 @@ const UsernameGenerator = () => {
                 <Checkbox
                   id="symbols"
                   checked={includeSymbols}
-                  onCheckedChange={setIncludeSymbols}
+                  onCheckedChange={handleSymbolsChange}
                 />
                 <label htmlFor="symbols" className="text-sm">Include Symbols (_ - .)</label>
               </div>
