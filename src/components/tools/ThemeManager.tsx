@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Palette, Settings, Check, Sparkles } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface Theme {
   id: string;
@@ -30,9 +30,9 @@ interface Tool {
 
 const themes: Theme[] = [
   {
-    id: 'default',
-    name: 'Default Blue',
-    description: 'Clean and professional blue theme',
+    id: 'light',
+    name: 'Default Light',
+    description: 'Clean and professional light theme',
     colors: {
       primary: '#3B82F6',
       background: '#FFFFFF',
@@ -53,84 +53,6 @@ const themes: Theme[] = [
       '--border': '214.3 31.8% 91.4%',
       '--input': '214.3 31.8% 91.4%',
       '--ring': '217.2 91.2% 59.8%'
-    }
-  },
-  {
-    id: 'emerald',
-    name: 'Emerald Green',
-    description: 'Fresh and vibrant green theme',
-    colors: {
-      primary: '#10B981',
-      background: '#FFFFFF',
-      accent: '#F0FDF4'
-    },
-    cssVars: {
-      '--primary': '160 84% 39%',
-      '--background': '0 0% 100%',
-      '--foreground': '222.2 84% 4.9%',
-      '--card': '0 0% 100%',
-      '--card-foreground': '222.2 84% 4.9%',
-      '--secondary': '138 76% 97%',
-      '--secondary-foreground': '222.2 47.4% 11.2%',
-      '--muted': '138 76% 97%',
-      '--muted-foreground': '215.4 16.3% 46.9%',
-      '--accent': '138 76% 97%',
-      '--accent-foreground': '222.2 47.4% 11.2%',
-      '--border': '138 76% 90%',
-      '--input': '138 76% 90%',
-      '--ring': '160 84% 39%'
-    }
-  },
-  {
-    id: 'purple',
-    name: 'Royal Purple',
-    description: 'Elegant and sophisticated purple theme',
-    colors: {
-      primary: '#8B5CF6',
-      background: '#FFFFFF',
-      accent: '#FAF5FF'
-    },
-    cssVars: {
-      '--primary': '262 83% 65%',
-      '--background': '0 0% 100%',
-      '--foreground': '222.2 84% 4.9%',
-      '--card': '0 0% 100%',
-      '--card-foreground': '222.2 84% 4.9%',
-      '--secondary': '270 100% 98%',
-      '--secondary-foreground': '222.2 47.4% 11.2%',
-      '--muted': '270 100% 98%',
-      '--muted-foreground': '215.4 16.3% 46.9%',
-      '--accent': '270 100% 98%',
-      '--accent-foreground': '222.2 47.4% 11.2%',
-      '--border': '270 100% 92%',
-      '--input': '270 100% 92%',
-      '--ring': '262 83% 65%'
-    }
-  },
-  {
-    id: 'orange',
-    name: 'Sunset Orange',
-    description: 'Warm and energetic orange theme',
-    colors: {
-      primary: '#F97316',
-      background: '#FFFFFF',
-      accent: '#FFF7ED'
-    },
-    cssVars: {
-      '--primary': '24 95% 53%',
-      '--background': '0 0% 100%',
-      '--foreground': '222.2 84% 4.9%',
-      '--card': '0 0% 100%',
-      '--card-foreground': '222.2 84% 4.9%',
-      '--secondary': '33 100% 96%',
-      '--secondary-foreground': '222.2 47.4% 11.2%',
-      '--muted': '33 100% 96%',
-      '--muted-foreground': '215.4 16.3% 46.9%',
-      '--accent': '33 100% 96%',
-      '--accent-foreground': '222.2 47.4% 11.2%',
-      '--border': '33 100% 90%',
-      '--input': '33 100% 90%',
-      '--ring': '24 95% 53%'
     }
   },
   {
@@ -157,6 +79,32 @@ const themes: Theme[] = [
       '--border': '217.2 32.6% 17.5%',
       '--input': '217.2 32.6% 17.5%',
       '--ring': '217.2 91.2% 59.8%'
+    }
+  },
+  {
+    id: 'metallic',
+    name: 'Metallic Blue',
+    description: 'Professional metallic blue theme',
+    colors: {
+      primary: '#3D52A0',
+      background: '#E6F0FF',
+      accent: '#B3D9FF'
+    },
+    cssVars: {
+      '--primary': '210 70% 50%',
+      '--background': '210 40% 95%',
+      '--foreground': '210 20% 10%',
+      '--card': '210 40% 98%',
+      '--card-foreground': '210 20% 10%',
+      '--secondary': '210 30% 85%',
+      '--secondary-foreground': '210 20% 20%',
+      '--muted': '210 30% 88%',
+      '--muted-foreground': '210 15% 45%',
+      '--accent': '210 50% 75%',
+      '--accent-foreground': '210 20% 15%',
+      '--border': '210 30% 80%',
+      '--input': '210 30% 85%',
+      '--ring': '210 70% 50%'
     }
   },
   // New Gradient Themes
@@ -352,15 +300,12 @@ const defaultTools: Tool[] = [
 ];
 
 const ThemeManager = () => {
-  const [currentTheme, setCurrentTheme] = useState('default');
+  const { theme: currentTheme, setTheme } = useTheme();
   const [tools, setTools] = useState<Tool[]>(defaultTools);
 
   useEffect(() => {
-    // Load saved theme and tools from localStorage
-    const savedTheme = localStorage.getItem('selected-theme') || 'default';
+    // Load saved tools from localStorage
     const savedTools = localStorage.getItem('enabled-tools');
-    
-    setCurrentTheme(savedTheme);
     
     if (savedTools) {
       try {
@@ -370,38 +315,11 @@ const ThemeManager = () => {
         console.error('Error parsing saved tools:', error);
       }
     }
-
-    // Apply the saved theme
-    applyTheme(savedTheme);
   }, []);
 
-  const applyTheme = (themeId: string) => {
-    const theme = themes.find(t => t.id === themeId);
-    if (!theme) return;
-
-    const root = document.documentElement;
-    
-    // Remove existing theme classes
-    root.classList.remove('theme-ocean-wave', 'theme-sunset-glow', 'theme-aurora-borealis', 'theme-cherry-blossom', 'theme-forest-mist', 'theme-cosmic-nebula');
-    
-    // Apply CSS variables
-    Object.entries(theme.cssVars).forEach(([key, value]) => {
-      root.style.setProperty(key, value);
-    });
-
-    // Add gradient theme class if it's a gradient theme
-    if (theme.isGradient) {
-      root.classList.add(`theme-${theme.id}`);
-    }
-
-    // Save to localStorage
-    localStorage.setItem('selected-theme', themeId);
-    console.log(`Applied theme: ${theme.name}`);
-  };
-
   const handleThemeChange = (themeId: string) => {
-    setCurrentTheme(themeId);
-    applyTheme(themeId);
+    setTheme(themeId as any);
+    console.log(`Applied theme: ${themeId}`);
   };
 
   const handleToolToggle = (toolId: string) => {
