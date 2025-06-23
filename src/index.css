@@ -85,6 +85,43 @@
     --chart-4: 230 55% 65%;
     --chart-5: 240 60% 70%;
   }
+
+  /* Gradient Theme Backgrounds */
+  .theme-ocean-wave {
+    background: linear-gradient(-45deg, #0ea5e9, #06b6d4, #0891b2, #0e7490);
+    background-size: 400% 400%;
+    animation: gradient-ocean 8s ease infinite;
+  }
+
+  .theme-sunset-glow {
+    background: linear-gradient(-45deg, #f59e0b, #f97316, #ea580c, #dc2626);
+    background-size: 400% 400%;
+    animation: gradient-sunset 10s ease infinite;
+  }
+
+  .theme-aurora-borealis {
+    background: linear-gradient(-45deg, #8b5cf6, #a855f7, #9333ea, #7c3aed, #06b6d4);
+    background-size: 400% 400%;
+    animation: gradient-aurora 12s ease infinite;
+  }
+
+  .theme-cherry-blossom {
+    background: linear-gradient(-45deg, #ec4899, #f472b6, #fb7185, #fda4af);
+    background-size: 400% 400%;
+    animation: gradient-cherry 9s ease infinite;
+  }
+
+  .theme-forest-mist {
+    background: linear-gradient(-45deg, #059669, #10b981, #34d399, #6ee7b7);
+    background-size: 400% 400%;
+    animation: gradient-forest 11s ease infinite;
+  }
+
+  .theme-cosmic-nebula {
+    background: linear-gradient(-45deg, #6366f1, #8b5cf6, #a855f7, #3b82f6, #1d4ed8);
+    background-size: 400% 400%;
+    animation: gradient-cosmic 15s ease infinite;
+  }
 }
 
 @layer base {
@@ -141,6 +178,29 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  /* Gradient Themes Card Enhancements */
+  .theme-ocean-wave .card,
+  .theme-sunset-glow .card,
+  .theme-aurora-borealis .card,
+  .theme-cherry-blossom .card,
+  .theme-forest-mist .card,
+  .theme-cosmic-nebula .card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .theme-ocean-wave .card:hover,
+  .theme-sunset-glow .card:hover,
+  .theme-aurora-borealis .card:hover,
+  .theme-cherry-blossom .card:hover,
+  .theme-forest-mist .card:hover,
+  .theme-cosmic-nebula .card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
 }
 
 /* Enhanced animations */
@@ -175,6 +235,69 @@
   50% { background-position: 100% 50%; }
 }
 
+/* New Gradient Animations */
+@keyframes gradient-ocean {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 100% 25%; }
+  50% { background-position: 100% 75%; }
+  75% { background-position: 25% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-sunset {
+  0% { background-position: 0% 50%; }
+  20% { background-position: 100% 20%; }
+  40% { background-position: 80% 80%; }
+  60% { background-position: 20% 100%; }
+  80% { background-position: 90% 30%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-aurora {
+  0% { background-position: 0% 50%; }
+  16% { background-position: 100% 25%; }
+  33% { background-position: 50% 100%; }
+  50% { background-position: 100% 75%; }
+  66% { background-position: 25% 0%; }
+  83% { background-position: 75% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-cherry {
+  0% { background-position: 0% 50%; }
+  33% { background-position: 100% 33%; }
+  66% { background-position: 33% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-forest {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 75% 25%; }
+  50% { background-position: 100% 75%; }
+  75% { background-position: 25% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-cosmic {
+  0% { background-position: 0% 50%; }
+  14% { background-position: 100% 20%; }
+  28% { background-position: 60% 100%; }
+  42% { background-position: 100% 80%; }
+  57% { background-position: 20% 100%; }
+  71% { background-position: 80% 0%; }
+  85% { background-position: 40% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes gradient-x {
+  0%, 100% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+}
+
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
@@ -200,6 +323,10 @@
 .animate-gradient {
   background-size: 200% 200%;
   animation: gradient-shift 3s ease infinite;
+}
+
+.animate-gradient-x {
+  animation: gradient-x 3s ease infinite;
 }
 
 .hover-lift {

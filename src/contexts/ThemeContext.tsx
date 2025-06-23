@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'dark' | 'light' | 'metallic' | 'system';
+type Theme = 'dark' | 'light' | 'metallic' | 'system' | 'ocean-wave' | 'sunset-glow' | 'aurora-borealis' | 'cherry-blossom' | 'forest-mist' | 'cosmic-nebula';
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -34,7 +34,17 @@ export function ThemeProvider({
   useEffect(() => {
     const root = window.document.documentElement;
 
-    root.classList.remove('light', 'dark', 'metallic');
+    root.classList.remove(
+      'light', 
+      'dark', 
+      'metallic', 
+      'theme-ocean-wave', 
+      'theme-sunset-glow', 
+      'theme-aurora-borealis', 
+      'theme-cherry-blossom', 
+      'theme-forest-mist', 
+      'theme-cosmic-nebula'
+    );
 
     if (theme === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
@@ -46,7 +56,12 @@ export function ThemeProvider({
       return;
     }
 
-    root.classList.add(theme);
+    // Handle gradient themes
+    if (theme.includes('-')) {
+      root.classList.add(`theme-${theme}`);
+    } else {
+      root.classList.add(theme);
+    }
   }, [theme]);
 
   const value = {
