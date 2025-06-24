@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -66,17 +67,23 @@ import NotesPage from '@/pages/tools/NotesPage';
 import UrlWrapperPage from '@/pages/tools/UrlWrapperPage';
 import IpLookupPage from '@/pages/tools/IpLookupPage';
 import TodoListPage from '@/pages/tools/TodoListPage';
-
 import HashGeneratorPage from '@/pages/tools/HashGeneratorPage';
 import JwtDecoderPage from '@/pages/tools/JwtDecoderPage';
 import MetaTagPreviewerPage from '@/pages/tools/MetaTagPreviewerPage';
 import EnhancedUnitConverterPage from '@/pages/tools/EnhancedUnitConverterPage';
-
 import SocialMediaDbViewerPage from '@/pages/tools/SocialMediaDbViewerPage';
 import SocialMediaDownloaderPage from '@/pages/tools/SocialMediaDownloaderPage';
 import YoutubeDownloaderPage from '@/pages/tools/YoutubeDownloaderPage';
+import WeatherForecastPage from '@/pages/tools/WeatherForecastPage';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: false, // Disable retries for prerendering
+    },
+  },
+});
 
 function App() {
   return (
@@ -90,8 +97,7 @@ function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/tools" element={<ToolsPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-
+              
               {/* Tool Routes */}
               <Route path="/word-counter" element={<WordCounterPage />} />
               <Route path="/text-case-converter" element={<TextCaseConverterPage />} />
@@ -148,18 +154,16 @@ function App() {
               <Route path="/url-wrapper" element={<UrlWrapperPage />} />
               <Route path="/ip-lookup" element={<IpLookupPage />} />
               <Route path="/todo-list" element={<TodoListPage />} />
-              
-              {/* New Developer Tools Routes */}
               <Route path="/hash-generator" element={<HashGeneratorPage />} />
               <Route path="/jwt-decoder" element={<JwtDecoderPage />} />
               <Route path="/meta-tag-previewer" element={<MetaTagPreviewerPage />} />
               <Route path="/enhanced-unit-converter" element={<EnhancedUnitConverterPage />} />
-              
-              {/* New Video Tools Routes */}
               <Route path="/social-media-db-viewer" element={<SocialMediaDbViewerPage />} />
               <Route path="/social-media-downloader" element={<SocialMediaDownloaderPage />} />
               <Route path="/youtube-downloader" element={<YoutubeDownloaderPage />} />
+              <Route path="/weather-forecast" element={<WeatherForecastPage />} />
               
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </MainLayout>
         </QueryClientProvider>
