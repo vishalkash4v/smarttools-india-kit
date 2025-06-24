@@ -89,7 +89,6 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === 'development' && componentTagger(),
     mode === 'production' && prerender({
-      staticDir: path.resolve(__dirname, 'dist'),
       routes,
     }),
   ].filter(Boolean),
