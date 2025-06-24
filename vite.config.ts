@@ -90,9 +90,6 @@ export default defineConfig(({ mode }) => ({
     mode === 'development' && componentTagger(),
     mode === 'production' && prerender({
       routes,
-      rendererOptions: {
-        renderAfterDocumentEvent: 'render-event'
-      }
     }),
   ].filter(Boolean),
   resolve: {
