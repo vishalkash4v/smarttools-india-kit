@@ -1,19 +1,21 @@
 
 import React from 'react';
+import PageWrapper from '@/components/layout/PageWrapper';
 import WeatherForecast from '@/components/tools/WeatherForecast';
 
 const WeatherForecastPage = () => {
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold mb-4">Weather Forecast</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Get real-time weather data and 5-day forecast for any city worldwide. 
-          The interface adapts to current weather conditions for an immersive experience.
-        </p>
-      </div>
+    <PageWrapper
+      title="Weather Forecast - Live Weather Updates"
+      description="Get accurate weather forecasts and current weather conditions for any city worldwide. Live weather updates with temperature, humidity, wind speed, and 5-day forecast."
+      keywords="weather forecast, current weather, weather updates, temperature, humidity, wind speed, weather conditions, 5 day forecast, weather API, live weather"
+      pageTitle="Weather Forecast"
+      toolCategory="Weather Tool"
+      canonicalUrl="https://smarttoolsworldwide.com/weather-forecast"
+      heroImage="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=1200&h=630&fit=crop"
+    >
       <WeatherForecast />
-    </div>
+    </PageWrapper>
   );
 };
 

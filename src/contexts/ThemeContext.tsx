@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'dark' | 'light' | 'metallic' | 'system' | 'ocean-wave' | 'sunset-glow' | 'aurora-borealis' | 'cherry-blossom' | 'forest-mist' | 'cosmic-nebula';
+type Theme = 'dark' | 'light' | 'metallic' | 'system';
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -35,17 +35,7 @@ export function ThemeProvider({
     const root = window.document.documentElement;
 
     // Remove all theme classes
-    root.classList.remove(
-      'light', 
-      'dark', 
-      'metallic', 
-      'theme-ocean-wave', 
-      'theme-sunset-glow', 
-      'theme-aurora-borealis', 
-      'theme-cherry-blossom', 
-      'theme-forest-mist', 
-      'theme-cosmic-nebula'
-    );
+    root.classList.remove('light', 'dark', 'metallic');
 
     if (theme === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
@@ -57,35 +47,8 @@ export function ThemeProvider({
       return;
     }
 
-    // Handle gradient themes with proper class names
-    const gradientThemes = ['ocean-wave', 'sunset-glow', 'aurora-borealis', 'cherry-blossom', 'forest-mist', 'cosmic-nebula'];
-    
-    if (gradientThemes.includes(theme)) {
-      root.classList.add(`theme-${theme}`);
-      // Also apply CSS variables for gradient themes
-      if (theme === 'ocean-wave') {
-        root.style.setProperty('--primary', '199 89% 48%');
-        root.style.setProperty('--background', '0 0% 100%');
-      } else if (theme === 'sunset-glow') {
-        root.style.setProperty('--primary', '45 93% 47%');
-        root.style.setProperty('--background', '0 0% 100%');
-      } else if (theme === 'aurora-borealis') {
-        root.style.setProperty('--primary', '262 83% 65%');
-        root.style.setProperty('--background', '0 0% 100%');
-      } else if (theme === 'cherry-blossom') {
-        root.style.setProperty('--primary', '330 81% 60%');
-        root.style.setProperty('--background', '0 0% 100%');
-      } else if (theme === 'forest-mist') {
-        root.style.setProperty('--primary', '160 84% 39%');
-        root.style.setProperty('--background', '0 0% 100%');
-      } else if (theme === 'cosmic-nebula') {
-        root.style.setProperty('--primary', '239 84% 67%');
-        root.style.setProperty('--background', '0 0% 100%');
-      }
-    } else {
-      // Handle standard themes
-      root.classList.add(theme);
-    }
+    // Apply the selected theme
+    root.classList.add(theme);
   }, [theme]);
 
   const value = {

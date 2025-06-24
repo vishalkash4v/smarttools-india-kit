@@ -8,12 +8,12 @@ import { Percent, Calculator, TrendingUp } from 'lucide-react';
 const GstCalculatorPage = () => {
   return (
     <PageWrapper
-      title="GST Calculator"
-      description="Calculate Goods and Services Tax (GST) amounts quickly and easily. Get detailed breakdown of CGST, SGST, and IGST with professional accuracy for Indian businesses."
-      keywords="GST calculator India, goods and services tax calculator, CGST SGST IGST calculator, tax calculation tool, Indian tax calculator, business GST tool"
+      title="GST Calculator - Calculate GST Tax Online"
+      description="Free GST Calculator for India. Calculate Goods and Services Tax (GST) amounts with detailed breakdown of CGST, SGST, and IGST. Professional tax calculation tool for businesses and individuals."
+      keywords="GST calculator India, goods and services tax calculator, CGST SGST IGST calculator, tax calculation tool, Indian tax calculator, business GST tool, free GST calculator, online tax calculator"
       pageTitle="GST Calculator"
       toolCategory="Tax Calculator"
-      canonicalUrl="https://smarttools-india.com/gst-calculator"
+      canonicalUrl="https://smarttoolsworldwide.com/gst-calculator"
       heroImage="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">
