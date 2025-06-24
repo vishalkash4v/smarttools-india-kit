@@ -5,21 +5,10 @@ import App from "./App.tsx";
 import "./index.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 
-const root = createRoot(document.getElementById("root")!);
-
-root.render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <App />
     </ThemeProvider>
-  </StrictMode>
+  </StrictMode>,
 );
-
-// Dispatch render event for prerendering
-if (typeof window !== 'undefined') {
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.dispatchEvent(new Event('render-event'));
-    }, 100);
-  });
-}
