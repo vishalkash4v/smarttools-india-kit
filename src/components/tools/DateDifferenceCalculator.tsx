@@ -57,7 +57,7 @@ const DateDifferenceCalculator = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 p-4 sm:p-6 relative z-10">
+    <div className="max-w-4xl mx-auto space-y-6 p-4 sm:p-6">
       {/* Hero Section */}
       <div className="text-center space-y-3">
         <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-100 mb-3">
@@ -70,7 +70,7 @@ const DateDifferenceCalculator = () => {
       </div>
 
       {/* Main Calculator Card */}
-      <Card className="border-0 shadow-xl bg-white relative">
+      <Card className="border-0 shadow-xl bg-white relative z-10">
         <CardContent className="p-4 sm:p-6 lg:p-8">
           <div className="space-y-6 sm:space-y-8">
             {/* Date Inputs */}
@@ -90,7 +90,7 @@ const DateDifferenceCalculator = () => {
                       {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 z-[9999] bg-white border shadow-lg" align="start">
+                  <PopoverContent className="w-auto p-0 z-50" align="start">
                     <Calendar
                       mode="single"
                       selected={startDate}
@@ -98,7 +98,7 @@ const DateDifferenceCalculator = () => {
                       initialFocus
                       className="pointer-events-auto"
                     />
-                    <div className="p-3 border-t bg-white">
+                    <div className="p-3 border-t">
                       <Button
                         onClick={() => setToday(true)}
                         variant="outline"
@@ -133,7 +133,7 @@ const DateDifferenceCalculator = () => {
                       {endDate ? format(endDate, "PPP") : <span>Pick a date</span>}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 z-[9999] bg-white border shadow-lg" align="start">
+                  <PopoverContent className="w-auto p-0 z-50" align="start">
                     <Calendar
                       mode="single"
                       selected={endDate}
@@ -141,7 +141,7 @@ const DateDifferenceCalculator = () => {
                       initialFocus
                       className="pointer-events-auto"
                     />
-                    <div className="p-3 border-t bg-white">
+                    <div className="p-3 border-t">
                       <Button
                         onClick={() => setToday(false)}
                         variant="outline"
