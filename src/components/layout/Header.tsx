@@ -5,6 +5,36 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import ToolSearch from '@/components/tools/ToolSearch';
+
+// Tool data for search functionality
+const tools = [
+  { name: 'Age Calculator', description: 'Calculate your exact age in years, months, and days', href: '/tools/age-calculator', category: 'Calculator', keywords: 'age birthday years months days calculate', icon: () => null },
+  { name: 'BMI Calculator', description: 'Calculate your Body Mass Index and health status', href: '/tools/bmi-calculator', category: 'Health', keywords: 'bmi body mass index weight height health fitness', icon: () => null },
+  { name: 'Currency Converter', description: 'Convert between different currencies with live rates', href: '/tools/currency-converter', category: 'Finance', keywords: 'currency exchange rate convert money forex', icon: () => null },
+  { name: 'Password Generator', description: 'Generate secure and strong passwords', href: '/tools/password-generator', category: 'Security', keywords: 'password generate secure strong random', icon: () => null },
+  { name: 'QR Code Generator', description: 'Generate QR codes for text, URLs, and more', href: '/tools/qr-code-generator', category: 'Generator', keywords: 'qr code generate barcode scanner', icon: () => null },
+  { name: 'Text Case Converter', description: 'Convert text between different cases', href: '/tools/text-case-converter', category: 'Text', keywords: 'text case upper lower title toggle convert', icon: () => null },
+  { name: 'Word Counter', description: 'Count words, characters, and paragraphs', href: '/tools/word-counter', category: 'Text', keywords: 'word count character paragraph text analysis', icon: () => null },
+  { name: 'Color Picker', description: 'Pick and convert colors between formats', href: '/tools/color-picker-tool', category: 'Design', keywords: 'color picker hex rgb hsl palette', icon: () => null },
+  { name: 'Unit Converter', description: 'Convert between different units of measurement', href: '/tools/unit-converter', category: 'Converter', keywords: 'unit convert length weight temperature volume', icon: () => null },
+  { name: 'JSON Formatter', description: 'Format and validate JSON data', href: '/tools/json-formatter', category: 'Developer', keywords: 'json format validate pretty print', icon: () => null },
+  { name: 'Base64 Converter', description: 'Encode and decode Base64 strings', href: '/tools/base64-converter', category: 'Developer', keywords: 'base64 encode decode convert string', icon: () => null },
+  { name: 'URL Shortener', description: 'Shorten long URLs for easy sharing', href: '/tools/url-shortener', category: 'Utility', keywords: 'url shorten link short tiny', icon: () => null },
+  { name: 'Lorem Ipsum Generator', description: 'Generate placeholder text for designs', href: '/tools/lorem-ipsum-generator', category: 'Generator', keywords: 'lorem ipsum placeholder text dummy content', icon: () => null },
+  { name: 'Stopwatch', description: 'Simple stopwatch for timing activities', href: '/tools/stopwatch', category: 'Timer', keywords: 'stopwatch timer chronometer time measure', icon: () => null },
+  { name: 'Countdown Timer', description: 'Set countdown timers for events', href: '/tools/countdown-timer', category: 'Timer', keywords: 'countdown timer alarm clock event', icon: () => null },
+  { name: 'Date Difference Calculator', description: 'Calculate the difference between two dates', href: '/tools/date-difference-calculator', category: 'Calculator', keywords: 'date difference days months years calculate between', icon: () => null },
+  { name: 'Future Date Calculator', description: 'Calculate future dates by adding days', href: '/tools/future-date-calculator', category: 'Calculator', keywords: 'future date add days calculate forward', icon: () => null },
+  { name: 'Simple Calculator', description: 'Basic calculator for everyday calculations', href: '/tools/simple-calculator', category: 'Calculator', keywords: 'calculator math arithmetic basic simple', icon: () => null },
+  { name: 'Percentage Calculator', description: 'Calculate percentages and percentage changes', href: '/tools/percentage-calculator', category: 'Calculator', keywords: 'percentage calculate percent change increase decrease', icon: () => null },
+  { name: 'GST Calculator', description: 'Calculate GST (Goods and Services Tax)', href: '/tools/gst-calculator', category: 'Finance', keywords: 'gst tax calculate goods services india', icon: () => null },
+  { name: 'EMI Calculator', description: 'Calculate loan EMI (Equated Monthly Installment)', href: '/tools/emi-calculator', category: 'Finance', keywords: 'emi loan calculate monthly installment interest', icon: () => null },
+  { name: 'SIP Calculator', description: 'Calculate Systematic Investment Plan returns', href: '/tools/sip-calculator', category: 'Finance', keywords: 'sip investment mutual fund calculate returns', icon: () => null },
+  { name: 'PPF Calculator', description: 'Calculate Public Provident Fund returns', href: '/tools/ppf-calculator', category: 'Finance', keywords: 'ppf provident fund calculate returns investment', icon: () => null },
+  { name: 'FD Calculator', description: 'Calculate Fixed Deposit returns and maturity', href: '/tools/fd-calculator', category: 'Finance', keywords: 'fd fixed deposit calculate returns maturity interest', icon: () => null },
+  { name: 'Income Tax Calculator', description: 'Calculate income tax for Indian tax payers', href: '/tools/income-tax-calculator', category: 'Finance', keywords: 'income tax calculate indian slab deduction', icon: () => null },
+];
 
 interface HeaderProps {
   title?: string;
@@ -54,25 +84,25 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-16 items-center justify-between gap-4">
           {/* Left side - Logo/Back button */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 min-w-0">
             {showBackButton && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleBack}
-                className="hover:bg-muted"
+                className="hover:bg-muted flex-shrink-0"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
             )}
             
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2 flex-shrink-0">
               <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-sm">ST</span>
               </div>
-              <div className="flex flex-col">
+              <div className="hidden sm:flex flex-col">
                 <span className="font-bold text-lg leading-none">SmartTools</span>
                 <span className="text-xs text-muted-foreground leading-none">India</span>
               </div>
@@ -80,41 +110,46 @@ const Header: React.FC<HeaderProps> = ({
 
             {title && (
               <>
-                <div className="h-6 w-px bg-border mx-2" />
-                <h1 className="text-lg font-semibold text-foreground">{title}</h1>
+                <div className="h-6 w-px bg-border mx-2 hidden sm:block" />
+                <h1 className="text-lg font-semibold text-foreground truncate hidden sm:block">{title}</h1>
               </>
             )}
+          </div>
+
+          {/* Center - Search Bar (hidden on mobile) */}
+          <div className="hidden lg:flex flex-1 max-w-md mx-4">
+            <ToolSearch tools={tools} className="w-full" />
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <Link 
               to="/tools" 
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
             >
               All Tools
             </Link>
             <button 
               onClick={() => scrollToSection('features')}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
             >
               Features
             </button>
             <button 
               onClick={() => scrollToSection('faq')}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
             >
               FAQ
             </button>
             <Link 
               to="/about" 
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
             >
               About
             </Link>
             <Link 
               to="/contact" 
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap"
             >
               Contact
             </Link>
@@ -135,6 +170,13 @@ const Header: React.FC<HeaderProps> = ({
             </Button>
           </div>
         </div>
+
+        {/* Mobile Search Bar - shown when menu is open */}
+        {isMenuOpen && (
+          <div className="lg:hidden py-4 border-t border-border/40">
+            <ToolSearch tools={tools} className="w-full" />
+          </div>
+        )}
 
         {/* Mobile Navigation */}
         {isMenuOpen && (

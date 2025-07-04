@@ -18,7 +18,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         {!isHomePage && (
           <SidebarProvider>
             <AppSidebar />
-            <main className="flex-1 p-6 md:p-8 lg:p-12">
+            <main className="flex-1 p-3 sm:p-6 md:p-8 lg:p-12">
               <div className="max-w-7xl mx-auto">
                 <div className="animate-fade-in-up">
                   {children}
