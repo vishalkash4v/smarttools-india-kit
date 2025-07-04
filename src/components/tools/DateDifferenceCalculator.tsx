@@ -70,7 +70,7 @@ const DateDifferenceCalculator = () => {
       </div>
 
       {/* Main Calculator Card */}
-      <Card className="border-0 shadow-xl bg-white">
+      <Card className="border-0 shadow-xl bg-white relative z-10">
         <CardContent className="p-4 sm:p-6 lg:p-8">
           <div className="space-y-6 sm:space-y-8">
             {/* Date Inputs */}
@@ -90,7 +90,7 @@ const DateDifferenceCalculator = () => {
                       {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent className="w-auto p-0 z-50" align="start">
                     <Calendar
                       mode="single"
                       selected={startDate}
@@ -133,7 +133,7 @@ const DateDifferenceCalculator = () => {
                       {endDate ? format(endDate, "PPP") : <span>Pick a date</span>}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent className="w-auto p-0 z-50" align="start">
                     <Calendar
                       mode="single"
                       selected={endDate}

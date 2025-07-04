@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -6,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import FAQ from '@/components/sections/FAQ';
 import Testimonials from '@/components/sections/Testimonials';
+import ToolSearch from '@/components/tools/ToolSearch';
 import { 
   Calculator, 
   FileText, 
@@ -20,7 +22,34 @@ import {
   CheckCircle,
   TrendingUp,
   Award,
-  Sparkles
+  Sparkles,
+  Calendar,
+  Plus,
+  Hash,
+  Image,
+  Type,
+  Clock,
+  Camera,
+  Scissors,
+  Download,
+  Settings,
+  Percent,
+  DollarSign,
+  Thermometer,
+  Ruler,
+  Timer,
+  List,
+  BarChart3,
+  Link2,
+  PenTool,
+  StickyNote,
+  MapPin,
+  CheckSquare,
+  Lock,
+  FileJson,
+  Search,
+  Eye,
+  Layers
 } from 'lucide-react';
 
 const LandingPage = () => {
@@ -31,7 +60,8 @@ const LandingPage = () => {
       icon: Calculator,
       category: 'Health',
       href: '/bmi-calculator',
-      color: 'from-blue-500 to-cyan-500'
+      color: 'from-blue-500 to-cyan-500',
+      keywords: 'body mass index health weight height fitness calculator medical'
     },
     {
       name: 'JSON Formatter',
@@ -39,7 +69,8 @@ const LandingPage = () => {
       icon: Code,
       category: 'Developer',
       href: '/json-formatter',
-      color: 'from-green-500 to-emerald-500'
+      color: 'from-green-500 to-emerald-500',
+      keywords: 'json format validate beautify minify developer api data'
     },
     {
       name: 'QR Code Generator',
@@ -47,7 +78,8 @@ const LandingPage = () => {
       icon: Palette,
       category: 'Utility',
       href: '/qr-code-generator',
-      color: 'from-purple-500 to-pink-500'
+      color: 'from-purple-500 to-pink-500',
+      keywords: 'qr code generator barcode scanner link url text'
     },
     {
       name: 'Word Counter',
@@ -55,7 +87,8 @@ const LandingPage = () => {
       icon: FileText,
       category: 'Text',
       href: '/word-counter',
-      color: 'from-orange-500 to-red-500'
+      color: 'from-orange-500 to-red-500',
+      keywords: 'word count character count text analysis writing seo'
     },
     {
       name: 'Password Generator',
@@ -63,7 +96,8 @@ const LandingPage = () => {
       icon: Shield,
       category: 'Security',
       href: '/password-generator',
-      color: 'from-indigo-500 to-blue-500'
+      color: 'from-indigo-500 to-blue-500',
+      keywords: 'password generator secure strong random encryption security'
     },
     {
       name: 'Currency Converter',
@@ -71,9 +105,138 @@ const LandingPage = () => {
       icon: Globe,
       category: 'Finance',
       href: '/currency-converter',
-      color: 'from-yellow-500 to-orange-500'
+      color: 'from-yellow-500 to-orange-500',
+      keywords: 'currency converter exchange rate money finance forex'
+    },
+    {
+      name: 'Date Difference Calculator',
+      description: 'Calculate the exact difference between two dates',
+      icon: Calendar,
+      category: 'Date Calculator',
+      href: '/date-difference-calculator',
+      color: 'from-blue-500 to-indigo-500',
+      keywords: 'date difference calculator age duration time span calendar'
+    },
+    {
+      name: 'Future Date Calculator',
+      description: 'Calculate future dates by adding days',
+      icon: Plus,
+      category: 'Date Calculator',
+      href: '/future-date-calculator',
+      color: 'from-green-500 to-emerald-500',
+      keywords: 'future date calculator add days planning deadline project'
+    },
+    {
+      name: 'Age Calculator',
+      description: 'Calculate exact age in years, months, and days',
+      icon: Calendar,
+      category: 'Calculator',
+      href: '/age-calculator',
+      color: 'from-purple-500 to-pink-500',
+      keywords: 'age calculator birthday years months days birth date'
+    },
+    {
+      name: 'Percentage Calculator',
+      description: 'Calculate percentages, increases, and decreases',
+      icon: Percent,
+      category: 'Calculator',
+      href: '/percentage-calculator',
+      color: 'from-red-500 to-orange-500',
+      keywords: 'percentage calculator increase decrease math percentage'
+    },
+    {
+      name: 'Simple Calculator',
+      description: 'Basic arithmetic calculator for everyday use',
+      icon: Calculator,
+      category: 'Calculator',
+      href: '/simple-calculator',
+      color: 'from-gray-500 to-slate-500',
+      keywords: 'calculator arithmetic math basic operations addition subtraction'
+    },
+    {
+      name: 'Text Case Converter',
+      description: 'Convert text between different cases',
+      icon: Type,
+      category: 'Text',
+      href: '/text-case-converter',
+      color: 'from-teal-500 to-cyan-500',
+      keywords: 'text case converter uppercase lowercase title case'
+    },
+    {
+      name: 'Base64 Converter',
+      description: 'Encode and decode Base64 strings',
+      icon: Code,
+      category: 'Developer',
+      href: '/base64-converter',
+      color: 'from-violet-500 to-purple-500',
+      keywords: 'base64 encode decode converter developer data string'
+    },
+    {
+      name: 'Lorem Ipsum Generator',
+      description: 'Generate placeholder text for design projects',
+      icon: FileText,
+      category: 'Text',
+      href: '/lorem-ipsum-generator',
+      color: 'from-rose-500 to-pink-500',
+      keywords: 'lorem ipsum generator placeholder text dummy content design'
+    },
+    {
+      name: 'Image Compressor',
+      description: 'Compress images to reduce file size',
+      icon: Image,
+      category: 'Image Tool',
+      href: '/image-compressor',
+      color: 'from-emerald-500 to-green-500',
+      keywords: 'image compressor resize optimize jpeg png webp size reduce'
+    },
+    {
+      name: 'Stopwatch',
+      description: 'Precise stopwatch with lap timing',
+      icon: Clock,
+      category: 'Utility',
+      href: '/stopwatch',
+      color: 'from-blue-500 to-cyan-500',
+      keywords: 'stopwatch timer lap timing precise time measurement'
+    },
+    {
+      name: 'Countdown Timer',
+      description: 'Set custom countdown timers',
+      icon: Timer,
+      category: 'Utility',
+      href: '/countdown-timer',
+      color: 'from-red-500 to-rose-500',
+      keywords: 'countdown timer alarm reminder time management productivity'
+    },
+    {
+      name: 'Hash Generator',
+      description: 'Generate MD5, SHA-1, SHA-256 hashes',
+      icon: Hash,
+      category: 'Developer',
+      href: '/hash-generator',
+      color: 'from-indigo-500 to-blue-500',
+      keywords: 'hash generator md5 sha1 sha256 encryption security checksum'
+    },
+    {
+      name: 'URL Shortener',
+      description: 'Create short links from long URLs',
+      icon: Link2,
+      category: 'Utility',
+      href: '/url-shortener',
+      color: 'from-cyan-500 to-blue-500',
+      keywords: 'url shortener link shortener tiny url redirect'
+    },
+    {
+      name: 'Temperature Converter',
+      description: 'Convert between Celsius, Fahrenheit, and Kelvin',
+      icon: Thermometer,
+      category: 'Converter',
+      href: '/temperature-converter',
+      color: 'from-orange-500 to-red-500',
+      keywords: 'temperature converter celsius fahrenheit kelvin weather'
     }
   ];
+
+  const featuredTools = tools.slice(0, 6);
 
   const features = [
     {
@@ -166,6 +329,11 @@ const LandingPage = () => {
                 </p>
               </div>
 
+              {/* Search Bar */}
+              <div className="mb-8">
+                <ToolSearch tools={tools} className="max-w-lg" />
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up">
                 <Button asChild size="lg" className="btn-primary text-lg px-8 py-4">
                   <Link to="/tools">
@@ -208,7 +376,7 @@ const LandingPage = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tools.map((tool, index) => (
+              {featuredTools.map((tool, index) => (
                 <Link key={index} to={tool.href}>
                   <Card className="h-full hover-lift card-enhanced group cursor-pointer">
                     <CardHeader className="pb-4">
