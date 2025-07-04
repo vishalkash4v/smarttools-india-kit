@@ -76,6 +76,8 @@ import SocialMediaDbViewerPage from '@/pages/tools/SocialMediaDbViewerPage';
 import SocialMediaDownloaderPage from '@/pages/tools/SocialMediaDownloaderPage';
 import YoutubeDownloaderPage from '@/pages/tools/YoutubeDownloaderPage';
 
+import FutureDateCalculatorPage from '@/pages/tools/FutureDateCalculatorPage';
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -124,6 +126,7 @@ function App() {
               <Route path="/simple-calculator" element={<SimpleCalculatorPage />} />
               <Route path="/age-calculator" element={<AgeCalculatorPage />} />
               <Route path="/date-difference-calculator" element={<DateDifferenceCalculatorPage />} />
+              <Route path="/future-date-calculator" element={<FutureDateCalculatorPage />} />
               <Route path="/bmi-calculator" element={<BmiCalculatorPage />} />
               <Route path="/percentage-calculator" element={<PercentageCalculatorPage />} />
               <Route path="/currency-converter" element={<CurrencyConverterPage />} />
