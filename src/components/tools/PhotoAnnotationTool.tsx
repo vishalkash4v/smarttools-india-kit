@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Upload, Download, Plus, Trash2 } from 'lucide-react';
+import { Upload, Download, Plus, Trash2, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Annotation {
@@ -19,7 +19,11 @@ interface Annotation {
   width: number;
   height: number;
   fontSize?: number;
+  fontFamily?: string;
   color?: string;
+  backgroundColor?: string;
+  showBackground?: boolean;
+  textAlign?: 'left' | 'center' | 'right';
   removeBackground?: boolean;
 }
 
@@ -34,13 +38,32 @@ const PhotoAnnotationTool = () => {
     width: 200,
     height: 50,
     fontSize: 20,
-    color: '#000000'
+    fontFamily: 'Arial',
+    color: '#000000',
+    backgroundColor: '#ffffff',
+    showBackground: false,
+    textAlign: 'left'
   });
   const [downloadFormat, setDownloadFormat] = useState('png');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const overlayInputRef = useRef<HTMLInputElement>(null);
+
+  const fontOptions = [
+    { value: 'Arial', label: 'Arial' },
+    { value: 'Helvetica', label: 'Helvetica' },
+    { value: 'Times New Roman', label: 'Times New Roman' },
+    { value: 'Georgia', label: 'Georgia' },
+    { value: 'Verdana', label: 'Verdana' },
+    { value: 'Tahoma', label: 'Tahoma' },
+    { value: 'Trebuchet MS', label: 'Trebuchet MS' },
+    { value: 'Impact', label: 'Impact' },
+    { value: 'Courier New', label: 'Courier New' },
+    { value: 'Comic Sans MS', label: 'Comic Sans MS' },
+    { value: 'Palatino', label: 'Palatino' },
+    { value: 'Garamond', label: 'Garamond' }
+  ];
 
   const handleImageUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -117,6 +140,40 @@ const PhotoAnnotationTool = () => {
     });
   };
 
+  const setTextAlignment = (position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center') => {
+    if (!baseImage) return;
+    
+    const imageWidth = baseImage.width;
+    const imageHeight = baseImage.height;
+    
+    let x = 50, y = 50;
+    
+    switch (position) {
+      case 'top-left':
+        x = 20;
+        y = 30;
+        break;
+      case 'top-right':
+        x = imageWidth - 220;
+        y = 30;
+        break;
+      case 'bottom-left':
+        x = 20;
+        y = imageHeight - 60;
+        break;
+      case 'bottom-right':
+        x = imageWidth - 220;
+        y = imageHeight - 60;
+        break;
+      case 'center':
+        x = (imageWidth - 200) / 2;
+        y = imageHeight / 2;
+        break;
+    }
+    
+    setCurrentAnnotation(prev => ({ ...prev, x, y }));
+  };
+
   const addAnnotation = async () => {
     if (!currentAnnotation.content) {
       toast.error('Please enter content for the annotation');
@@ -138,7 +195,11 @@ const PhotoAnnotationTool = () => {
       width: currentAnnotation.width || 200,
       height: currentAnnotation.height || 50,
       fontSize: currentAnnotation.fontSize || 20,
+      fontFamily: currentAnnotation.fontFamily || 'Arial',
       color: currentAnnotation.color || '#000000',
+      backgroundColor: currentAnnotation.backgroundColor || '#ffffff',
+      showBackground: currentAnnotation.showBackground || false,
+      textAlign: currentAnnotation.textAlign || 'left',
       removeBackground: currentAnnotation.removeBackground
     };
 
@@ -151,7 +212,11 @@ const PhotoAnnotationTool = () => {
       width: 200,
       height: 50,
       fontSize: 20,
-      color: '#000000'
+      fontFamily: 'Arial',
+      color: '#000000',
+      backgroundColor: '#ffffff',
+      showBackground: false,
+      textAlign: 'left'
     });
     toast.success('Annotation added successfully!');
   };
@@ -181,13 +246,33 @@ const PhotoAnnotationTool = () => {
     // Draw annotations
     for (const annotation of annotations) {
       if (annotation.type === 'text') {
-        ctx.font = `${(annotation.fontSize || 20) * scale}px Arial`;
+        const scaledX = annotation.x * scale;
+        const scaledY = annotation.y * scale;
+        const scaledFontSize = (annotation.fontSize || 20) * scale;
+        
+        ctx.font = `${scaledFontSize}px ${annotation.fontFamily || 'Arial'}`;
+        
+        // Measure text for background
+        const textMetrics = ctx.measureText(annotation.content);
+        const textWidth = textMetrics.width;
+        const textHeight = scaledFontSize;
+        
+        // Draw background rectangle if enabled
+        if (annotation.showBackground) {
+          ctx.fillStyle = annotation.backgroundColor || '#ffffff';
+          const padding = 4 * scale;
+          ctx.fillRect(
+            scaledX - padding, 
+            scaledY - textHeight - padding, 
+            textWidth + (padding * 2), 
+            textHeight + (padding * 2)
+          );
+        }
+        
+        // Draw text
         ctx.fillStyle = annotation.color || '#000000';
-        ctx.fillText(
-          annotation.content, 
-          annotation.x * scale, 
-          annotation.y * scale
-        );
+        ctx.textAlign = annotation.textAlign || 'left';
+        ctx.fillText(annotation.content, scaledX, scaledY);
       } else if (annotation.type === 'image') {
         const img = new Image();
         await new Promise<void>((resolve) => {
@@ -230,8 +315,28 @@ const PhotoAnnotationTool = () => {
     // Draw annotations at full resolution
     for (const annotation of annotations) {
       if (annotation.type === 'text') {
-        ctx.font = `${annotation.fontSize || 20}px Arial`;
+        ctx.font = `${annotation.fontSize || 20}px ${annotation.fontFamily || 'Arial'}`;
+        
+        // Measure text for background
+        const textMetrics = ctx.measureText(annotation.content);
+        const textWidth = textMetrics.width;
+        const textHeight = annotation.fontSize || 20;
+        
+        // Draw background rectangle if enabled
+        if (annotation.showBackground) {
+          ctx.fillStyle = annotation.backgroundColor || '#ffffff';
+          const padding = 4;
+          ctx.fillRect(
+            annotation.x - padding, 
+            annotation.y - textHeight - padding, 
+            textWidth + (padding * 2), 
+            textHeight + (padding * 2)
+          );
+        }
+        
+        // Draw text
         ctx.fillStyle = annotation.color || '#000000';
+        ctx.textAlign = annotation.textAlign || 'left';
         ctx.fillText(annotation.content, annotation.x, annotation.y);
       } else if (annotation.type === 'image') {
         const img = new Image();
@@ -266,7 +371,7 @@ const PhotoAnnotationTool = () => {
         <CardHeader>
           <CardTitle>Photo Annotation Tool</CardTitle>
           <CardDescription>
-            Add name, date, signature, and fingerprint to your photos with live preview
+            Add name, date, signature, and fingerprint to your photos with advanced text styling options
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -333,6 +438,28 @@ const PhotoAnnotationTool = () => {
                           Add Current Date
                         </Button>
                       </div>
+                      
+                      {/* Font Family */}
+                      <div>
+                        <Label>Font Family</Label>
+                        <Select
+                          value={currentAnnotation.fontFamily}
+                          onValueChange={(value) => setCurrentAnnotation(prev => ({ ...prev, fontFamily: value }))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {fontOptions.map(font => (
+                              <SelectItem key={font.value} value={font.value}>
+                                <span style={{ fontFamily: font.value }}>{font.label}</span>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Font Size and Color */}
                       <div className="grid grid-cols-2 gap-2">
                         <div>
                           <Label>Font Size</Label>
@@ -341,16 +468,108 @@ const PhotoAnnotationTool = () => {
                             value={currentAnnotation.fontSize}
                             onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, fontSize: parseInt(e.target.value) }))}
                             min={8}
-                            max={72}
+                            max={200}
                           />
                         </div>
                         <div>
-                          <Label>Color</Label>
+                          <Label>Text Color</Label>
                           <Input
                             type="color"
                             value={currentAnnotation.color}
                             onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, color: e.target.value }))}
                           />
+                        </div>
+                      </div>
+
+                      {/* Text Alignment */}
+                      <div>
+                        <Label>Text Alignment</Label>
+                        <div className="flex gap-1 mt-1">
+                          <Button
+                            size="sm"
+                            variant={currentAnnotation.textAlign === 'left' ? 'default' : 'outline'}
+                            onClick={() => setCurrentAnnotation(prev => ({ ...prev, textAlign: 'left' }))}
+                          >
+                            <AlignLeft className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant={currentAnnotation.textAlign === 'center' ? 'default' : 'outline'}
+                            onClick={() => setCurrentAnnotation(prev => ({ ...prev, textAlign: 'center' }))}
+                          >
+                            <AlignCenter className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant={currentAnnotation.textAlign === 'right' ? 'default' : 'outline'}
+                            onClick={() => setCurrentAnnotation(prev => ({ ...prev, textAlign: 'right' }))}
+                          >
+                            <AlignRight className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Background Options */}
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="showBackground"
+                            checked={currentAnnotation.showBackground}
+                            onCheckedChange={(checked) => 
+                              setCurrentAnnotation(prev => ({ ...prev, showBackground: checked === true }))
+                            }
+                          />
+                          <Label htmlFor="showBackground">Add background rectangle</Label>
+                        </div>
+                        {currentAnnotation.showBackground && (
+                          <div>
+                            <Label>Background Color</Label>
+                            <div className="flex gap-2 mt-1">
+                              <Button
+                                size="sm"
+                                variant={currentAnnotation.backgroundColor === '#ffffff' ? 'default' : 'outline'}
+                                onClick={() => setCurrentAnnotation(prev => ({ ...prev, backgroundColor: '#ffffff' }))}
+                              >
+                                White
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant={currentAnnotation.backgroundColor === '#000000' ? 'default' : 'outline'}
+                                onClick={() => setCurrentAnnotation(prev => ({ ...prev, backgroundColor: '#000000' }))}
+                              >
+                                Black
+                              </Button>
+                              <Input
+                                type="color"
+                                value={currentAnnotation.backgroundColor}
+                                onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, backgroundColor: e.target.value }))}
+                                className="w-12 h-8 p-0 border-0"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Position Presets */}
+                      <div>
+                        <Label>Quick Position</Label>
+                        <div className="grid grid-cols-3 gap-1 mt-1">
+                          <Button size="sm" variant="outline" onClick={() => setTextAlignment('top-left')}>
+                            Top Left
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => setTextAlignment('center')}>
+                            Center
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => setTextAlignment('top-right')}>
+                            Top Right
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => setTextAlignment('bottom-left')}>
+                            Bottom Left
+                          </Button>
+                          <div></div>
+                          <Button size="sm" variant="outline" onClick={() => setTextAlignment('bottom-right')}>
+                            Bottom Right
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -386,6 +605,7 @@ const PhotoAnnotationTool = () => {
                     </div>
                   )}
 
+                  {/* Manual Position Controls */}
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <Label>X Position</Label>
