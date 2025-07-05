@@ -83,6 +83,8 @@ import PhotoAnnotationToolPage from '@/pages/tools/PhotoAnnotationToolPage';
 import BackgroundRemoverPage from '@/pages/tools/BackgroundRemoverPage';
 import ImageResizerPage from '@/pages/tools/ImageResizerPage';
 import QRScannerPage from '@/pages/tools/QRScannerPage';
+import AutoImageResizerPage from '@/pages/tools/AutoImageResizerPage';
+import AddNameDatePhotoPage from '@/pages/tools/AddNameDatePhotoPage';
 
 const queryClient = new QueryClient();
 
@@ -174,6 +176,8 @@ function App() {
               <Route path="/tools/photo-annotation-tool" element={<PhotoAnnotationToolPage />} />
               <Route path="/tools/background-remover" element={<BackgroundRemoverPage />} />
               <Route path="/tools/image-resizer" element={<ImageResizerPage />} />
+              <Route path="/tools/auto-image-resizer" element={<AutoImageResizerPage />} />
+              <Route path="/tools/add-name-date-photo" element={<AddNameDatePhotoPage />} />
               <Route path="/tools/qr-scanner" element={<QRScannerPage />} />
               
             </Routes>

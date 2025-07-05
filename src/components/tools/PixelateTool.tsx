@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,15 +14,16 @@ const PixelateTool = () => {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [pixelSize, setPixelSize] = useState([8]);
-  const [pixelStrength, setPixelStrength] = useState([100]);
   const [cropArea, setCropArea] = useState({
-    x: 0,
-    y: 0,
-    width: 100,
-    height: 100
+    x: 50,
+    y: 50,
+    width: 200,
+    height: 200
   });
   const [downloadFormat, setDownloadFormat] = useState('png');
+  const [previewScale, setPreviewScale] = useState(1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,29 +37,93 @@ const PixelateTool = () => {
       const img = new Image();
       img.onload = () => {
         setImage(img);
+        const maxDimension = Math.max(img.width, img.height);
+        const scale = maxDimension > 500 ? 500 / maxDimension : 1;
+        setPreviewScale(scale);
+        
         setCropArea({
-          x: 0,
-          y: 0,
-          width: Math.min(200, img.width),
-          height: Math.min(200, img.height)
+          x: Math.round(img.width * 0.2),
+          y: Math.round(img.height * 0.2),
+          width: Math.round(img.width * 0.3),
+          height: Math.round(img.height * 0.3)
         });
-        drawOriginalImage(img);
+        drawPreview(img);
       };
       img.src = URL.createObjectURL(file);
     }
   }, []);
 
-  const drawOriginalImage = (img: HTMLImageElement) => {
-    const canvas = canvasRef.current;
+  const drawPreview = useCallback((img: HTMLImageElement, showPixelation = false) => {
+    const canvas = previewCanvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = img.width;
-    canvas.height = img.height;
-    ctx.drawImage(img, 0, 0);
-  };
+    const scaledWidth = img.width * previewScale;
+    const scaledHeight = img.height * previewScale;
+    
+    canvas.width = scaledWidth;
+    canvas.height = scaledHeight;
+
+    // Draw original image
+    ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
+
+    if (showPixelation) {
+      // Apply pixelation to the specified area
+      const scaledCropArea = {
+        x: cropArea.x * previewScale,
+        y: cropArea.y * previewScale,
+        width: cropArea.width * previewScale,
+        height: cropArea.height * previewScale
+      };
+
+      const imageData = ctx.getImageData(scaledCropArea.x, scaledCropArea.y, scaledCropArea.width, scaledCropArea.height);
+      const data = imageData.data;
+      const size = Math.max(2, pixelSize[0] * previewScale);
+
+      for (let y = 0; y < scaledCropArea.height; y += size) {
+        for (let x = 0; x < scaledCropArea.width; x += size) {
+          const pixelIndex = (y * scaledCropArea.width + x) * 4;
+          const r = data[pixelIndex];
+          const g = data[pixelIndex + 1];
+          const b = data[pixelIndex + 2];
+          const a = data[pixelIndex + 3];
+
+          for (let dy = 0; dy < size && y + dy < scaledCropArea.height; dy++) {
+            for (let dx = 0; dx < size && x + dx < scaledCropArea.width; dx++) {
+              const targetIndex = ((y + dy) * scaledCropArea.width + (x + dx)) * 4;
+              data[targetIndex] = r;
+              data[targetIndex + 1] = g;
+              data[targetIndex + 2] = b;
+              data[targetIndex + 3] = a;
+            }
+          }
+        }
+      }
+
+      ctx.putImageData(imageData, scaledCropArea.x, scaledCropArea.y);
+    }
+
+    // Draw selection rectangle
+    ctx.strokeStyle = '#ff0000';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    ctx.strokeRect(
+      cropArea.x * previewScale,
+      cropArea.y * previewScale,
+      cropArea.width * previewScale,
+      cropArea.height * previewScale
+    );
+    ctx.setLineDash([]);
+  }, [cropArea, pixelSize, previewScale]);
+
+  // Live preview update
+  useEffect(() => {
+    if (image) {
+      drawPreview(image, true);
+    }
+  }, [image, cropArea, pixelSize, drawPreview]);
 
   const applyPixelation = useCallback(() => {
     if (!image || !canvasRef.current) return;
@@ -67,6 +132,9 @@ const PixelateTool = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    canvas.width = image.width;
+    canvas.height = image.height;
 
     // Draw original image
     ctx.drawImage(image, 0, 0);
@@ -84,7 +152,6 @@ const PixelateTool = () => {
         const b = data[pixelIndex + 2];
         const a = data[pixelIndex + 3];
 
-        // Fill the pixel block with the same color
         for (let dy = 0; dy < size && y + dy < cropArea.height; dy++) {
           for (let dx = 0; dx < size && x + dx < cropArea.width; dx++) {
             const targetIndex = ((y + dy) * cropArea.width + (x + dx)) * 4;
@@ -115,7 +182,7 @@ const PixelateTool = () => {
 
   const resetImage = () => {
     if (image) {
-      drawOriginalImage(image);
+      drawPreview(image, false);
       setProcessedImage(null);
     }
   };
@@ -126,7 +193,7 @@ const PixelateTool = () => {
         <CardHeader>
           <CardTitle>Pixelate Tool</CardTitle>
           <CardDescription>
-            Apply pixelation effects to specific areas of your images
+            Apply pixelation effects to specific areas of your images with live preview
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -169,18 +236,6 @@ const PixelateTool = () => {
                   </div>
 
                   <div>
-                    <Label>Pixelation Strength: {pixelStrength[0]}%</Label>
-                    <Slider
-                      value={pixelStrength}
-                      onValueChange={setPixelStrength}
-                      max={100}
-                      min={10}
-                      step={5}
-                      className="mt-2"
-                    />
-                  </div>
-
-                  <div>
                     <Label htmlFor="format">Download Format</Label>
                     <Select value={downloadFormat} onValueChange={setDownloadFormat}>
                       <SelectTrigger>
@@ -197,7 +252,7 @@ const PixelateTool = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="font-semibold">Pixelation Area</h3>
+                  <h3 className="font-semibold">Pixelation Area (Red Rectangle)</h3>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <Label htmlFor="x">X Position</Label>
@@ -205,9 +260,9 @@ const PixelateTool = () => {
                         id="x"
                         type="number"
                         value={cropArea.x}
-                        onChange={(e) => setCropArea(prev => ({ ...prev, x: parseInt(e.target.value) || 0 }))}
+                        onChange={(e) => setCropArea(prev => ({ ...prev, x: Math.max(0, parseInt(e.target.value) || 0) }))}
                         min={0}
-                        max={image.width - cropArea.width}
+                        max={image ? image.width - cropArea.width : 0}
                       />
                     </div>
                     <div>
@@ -216,9 +271,9 @@ const PixelateTool = () => {
                         id="y"
                         type="number"
                         value={cropArea.y}
-                        onChange={(e) => setCropArea(prev => ({ ...prev, y: parseInt(e.target.value) || 0 }))}
+                        onChange={(e) => setCropArea(prev => ({ ...prev, y: Math.max(0, parseInt(e.target.value) || 0) }))}
                         min={0}
-                        max={image.height - cropArea.height}
+                        max={image ? image.height - cropArea.height : 0}
                       />
                     </div>
                     <div>
@@ -227,9 +282,9 @@ const PixelateTool = () => {
                         id="width"
                         type="number"
                         value={cropArea.width}
-                        onChange={(e) => setCropArea(prev => ({ ...prev, width: parseInt(e.target.value) || 100 }))}
-                        min={1}
-                        max={image.width - cropArea.x}
+                        onChange={(e) => setCropArea(prev => ({ ...prev, width: Math.max(10, parseInt(e.target.value) || 100) }))}
+                        min={10}
+                        max={image ? image.width - cropArea.x : 100}
                       />
                     </div>
                     <div>
@@ -238,39 +293,39 @@ const PixelateTool = () => {
                         id="height"
                         type="number"
                         value={cropArea.height}
-                        onChange={(e) => setCropArea(prev => ({ ...prev, height: parseInt(e.target.value) || 100 }))}
-                        min={1}
-                        max={image.height - cropArea.y}
+                        onChange={(e) => setCropArea(prev => ({ ...prev, height: Math.max(10, parseInt(e.target.value) || 100) }))}
+                        min={10}
+                        max={image ? image.height - cropArea.y : 100}
                       />
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Canvas */}
-              <div className="flex justify-center">
-                <canvas
-                  ref={canvasRef}
-                  className="max-w-full max-h-96 border border-border rounded-lg"
-                  style={{ maxWidth: '100%', height: 'auto' }}
-                />
+              {/* Live Preview */}
+              <div className="space-y-4">
+                <h3 className="font-semibold">Live Preview (Red box shows pixelation area)</h3>
+                <div className="flex justify-center">
+                  <canvas
+                    ref={previewCanvasRef}
+                    className="max-w-full max-h-96 border border-border rounded-lg"
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
+                </div>
               </div>
+
+              {/* Hidden canvas for final processing */}
+              <canvas ref={canvasRef} className="hidden" />
 
               {/* Action Buttons */}
               <div className="flex gap-2 justify-center">
                 <Button onClick={applyPixelation} disabled={isProcessing}>
-                  {isProcessing ? 'Processing...' : 'Apply Pixelation'}
+                  {isProcessing ? 'Processing...' : 'Apply & Download'}
                 </Button>
                 <Button onClick={resetImage} variant="outline">
                   <RotateCcw className="mr-2 h-4 w-4" />
                   Reset
                 </Button>
-                {processedImage && (
-                  <Button onClick={downloadImage}>
-                    <Download className="mr-2 h-4 w-4" />
-                    Download
-                  </Button>
-                )}
               </div>
             </>
           )}

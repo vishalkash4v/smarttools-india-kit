@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -38,6 +38,7 @@ const PhotoAnnotationTool = () => {
   });
   const [downloadFormat, setDownloadFormat] = useState('png');
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const overlayInputRef = useRef<HTMLInputElement>(null);
 
@@ -52,7 +53,7 @@ const PhotoAnnotationTool = () => {
       const img = new Image();
       img.onload = () => {
         setBaseImage(img);
-        drawCanvas();
+        toast.success('Image uploaded successfully!');
       };
       img.src = URL.createObjectURL(file);
     }
@@ -73,13 +74,13 @@ const PhotoAnnotationTool = () => {
           type: 'image',
           content: e.target?.result as string
         }));
+        toast.success('Overlay image loaded!');
       };
       reader.readAsDataURL(file);
     }
   }, []);
 
   const removeImageBackground = async (imageData: string): Promise<string> => {
-    // Simplified background removal - in a real implementation, you'd use a more sophisticated algorithm
     return new Promise((resolve) => {
       const img = new Image();
       img.onload = () => {
@@ -157,9 +158,63 @@ const PhotoAnnotationTool = () => {
 
   const removeAnnotation = (id: string) => {
     setAnnotations(prev => prev.filter(ann => ann.id !== id));
+    toast.success('Annotation removed!');
   };
 
-  const drawCanvas = useCallback(() => {
+  const drawCanvas = useCallback(async () => {
+    if (!baseImage || !previewCanvasRef.current) return;
+
+    const canvas = previewCanvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Scale image for preview
+    const maxWidth = 600;
+    const scale = baseImage.width > maxWidth ? maxWidth / baseImage.width : 1;
+    
+    canvas.width = baseImage.width * scale;
+    canvas.height = baseImage.height * scale;
+
+    // Draw base image
+    ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
+
+    // Draw annotations
+    for (const annotation of annotations) {
+      if (annotation.type === 'text') {
+        ctx.font = `${(annotation.fontSize || 20) * scale}px Arial`;
+        ctx.fillStyle = annotation.color || '#000000';
+        ctx.fillText(
+          annotation.content, 
+          annotation.x * scale, 
+          annotation.y * scale
+        );
+      } else if (annotation.type === 'image') {
+        const img = new Image();
+        await new Promise<void>((resolve) => {
+          img.onload = () => {
+            ctx.drawImage(
+              img, 
+              annotation.x * scale, 
+              annotation.y * scale, 
+              annotation.width * scale, 
+              annotation.height * scale
+            );
+            resolve();
+          };
+          img.src = annotation.content;
+        });
+      }
+    }
+  }, [baseImage, annotations]);
+
+  // Update preview when annotations change
+  useEffect(() => {
+    if (baseImage) {
+      drawCanvas();
+    }
+  }, [baseImage, annotations, drawCanvas]);
+
+  const downloadImage = async () => {
     if (!baseImage || !canvasRef.current) return;
 
     const canvas = canvasRef.current;
@@ -169,35 +224,30 @@ const PhotoAnnotationTool = () => {
     canvas.width = baseImage.width;
     canvas.height = baseImage.height;
 
-    // Draw base image
+    // Draw base image at full resolution
     ctx.drawImage(baseImage, 0, 0);
 
-    // Draw annotations
-    annotations.forEach(annotation => {
+    // Draw annotations at full resolution
+    for (const annotation of annotations) {
       if (annotation.type === 'text') {
-        ctx.font = `${annotation.fontSize}px Arial`;
+        ctx.font = `${annotation.fontSize || 20}px Arial`;
         ctx.fillStyle = annotation.color || '#000000';
         ctx.fillText(annotation.content, annotation.x, annotation.y);
       } else if (annotation.type === 'image') {
         const img = new Image();
-        img.onload = () => {
-          ctx.drawImage(img, annotation.x, annotation.y, annotation.width, annotation.height);
-        };
-        img.src = annotation.content;
+        await new Promise<void>((resolve) => {
+          img.onload = () => {
+            ctx.drawImage(img, annotation.x, annotation.y, annotation.width, annotation.height);
+            resolve();
+          };
+          img.src = annotation.content;
+        });
       }
-    });
-  }, [baseImage, annotations]);
-
-  React.useEffect(() => {
-    drawCanvas();
-  }, [drawCanvas]);
-
-  const downloadImage = () => {
-    if (!canvasRef.current) return;
+    }
 
     const link = document.createElement('a');
     link.download = `annotated-photo.${downloadFormat}`;
-    link.href = canvasRef.current.toDataURL(`image/${downloadFormat}`);
+    link.href = canvas.toDataURL(`image/${downloadFormat}`);
     link.click();
     toast.success('Image downloaded successfully!');
   };
@@ -216,7 +266,7 @@ const PhotoAnnotationTool = () => {
         <CardHeader>
           <CardTitle>Photo Annotation Tool</CardTitle>
           <CardDescription>
-            Add name, date, signature, and fingerprint to your photos
+            Add name, date, signature, and fingerprint to your photos with live preview
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -328,7 +378,7 @@ const PhotoAnnotationTool = () => {
                           id="removeBackground"
                           checked={currentAnnotation.removeBackground}
                           onCheckedChange={(checked) => 
-                            setCurrentAnnotation(prev => ({ ...prev, removeBackground: checked as boolean }))
+                            setCurrentAnnotation(prev => ({ ...prev, removeBackground: checked === true }))
                           }
                         />
                         <Label htmlFor="removeBackground">Remove white background</Label>
@@ -342,7 +392,7 @@ const PhotoAnnotationTool = () => {
                       <Input
                         type="number"
                         value={currentAnnotation.x}
-                        onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, x: parseInt(e.target.value) }))}
+                        onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, x: parseInt(e.target.value) || 0 }))}
                         min={0}
                       />
                     </div>
@@ -351,7 +401,7 @@ const PhotoAnnotationTool = () => {
                       <Input
                         type="number"
                         value={currentAnnotation.y}
-                        onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, y: parseInt(e.target.value) }))}
+                        onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, y: parseInt(e.target.value) || 0 }))}
                         min={0}
                       />
                     </div>
@@ -364,7 +414,7 @@ const PhotoAnnotationTool = () => {
                         <Input
                           type="number"
                           value={currentAnnotation.width}
-                          onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, width: parseInt(e.target.value) }))}
+                          onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, width: parseInt(e.target.value) || 200 }))}
                           min={10}
                         />
                       </div>
@@ -373,7 +423,7 @@ const PhotoAnnotationTool = () => {
                         <Input
                           type="number"
                           value={currentAnnotation.height}
-                          onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, height: parseInt(e.target.value) }))}
+                          onChange={(e) => setCurrentAnnotation(prev => ({ ...prev, height: parseInt(e.target.value) || 50 }))}
                           min={10}
                         />
                       </div>
@@ -407,18 +457,21 @@ const PhotoAnnotationTool = () => {
                   )}
                 </div>
 
-                {/* Preview */}
+                {/* Live Preview */}
                 <div className="space-y-4">
-                  <h3 className="font-semibold">Preview</h3>
+                  <h3 className="font-semibold">Live Preview</h3>
                   <div className="flex justify-center">
                     <canvas
-                      ref={canvasRef}
+                      ref={previewCanvasRef}
                       className="max-w-full max-h-96 border border-border rounded-lg"
                       style={{ maxWidth: '100%', height: 'auto' }}
                     />
                   </div>
                 </div>
               </div>
+
+              {/* Hidden canvas for final processing */}
+              <canvas ref={canvasRef} className="hidden" />
 
               {/* Download Controls */}
               <div className="flex gap-4 items-center justify-center">
