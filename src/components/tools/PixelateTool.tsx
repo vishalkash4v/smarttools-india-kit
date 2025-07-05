@@ -22,6 +22,9 @@ const PixelateTool = () => {
   });
   const [downloadFormat, setDownloadFormat] = useState('png');
   const [previewScale, setPreviewScale] = useState(1);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -78,31 +81,41 @@ const PixelateTool = () => {
         height: cropArea.height * previewScale
       };
 
-      const imageData = ctx.getImageData(scaledCropArea.x, scaledCropArea.y, scaledCropArea.width, scaledCropArea.height);
-      const data = imageData.data;
-      const size = Math.max(2, pixelSize[0] * previewScale);
+      // Ensure the area is within bounds
+      const clampedArea = {
+        x: Math.max(0, Math.min(scaledCropArea.x, scaledWidth - scaledCropArea.width)),
+        y: Math.max(0, Math.min(scaledCropArea.y, scaledHeight - scaledCropArea.height)),
+        width: Math.min(scaledCropArea.width, scaledWidth - scaledCropArea.x),
+        height: Math.min(scaledCropArea.height, scaledHeight - scaledCropArea.y)
+      };
 
-      for (let y = 0; y < scaledCropArea.height; y += size) {
-        for (let x = 0; x < scaledCropArea.width; x += size) {
-          const pixelIndex = (y * scaledCropArea.width + x) * 4;
-          const r = data[pixelIndex];
-          const g = data[pixelIndex + 1];
-          const b = data[pixelIndex + 2];
-          const a = data[pixelIndex + 3];
+      if (clampedArea.width > 0 && clampedArea.height > 0) {
+        const imageData = ctx.getImageData(clampedArea.x, clampedArea.y, clampedArea.width, clampedArea.height);
+        const data = imageData.data;
+        const size = Math.max(2, pixelSize[0] * previewScale);
 
-          for (let dy = 0; dy < size && y + dy < scaledCropArea.height; dy++) {
-            for (let dx = 0; dx < size && x + dx < scaledCropArea.width; dx++) {
-              const targetIndex = ((y + dy) * scaledCropArea.width + (x + dx)) * 4;
-              data[targetIndex] = r;
-              data[targetIndex + 1] = g;
-              data[targetIndex + 2] = b;
-              data[targetIndex + 3] = a;
+        for (let y = 0; y < clampedArea.height; y += size) {
+          for (let x = 0; x < clampedArea.width; x += size) {
+            const pixelIndex = (y * clampedArea.width + x) * 4;
+            const r = data[pixelIndex];
+            const g = data[pixelIndex + 1];
+            const b = data[pixelIndex + 2];
+            const a = data[pixelIndex + 3];
+
+            for (let dy = 0; dy < size && y + dy < clampedArea.height; dy++) {
+              for (let dx = 0; dx < size && x + dx < clampedArea.width; dx++) {
+                const targetIndex = ((y + dy) * clampedArea.width + (x + dx)) * 4;
+                data[targetIndex] = r;
+                data[targetIndex + 1] = g;
+                data[targetIndex + 2] = b;
+                data[targetIndex + 3] = a;
+              }
             }
           }
         }
-      }
 
-      ctx.putImageData(imageData, scaledCropArea.x, scaledCropArea.y);
+        ctx.putImageData(imageData, clampedArea.x, clampedArea.y);
+      }
     }
 
     // Draw selection rectangle
@@ -116,6 +129,20 @@ const PixelateTool = () => {
       cropArea.height * previewScale
     );
     ctx.setLineDash([]);
+
+    // Add resize handles
+    const handleSize = 8;
+    ctx.fillStyle = '#ff0000';
+    const scaledX = cropArea.x * previewScale;
+    const scaledY = cropArea.y * previewScale;
+    const scaledW = cropArea.width * previewScale;
+    const scaledH = cropArea.height * previewScale;
+
+    // Corner handles
+    ctx.fillRect(scaledX - handleSize/2, scaledY - handleSize/2, handleSize, handleSize);
+    ctx.fillRect(scaledX + scaledW - handleSize/2, scaledY - handleSize/2, handleSize, handleSize);
+    ctx.fillRect(scaledX - handleSize/2, scaledY + scaledH - handleSize/2, handleSize, handleSize);
+    ctx.fillRect(scaledX + scaledW - handleSize/2, scaledY + scaledH - handleSize/2, handleSize, handleSize);
   }, [cropArea, pixelSize, previewScale]);
 
   // Live preview update
@@ -124,6 +151,45 @@ const PixelateTool = () => {
       drawPreview(image, true);
     }
   }, [image, cropArea, pixelSize, drawPreview]);
+
+  const handleCanvasMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!image) return;
+    
+    const canvas = previewCanvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = (e.clientX - rect.left) / previewScale;
+    const mouseY = (e.clientY - rect.top) / previewScale;
+
+    // Check if clicking inside the crop area
+    if (mouseX >= cropArea.x && mouseX <= cropArea.x + cropArea.width &&
+        mouseY >= cropArea.y && mouseY <= cropArea.y + cropArea.height) {
+      setIsDragging(true);
+      setDragStart({ x: mouseX - cropArea.x, y: mouseY - cropArea.y });
+    }
+  };
+
+  const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDragging || !image) return;
+
+    const canvas = previewCanvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = (e.clientX - rect.left) / previewScale;
+    const mouseY = (e.clientY - rect.top) / previewScale;
+
+    const newX = Math.max(0, Math.min(mouseX - dragStart.x, image.width - cropArea.width));
+    const newY = Math.max(0, Math.min(mouseY - dragStart.y, image.height - cropArea.height));
+
+    setCropArea(prev => ({ ...prev, x: newX, y: newY }));
+  };
+
+  const handleCanvasMouseUp = () => {
+    setIsDragging(false);
+    setIsResizing(false);
+  };
 
   const applyPixelation = useCallback(() => {
     if (!image || !canvasRef.current) return;
@@ -193,7 +259,7 @@ const PixelateTool = () => {
         <CardHeader>
           <CardTitle>Pixelate Tool</CardTitle>
           <CardDescription>
-            Apply pixelation effects to specific areas of your images with live preview
+            Apply pixelation effects to specific areas of your images with draggable selection and live preview
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -252,14 +318,14 @@ const PixelateTool = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="font-semibold">Pixelation Area (Red Rectangle)</h3>
+                  <h3 className="font-semibold">Pixelation Area (Drag the red box to move)</h3>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <Label htmlFor="x">X Position</Label>
                       <Input
                         id="x"
                         type="number"
-                        value={cropArea.x}
+                        value={Math.round(cropArea.x)}
                         onChange={(e) => setCropArea(prev => ({ ...prev, x: Math.max(0, parseInt(e.target.value) || 0) }))}
                         min={0}
                         max={image ? image.width - cropArea.width : 0}
@@ -270,7 +336,7 @@ const PixelateTool = () => {
                       <Input
                         id="y"
                         type="number"
-                        value={cropArea.y}
+                        value={Math.round(cropArea.y)}
                         onChange={(e) => setCropArea(prev => ({ ...prev, y: Math.max(0, parseInt(e.target.value) || 0) }))}
                         min={0}
                         max={image ? image.height - cropArea.height : 0}
@@ -281,7 +347,7 @@ const PixelateTool = () => {
                       <Input
                         id="width"
                         type="number"
-                        value={cropArea.width}
+                        value={Math.round(cropArea.width)}
                         onChange={(e) => setCropArea(prev => ({ ...prev, width: Math.max(10, parseInt(e.target.value) || 100) }))}
                         min={10}
                         max={image ? image.width - cropArea.x : 100}
@@ -292,7 +358,7 @@ const PixelateTool = () => {
                       <Input
                         id="height"
                         type="number"
-                        value={cropArea.height}
+                        value={Math.round(cropArea.height)}
                         onChange={(e) => setCropArea(prev => ({ ...prev, height: Math.max(10, parseInt(e.target.value) || 100) }))}
                         min={10}
                         max={image ? image.height - cropArea.y : 100}
@@ -304,14 +370,21 @@ const PixelateTool = () => {
 
               {/* Live Preview */}
               <div className="space-y-4">
-                <h3 className="font-semibold">Live Preview (Red box shows pixelation area)</h3>
+                <h3 className="font-semibold">Live Preview - Drag the red box to select pixelation area</h3>
                 <div className="flex justify-center">
                   <canvas
                     ref={previewCanvasRef}
-                    className="max-w-full max-h-96 border border-border rounded-lg"
+                    className="max-w-full max-h-96 border border-border rounded-lg cursor-move"
                     style={{ maxWidth: '100%', height: 'auto' }}
+                    onMouseDown={handleCanvasMouseDown}
+                    onMouseMove={handleCanvasMouseMove}
+                    onMouseUp={handleCanvasMouseUp}
+                    onMouseLeave={handleCanvasMouseUp}
                   />
                 </div>
+                <p className="text-sm text-muted-foreground text-center">
+                  Click and drag the red selection box to move it around the image
+                </p>
               </div>
 
               {/* Hidden canvas for final processing */}

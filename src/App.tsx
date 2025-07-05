@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -5,6 +6,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'sonner';
 
 import MainLayout from '@/components/layout/MainLayout';
+import ScrollToTop from '@/components/common/ScrollToTop';
 import LandingPage from '@/pages/LandingPage';
 import AboutPage from '@/pages/AboutPage';
 import ContactPage from '@/pages/ContactPage';
@@ -92,6 +94,7 @@ function App() {
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <QueryClientProvider client={queryClient}>
           <Toaster />
           <MainLayout>
@@ -172,7 +175,9 @@ function App() {
               <Route path="/youtube-downloader" element={<YoutubeDownloaderPage />} />
               
               {/* New Tool Routes */}
+              <Route path="/pixelate-tool" element={<PixelateToolPage />} />
               <Route path="/tools/pixelate-tool" element={<PixelateToolPage />} />
+              <Route path="/photo-annotation-tool" element={<PhotoAnnotationToolPage />} />
               <Route path="/tools/photo-annotation-tool" element={<PhotoAnnotationToolPage />} />
               <Route path="/tools/background-remover" element={<BackgroundRemoverPage />} />
               <Route path="/tools/image-resizer" element={<ImageResizerPage />} />
