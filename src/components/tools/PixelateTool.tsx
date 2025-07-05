@@ -11,8 +11,6 @@ import { toast } from 'sonner';
 
 const PixelateTool = () => {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
-  const [processedImage, setProcessedImage] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [pixelSize, setPixelSize] = useState([8]);
   const [cropArea, setCropArea] = useState({
     x: 50,
@@ -23,7 +21,6 @@ const PixelateTool = () => {
   const [downloadFormat, setDownloadFormat] = useState('png');
   const [previewScale, setPreviewScale] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -50,13 +47,12 @@ const PixelateTool = () => {
           width: Math.round(img.width * 0.3),
           height: Math.round(img.height * 0.3)
         });
-        drawPreview(img);
       };
       img.src = URL.createObjectURL(file);
     }
   }, []);
 
-  const drawPreview = useCallback((img: HTMLImageElement, showPixelation = false) => {
+  const drawPreview = useCallback((img: HTMLImageElement) => {
     const canvas = previewCanvasRef.current;
     if (!canvas) return;
 
@@ -72,50 +68,48 @@ const PixelateTool = () => {
     // Draw original image
     ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
 
-    if (showPixelation) {
-      // Apply pixelation to the specified area
-      const scaledCropArea = {
-        x: cropArea.x * previewScale,
-        y: cropArea.y * previewScale,
-        width: cropArea.width * previewScale,
-        height: cropArea.height * previewScale
-      };
+    // Apply pixelation to the specified area
+    const scaledCropArea = {
+      x: cropArea.x * previewScale,
+      y: cropArea.y * previewScale,
+      width: cropArea.width * previewScale,
+      height: cropArea.height * previewScale
+    };
 
-      // Ensure the area is within bounds
-      const clampedArea = {
-        x: Math.max(0, Math.min(scaledCropArea.x, scaledWidth - scaledCropArea.width)),
-        y: Math.max(0, Math.min(scaledCropArea.y, scaledHeight - scaledCropArea.height)),
-        width: Math.min(scaledCropArea.width, scaledWidth - scaledCropArea.x),
-        height: Math.min(scaledCropArea.height, scaledHeight - scaledCropArea.y)
-      };
+    // Ensure the area is within bounds
+    const clampedArea = {
+      x: Math.max(0, Math.min(scaledCropArea.x, scaledWidth - scaledCropArea.width)),
+      y: Math.max(0, Math.min(scaledCropArea.y, scaledHeight - scaledCropArea.height)),
+      width: Math.min(scaledCropArea.width, scaledWidth - scaledCropArea.x),
+      height: Math.min(scaledCropArea.height, scaledHeight - scaledCropArea.y)
+    };
 
-      if (clampedArea.width > 0 && clampedArea.height > 0) {
-        const imageData = ctx.getImageData(clampedArea.x, clampedArea.y, clampedArea.width, clampedArea.height);
-        const data = imageData.data;
-        const size = Math.max(2, pixelSize[0] * previewScale);
+    if (clampedArea.width > 0 && clampedArea.height > 0) {
+      const imageData = ctx.getImageData(clampedArea.x, clampedArea.y, clampedArea.width, clampedArea.height);
+      const data = imageData.data;
+      const size = Math.max(2, pixelSize[0] * previewScale);
 
-        for (let y = 0; y < clampedArea.height; y += size) {
-          for (let x = 0; x < clampedArea.width; x += size) {
-            const pixelIndex = (y * clampedArea.width + x) * 4;
-            const r = data[pixelIndex];
-            const g = data[pixelIndex + 1];
-            const b = data[pixelIndex + 2];
-            const a = data[pixelIndex + 3];
+      for (let y = 0; y < clampedArea.height; y += size) {
+        for (let x = 0; x < clampedArea.width; x += size) {
+          const pixelIndex = (y * clampedArea.width + x) * 4;
+          const r = data[pixelIndex];
+          const g = data[pixelIndex + 1];
+          const b = data[pixelIndex + 2];
+          const a = data[pixelIndex + 3];
 
-            for (let dy = 0; dy < size && y + dy < clampedArea.height; dy++) {
-              for (let dx = 0; dx < size && x + dx < clampedArea.width; dx++) {
-                const targetIndex = ((y + dy) * clampedArea.width + (x + dx)) * 4;
-                data[targetIndex] = r;
-                data[targetIndex + 1] = g;
-                data[targetIndex + 2] = b;
-                data[targetIndex + 3] = a;
-              }
+          for (let dy = 0; dy < size && y + dy < clampedArea.height; dy++) {
+            for (let dx = 0; dx < size && x + dx < clampedArea.width; dx++) {
+              const targetIndex = ((y + dy) * clampedArea.width + (x + dx)) * 4;
+              data[targetIndex] = r;
+              data[targetIndex + 1] = g;
+              data[targetIndex + 2] = b;
+              data[targetIndex + 3] = a;
             }
           }
         }
-
-        ctx.putImageData(imageData, clampedArea.x, clampedArea.y);
       }
+
+      ctx.putImageData(imageData, clampedArea.x, clampedArea.y);
     }
 
     // Draw selection rectangle
@@ -145,10 +139,10 @@ const PixelateTool = () => {
     ctx.fillRect(scaledX + scaledW - handleSize/2, scaledY + scaledH - handleSize/2, handleSize, handleSize);
   }, [cropArea, pixelSize, previewScale]);
 
-  // Live preview update
+  // Auto-apply pixelation when image, crop area, or pixel size changes
   useEffect(() => {
     if (image) {
-      drawPreview(image, true);
+      drawPreview(image);
     }
   }, [image, cropArea, pixelSize, drawPreview]);
 
@@ -188,13 +182,11 @@ const PixelateTool = () => {
 
   const handleCanvasMouseUp = () => {
     setIsDragging(false);
-    setIsResizing(false);
   };
 
-  const applyPixelation = useCallback(() => {
+  const downloadImage = () => {
     if (!image || !canvasRef.current) return;
 
-    setIsProcessing(true);
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -231,25 +223,50 @@ const PixelateTool = () => {
     }
 
     ctx.putImageData(imageData, cropArea.x, cropArea.y);
-    setProcessedImage(canvas.toDataURL());
-    setIsProcessing(false);
-    toast.success('Pixelation applied successfully!');
-  }, [image, pixelSize, cropArea]);
 
-  const downloadImage = () => {
-    if (!processedImage) return;
-
-    const link = document.createElement('a');
-    link.download = `pixelated-image.${downloadFormat}`;
-    link.href = processedImage;
-    link.click();
-    toast.success('Image downloaded successfully!');
+    // Create download link
+    const mimeType = downloadFormat === 'jpg' || downloadFormat === 'jpeg' ? 'image/jpeg' : `image/${downloadFormat}`;
+    const quality = downloadFormat === 'jpg' || downloadFormat === 'jpeg' ? 0.9 : undefined;
+    
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = `pixelated-image.${downloadFormat}`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+        toast.success('Image downloaded successfully!');
+      }
+    }, mimeType, quality);
   };
 
   const resetImage = () => {
     if (image) {
-      drawPreview(image, false);
-      setProcessedImage(null);
+      // Reset to original image without pixelation
+      const canvas = previewCanvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          const scaledWidth = image.width * previewScale;
+          const scaledHeight = image.height * previewScale;
+          canvas.width = scaledWidth;
+          canvas.height = scaledHeight;
+          ctx.drawImage(image, 0, 0, scaledWidth, scaledHeight);
+          
+          // Draw selection rectangle
+          ctx.strokeStyle = '#ff0000';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([5, 5]);
+          ctx.strokeRect(
+            cropArea.x * previewScale,
+            cropArea.y * previewScale,
+            cropArea.width * previewScale,
+            cropArea.height * previewScale
+          );
+          ctx.setLineDash([]);
+        }
+      }
     }
   };
 
@@ -383,7 +400,7 @@ const PixelateTool = () => {
                   />
                 </div>
                 <p className="text-sm text-muted-foreground text-center">
-                  Click and drag the red selection box to move it around the image
+                  Click and drag the red selection box to move it around the image. Pixelation is applied automatically.
                 </p>
               </div>
 
@@ -392,8 +409,9 @@ const PixelateTool = () => {
 
               {/* Action Buttons */}
               <div className="flex gap-2 justify-center">
-                <Button onClick={applyPixelation} disabled={isProcessing}>
-                  {isProcessing ? 'Processing...' : 'Apply & Download'}
+                <Button onClick={downloadImage}>
+                  <Download className="mr-2 h-4 w-4" />
+                  Download Image
                 </Button>
                 <Button onClick={resetImage} variant="outline">
                   <RotateCcw className="mr-2 h-4 w-4" />
