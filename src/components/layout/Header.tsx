@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -34,6 +33,18 @@ const tools = [
   { name: 'PPF Calculator', description: 'Calculate Public Provident Fund returns', href: '/tools/ppf-calculator', category: 'Finance', keywords: 'ppf provident fund calculate returns investment', icon: () => null },
   { name: 'FD Calculator', description: 'Calculate Fixed Deposit returns and maturity', href: '/tools/fd-calculator', category: 'Finance', keywords: 'fd fixed deposit calculate returns maturity interest', icon: () => null },
   { name: 'Income Tax Calculator', description: 'Calculate income tax for Indian tax payers', href: '/tools/income-tax-calculator', category: 'Finance', keywords: 'income tax calculate indian slab deduction', icon: () => null },
+  { name: 'Pixelate Tool', description: 'Apply pixelation effects to specific areas of your images', href: '/tools/pixelate-tool', category: 'Image Tools', keywords: 'pixelate image effect privacy blur', icon: () => null },
+  { name: 'Photo Annotation Tool', description: 'Add name, date, signature, fingerprint to photos', href: '/tools/photo-annotation-tool', category: 'Image Tools', keywords: 'photo annotation name date signature fingerprint passport', icon: () => null },
+  { name: 'Background Remover', description: 'Remove background from photos automatically', href: '/tools/background-remover', category: 'Image Tools', keywords: 'background remover remove photo background transparent', icon: () => null },
+  { name: 'Image Resizer', description: 'Manually resize image dimensions and file size', href: '/tools/image-resizer', category: 'Image Tools', keywords: 'image resizer resize photo dimensions compress', icon: () => null },
+  { name: 'Auto Image Resizer', description: 'Automatically resize images to optimal dimensions', href: '/tools/auto-image-resizer', category: 'Image Tools', keywords: 'auto image resizer automatic resize optimize', icon: () => null },
+  { name: 'Add Name & Date on Photo', description: 'Add name and date on passport photographs', href: '/tools/add-name-date-photo', category: 'Image Tools', keywords: 'add name date photo passport application form', icon: () => null },
+  { name: 'Join Photo & Sign', description: 'Combine photo and signature for applications', href: '/tools/join-photo-sign', category: 'Image Tools', keywords: 'join photo signature combine application form', icon: () => null },
+  { name: 'Front & Back Side Joiner', description: 'Join front and back sides of ID cards', href: '/tools/front-back-joiner', category: 'Image Tools', keywords: 'front back joiner aadhaar voter id card license', icon: () => null },
+  { name: 'Single Image to PDF', description: 'Convert single JPG file to PDF', href: '/tools/single-image-to-pdf', category: 'Image Tools', keywords: 'image to pdf convert jpg pdf single', icon: () => null },
+  { name: 'Multiple Image to PDF', description: 'Convert multiple JPG files to single PDF', href: '/tools/multiple-image-to-pdf', category: 'Image Tools', keywords: 'multiple image pdf convert jpg combine', icon: () => null },
+  { name: 'Blur to Clear', description: 'AI-powered image enhancer and upscaler', href: '/tools/blur-to-clear', category: 'Image Tools', keywords: 'blur clear ai enhance upscale image quality', icon: () => null },
+  { name: 'QR Scanner', description: 'Scan QR codes using camera or upload image', href: '/tools/qr-scanner', category: 'Utility Tools', keywords: 'qr scanner scan code camera upload', icon: () => null },
 ];
 
 interface HeaderProps {

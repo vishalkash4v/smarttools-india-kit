@@ -115,6 +115,31 @@ export function AppSidebar() {
       ]
     },
     {
+      title: "Image & File Tools",
+      items: [
+        { title: "Image Compressor", url: "/image-compressor", icon: ImageIcon },
+        { title: "Logo to Favicon", url: "/logo-to-favicon", icon: Star },
+        { title: "Image Upscaler", url: "/image-upscaler", icon: Zap },
+        { title: "Image Cropper", url: "/image-cropper", icon: Crop },
+        { title: "Image Format Converter", url: "/image-format-converter", icon: RotateCcw },
+        { title: "SVG Optimizer", url: "/svg-optimizer", icon: FileCode2 },
+        { title: "Image Metadata Viewer", url: "/image-metadata-viewer", icon: Camera },
+        { title: "PDF Text Extractor", url: "/pdf-text-extractor", icon: FileArchive },
+        { title: "Placeholder Generator", url: "/placeholder-image-generator", icon: FileImage },
+        { title: "Pixelate Tool", url: "/tools/pixelate-tool", icon: ImageIcon },
+        { title: "Photo Annotation", url: "/tools/photo-annotation-tool", icon: StickyNote },
+        { title: "Background Remover", url: "/tools/background-remover", icon: ImageIcon },
+        { title: "Image Resizer", url: "/tools/image-resizer", icon: ImageIcon },
+        { title: "Auto Image Resizer", url: "/tools/auto-image-resizer", icon: Zap },
+        { title: "Add Name & Date", url: "/tools/add-name-date-photo", icon: CalendarSchedule },
+        { title: "Join Photo & Sign", url: "/tools/join-photo-sign", icon: Share2 },
+        { title: "Front & Back Joiner", url: "/tools/front-back-joiner", icon: Layout },
+        { title: "Image to PDF", url: "/tools/single-image-to-pdf", icon: FileArchive },
+        { title: "Multiple Images to PDF", url: "/tools/multiple-image-to-pdf", icon: FileArchive },
+        { title: "Blur to Clear", url: "/tools/blur-to-clear", icon: Zap },
+      ]
+    },
+    {
       title: "Utility Tools",
       items: [
         { title: "QR Code Generator", url: "/qr-code-generator", icon: FileCode2 },
@@ -129,6 +154,7 @@ export function AppSidebar() {
         { title: "List Randomizer", url: "/list-randomizer", icon: Layout },
         { title: "Barcode Generator", url: "/barcode-generator", icon: Layout },
         { title: "URL App Wrapper", url: "/url-wrapper", icon: Link2 },
+        { title: "QR Scanner", url: "/tools/qr-scanner", icon: Layout },
       ]
     },
     {
@@ -144,20 +170,6 @@ export function AppSidebar() {
       title: "Network Tools",
       items: [
         { title: "What's My IP", url: "/ip-lookup", icon: Globe },
-      ]
-    },
-    {
-      title: "Image & File Tools",
-      items: [
-        { title: "Image Compressor", url: "/image-compressor", icon: ImageIcon },
-        { title: "Logo to Favicon", url: "/logo-to-favicon", icon: Star },
-        { title: "Image Upscaler", url: "/image-upscaler", icon: Zap },
-        { title: "Image Cropper", url: "/image-cropper", icon: Crop },
-        { title: "Image Format Converter", url: "/image-format-converter", icon: RotateCcw },
-        { title: "SVG Optimizer", url: "/svg-optimizer", icon: FileCode2 },
-        { title: "Image Metadata Viewer", url: "/image-metadata-viewer", icon: Camera },
-        { title: "PDF Text Extractor", url: "/pdf-text-extractor", icon: FileArchive },
-        { title: "Placeholder Generator", url: "/placeholder-image-generator", icon: FileImage },
       ]
     },
     {

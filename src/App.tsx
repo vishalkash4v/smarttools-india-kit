@@ -78,6 +78,12 @@ import YoutubeDownloaderPage from '@/pages/tools/YoutubeDownloaderPage';
 
 import FutureDateCalculatorPage from '@/pages/tools/FutureDateCalculatorPage';
 
+import PixelateToolPage from '@/pages/tools/PixelateToolPage';
+import PhotoAnnotationToolPage from '@/pages/tools/PhotoAnnotationToolPage';
+import BackgroundRemoverPage from '@/pages/tools/BackgroundRemoverPage';
+import ImageResizerPage from '@/pages/tools/ImageResizerPage';
+import QRScannerPage from '@/pages/tools/QRScannerPage';
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -162,6 +168,13 @@ function App() {
               <Route path="/social-media-db-viewer" element={<SocialMediaDbViewerPage />} />
               <Route path="/social-media-downloader" element={<SocialMediaDownloaderPage />} />
               <Route path="/youtube-downloader" element={<YoutubeDownloaderPage />} />
+              
+              {/* New Tool Routes */}
+              <Route path="/tools/pixelate-tool" element={<PixelateToolPage />} />
+              <Route path="/tools/photo-annotation-tool" element={<PhotoAnnotationToolPage />} />
+              <Route path="/tools/background-remover" element={<BackgroundRemoverPage />} />
+              <Route path="/tools/image-resizer" element={<ImageResizerPage />} />
+              <Route path="/tools/qr-scanner" element={<QRScannerPage />} />
               
             </Routes>
           </MainLayout>

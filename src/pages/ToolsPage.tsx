@@ -193,6 +193,94 @@ const ToolsPage = () => {
       path: '/placeholder-image-generator',
       icon: FileImage
     },
+    { 
+      id: 'pixelate-tool', 
+      name: 'Pixelate Tool', 
+      category: 'Image Tools', 
+      description: 'Apply pixelation effects to specific areas of your images with customizable strength and size.',
+      path: '/tools/pixelate-tool',
+      icon: ImageIcon
+    },
+    { 
+      id: 'photo-annotation-tool', 
+      name: 'Photo Annotation Tool', 
+      category: 'Image Tools', 
+      description: 'Add name, date, signature, and fingerprint to photos. Perfect for passport photos and applications.',
+      path: '/tools/photo-annotation-tool',
+      icon: PenTool
+    },
+    { 
+      id: 'background-remover', 
+      name: 'Background Remover', 
+      category: 'Image Tools', 
+      description: 'Remove background from photos automatically. Create transparent backgrounds instantly.',
+      path: '/tools/background-remover',
+      icon: Eraser
+    },
+    { 
+      id: 'image-resizer', 
+      name: 'Image Resizer', 
+      category: 'Image Tools', 
+      description: 'Manually resize image dimensions and file size. Perfect for documents and web images.',
+      path: '/tools/image-resizer',
+      icon: ImageIcon
+    },
+    { 
+      id: 'auto-image-resizer', 
+      name: 'Auto Image Resizer', 
+      category: 'Image Tools', 
+      description: 'Automatically resize images to optimal dimensions and file sizes for various use cases.',
+      path: '/tools/auto-image-resizer',
+      icon: Zap
+    },
+    { 
+      id: 'add-name-date-photo', 
+      name: 'Add Name & Date on Photo', 
+      category: 'Image Tools', 
+      description: 'Add name and date on passport photographs for online application forms.',
+      path: '/tools/add-name-date-photo',
+      icon: CalendarDays
+    },
+    { 
+      id: 'join-photo-sign', 
+      name: 'Join Photo & Sign', 
+      category: 'Image Tools', 
+      description: 'Combine photo and signature for online application forms.',
+      path: '/tools/join-photo-sign',
+      icon: Share2
+    },
+    { 
+      id: 'front-back-joiner', 
+      name: 'Front & Back Side Joiner', 
+      category: 'Image Tools', 
+      description: 'Join front and back sides of Aadhaar Card, Voter Card, Driving License, etc.',
+      path: '/tools/front-back-joiner',
+      icon: Copy
+    },
+    { 
+      id: 'single-image-to-pdf', 
+      name: 'Single Image to PDF', 
+      category: 'Image Tools', 
+      description: 'Convert any single JPG file to PDF format.',
+      path: '/tools/single-image-to-pdf',
+      icon: FileArchive
+    },
+    { 
+      id: 'multiple-image-to-pdf', 
+      name: 'Multiple Image to PDF', 
+      category: 'Image Tools', 
+      description: 'Convert multiple JPG files to a single PDF document.',
+      path: '/tools/multiple-image-to-pdf',
+      icon: FileArchive
+    },
+    { 
+      id: 'blur-to-clear', 
+      name: 'Blur to Clear', 
+      category: 'Image Tools', 
+      description: 'AI-powered image enhancer and upscaler to clean blur images and photos.',
+      path: '/tools/blur-to-clear',
+      icon: Zap
+    },
 
     // Typing Tools
     { 
@@ -292,6 +380,14 @@ const ToolsPage = () => {
       description: 'Convert regular URLs into app-opening links for mobile apps and web services.',
       path: '/url-wrapper',
       icon: Smartphone
+    },
+    { 
+      id: 'qr-scanner', 
+      name: 'QR Scanner', 
+      category: 'Utility Tools', 
+      description: 'Scan QR codes using camera or upload image to generate links.',
+      path: '/tools/qr-scanner',
+      icon: QrCode
     },
 
     // Number Tools
