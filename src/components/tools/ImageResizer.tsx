@@ -222,7 +222,7 @@ const ImageResizer = () => {
                     <Checkbox
                       id="aspectRatio"
                       checked={maintainAspectRatio}
-                      onCheckedChange={setMaintainAspectRatio}
+                      onCheckedChange={(checked) => setMaintainAspectRatio(checked === true)}
                     />
                     <Label htmlFor="aspectRatio" className="flex items-center">
                       <Link className="mr-1 h-3 w-3" />
