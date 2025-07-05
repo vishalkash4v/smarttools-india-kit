@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -8,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { ModeToggle } from "@/components/ModeToggle"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -519,7 +520,7 @@ const Header = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <ModeToggle />
+        <ThemeToggle />
 
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild className="md:hidden">
