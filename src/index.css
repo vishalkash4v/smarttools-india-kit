@@ -30,6 +30,14 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 240 5.9% 89%;
+    --sidebar-ring: 240 5.9% 10%;
   }
 
   .dark {
@@ -57,6 +65,14 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.9% 83.9%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 240 4.9% 83.9%;
   }
 
   .metallic {
@@ -171,6 +187,34 @@
   input, textarea, select {
     font-size: 16px; /* Prevents zoom on iOS */
     min-height: 44px;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border-color: hsl(var(--border));
+  }
+
+  /* Form elements proper styling */
+  input[type="text"], 
+  input[type="email"], 
+  input[type="password"], 
+  input[type="number"], 
+  input[type="search"],
+  textarea,
+  select {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+  }
+
+  input[type="text"]:focus, 
+  input[type="email"]:focus, 
+  input[type="password"]:focus, 
+  input[type="number"]:focus, 
+  input[type="search"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: hsl(var(--ring));
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
   }
 
   /* Popover improvements for mobile */
@@ -181,12 +225,49 @@
   .popover-content {
     max-width: calc(100vw - 2rem);
     max-height: calc(100vh - 4rem);
+    background-color: hsl(var(--popover));
+    color: hsl(var(--popover-foreground));
+    border: 1px solid hsl(var(--border));
   }
 
-  /* Calendar specific improvements */
+  /* Calendar container improvements */
   .calendar-container {
     max-width: 100%;
     overflow: hidden;
+  }
+
+  /* Card improvements for better dark mode support */
+  .card {
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border: 1px solid hsl(var(--border));
+  }
+
+  /* Button improvements */
+  .button {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .button:hover {
+    background-color: hsl(var(--primary)/0.9);
+  }
+
+  /* Select dropdown improvements */
+  .select-content {
+    background-color: hsl(var(--popover));
+    color: hsl(var(--popover-foreground));
+    border: 1px solid hsl(var(--border));
+  }
+
+  .select-item {
+    background-color: transparent;
+    color: hsl(var(--popover-foreground));
+  }
+
+  .select-item:hover {
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
   }
 
   /* Metallic theme specific styles */
@@ -357,6 +438,11 @@
   }
 }
 
+@keyframes fade-in {
+  '0%': { opacity: '0', transform: 'translateY(10px)' },
+  '100%': { opacity: '1', transform: 'translateY(0)' },
+}
+
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
@@ -390,6 +476,10 @@
 
 .animate-gradient-x {
   animation: gradient-x 3s ease infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
 }
 
 .hover-lift {

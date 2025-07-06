@@ -1,3 +1,4 @@
+
 import {
   LayoutDashboard,
   Settings,
@@ -40,6 +41,17 @@ import {
   FileImage,
   Download,
   Video,
+  Key,
+  Eye,
+  ArrowLeftRight,
+  Search,
+  Palette,
+  List,
+  Barcode,
+  PenTool,
+  Eraser,
+  CopyCheck,
+  Smartphone,
 } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -79,6 +91,7 @@ export function AppSidebar() {
         { title: "Text to Handwriting", url: "/text-to-handwriting", icon: TextIcon },
         { title: "URL Slug Generator", url: "/url-slug-generator", icon: TextIcon },
         { title: "Notes", url: "/notes", icon: StickyNote },
+        { title: "Regex Tester", url: "/regex-tester", icon: Search },
       ]
     },
     {
@@ -102,6 +115,7 @@ export function AppSidebar() {
         { title: "EMI Calculator", url: "/emi-calculator", icon: PiggyBank },
         { title: "Temperature Converter", url: "/temperature-converter", icon: Thermometer },
         { title: "Unit Converter", url: "/unit-converter", icon: Layout },
+        { title: "Enhanced Unit Converter", url: "/enhanced-unit-converter", icon: ArrowLeftRight },
       ]
     },
     {
@@ -130,40 +144,44 @@ export function AppSidebar() {
         { title: "Photo Annotation", url: "/tools/photo-annotation-tool", icon: StickyNote },
         { title: "Background Remover", url: "/tools/background-remover", icon: ImageIcon },
         { title: "Image Resizer", url: "/tools/image-resizer", icon: ImageIcon },
-        { title: "Auto Image Resizer", url: "/tools/auto-image-resizer", icon: Zap },
-        { title: "Add Name & Date", url: "/tools/add-name-date-photo", icon: CalendarSchedule },
-        { title: "Join Photo & Sign", url: "/tools/join-photo-sign", icon: Share2 },
-        { title: "Front & Back Joiner", url: "/tools/front-back-joiner", icon: Layout },
-        { title: "Image to PDF", url: "/tools/single-image-to-pdf", icon: FileArchive },
-        { title: "Multiple Images to PDF", url: "/tools/multiple-image-to-pdf", icon: FileArchive },
-        { title: "Blur to Clear", url: "/tools/blur-to-clear", icon: Zap },
       ]
     },
     {
       title: "Utility Tools",
       items: [
         { title: "QR Code Generator", url: "/qr-code-generator", icon: FileCode2 },
-        { title: "Regex Tester", url: "/regex-tester", icon: FileCode2 },
-        { title: "Color Picker Tool", url: "/color-picker-tool", icon: Layout },
+        { title: "QR Scanner", url: "/tools/qr-scanner", icon: Layout },
+        { title: "Password Generator", url: "/password-generator", icon: Key },
+        { title: "Color Picker Tool", url: "/color-picker-tool", icon: Palette },
         { title: "Todo List", url: "/todo-list", icon: ListChecks },
         { title: "Stopwatch", url: "/stopwatch", icon: Timer },
         { title: "Countdown Timer", url: "/countdown-timer", icon: Clock },
-        { title: "Live Preview", url: "/live-preview", icon: Layout },
+        { title: "Live Preview", url: "/live-preview", icon: Eye },
         { title: "JavaScript Minifier", url: "/javascript-minifier", icon: FileCode2 },
         { title: "Table to JSON Converter", url: "/table-to-json-converter", icon: Table },
-        { title: "List Randomizer", url: "/list-randomizer", icon: Layout },
-        { title: "Barcode Generator", url: "/barcode-generator", icon: Layout },
-        { title: "URL App Wrapper", url: "/url-wrapper", icon: Link2 },
-        { title: "QR Scanner", url: "/tools/qr-scanner", icon: Layout },
+        { title: "List Randomizer", url: "/list-randomizer", icon: List },
+        { title: "Barcode Generator", url: "/barcode-generator", icon: Barcode },
+        { title: "URL App Wrapper", url: "/url-wrapper", icon: Smartphone },
       ]
     },
     {
       title: "Social Media Tools",
       items: [
-        { title: "Social Media Link Generator", url: "/social-media-link-generator", icon: Share2 },
         { title: "URL Shortener", url: "/url-shortener", icon: Link2 },
         { title: "Hashtag Generator", url: "/hashtag-generator", icon: Hash },
+        { title: "Social Media Link Generator", url: "/social-media-link-generator", icon: Share2 },
         { title: "Content Planner", url: "/social-media-planner", icon: CalendarSchedule },
+        { title: "Social Media DB Viewer", url: "/social-media-db-viewer", icon: Globe },
+        { title: "Instagram & Facebook Downloader", url: "/social-media-downloader", icon: Download },
+        { title: "YouTube Downloader", url: "/youtube-downloader", icon: Video },
+      ]
+    },
+    {
+      title: "Developer Tools",
+      items: [
+        { title: "Hash Generator", url: "/hash-generator", icon: Hash },
+        { title: "JWT Token Decoder", url: "/jwt-decoder", icon: Key },
+        { title: "Meta Tag Previewer", url: "/meta-tag-previewer", icon: Eye },
       ]
     },
     {
@@ -172,27 +190,19 @@ export function AppSidebar() {
         { title: "What's My IP", url: "/ip-lookup", icon: Globe },
       ]
     },
-    {
-      title: "Video & Social Media Tools",
-      items: [
-        { title: "Social Media DB Viewer", url: "/social-media-db-viewer", icon: Globe },
-        { title: "Instagram & Facebook Downloader", url: "/social-media-downloader", icon: Download },
-        { title: "YouTube Downloader", url: "/youtube-downloader", icon: Video },
-      ]
-    },
   ];
 
   return (
-    <div className="w-60 flex-shrink-0 border-r border-border py-4">
+    <div className="w-60 flex-shrink-0 border-r border-border py-4 bg-background">
       <div className="flex flex-col space-y-1">
         {sidebarItems.map((category, index) => (
           <Accordion type="single" collapsible className="w-full" key={index}>
             <AccordionItem value={category.title}>
-              <AccordionTrigger className="px-4 font-medium text-sm">{category.title}</AccordionTrigger>
+              <AccordionTrigger className="px-4 font-medium text-sm text-foreground">{category.title}</AccordionTrigger>
               <AccordionContent>
                 <div className="grid gap-2 py-2">
                   {category.items.map((item) => (
-                    <Link to={item.url} key={item.title} className="group flex items-center space-x-2 rounded-md px-4 py-2 text-sm font-medium hover:underline">
+                    <Link to={item.url} key={item.title} className="group flex items-center space-x-2 rounded-md px-4 py-2 text-sm font-medium hover:underline text-foreground hover:bg-muted">
                       <item.icon className="h-4 w-4 opacity-70 group-hover:opacity-100" />
                       <span>{item.title}</span>
                     </Link>
