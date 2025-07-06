@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,7 +9,7 @@ import { PenTool, Download, Type } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const TextToHandwriting = () => {
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState('Welcome to our handwriting tool! Type your text here and see it transform into beautiful handwriting instantly.');
   const [fontStyle, setFontStyle] = useState('cursive');
   const [fontSize, setFontSize] = useState([18]);
   const [lineHeight, setLineHeight] = useState([1.6]);
@@ -18,31 +18,31 @@ const TextToHandwriting = () => {
   const { toast } = useToast();
 
   const generateHandwriting = () => {
-    if (!inputText.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter some text to convert.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // High quality settings
+    // Enhanced quality settings
     const pixelRatio = quality[0];
-    const baseWidth = 800;
-    const estimatedHeight = Math.max(400, inputText.split('\n').length * fontSize[0] * lineHeight[0] + 100);
+    const isMobile = window.innerWidth < 768;
+    const baseWidth = isMobile ? 350 : 800;
+    const padding = isMobile ? 30 : 50;
+    
+    // Calculate dynamic height based on content
+    const lines = inputText.split('\n');
+    const lineSpacing = fontSize[0] * lineHeight[0];
+    const estimatedHeight = Math.max(
+      isMobile ? 200 : 300, 
+      lines.length * lineSpacing + padding * 2 + 50
+    );
 
     // Set actual canvas size for high DPI
     canvas.width = baseWidth * pixelRatio;
     canvas.height = estimatedHeight * pixelRatio;
     
-    // Scale the canvas back down using CSS
+    // Scale the canvas back down using CSS for proper mobile display
     canvas.style.width = baseWidth + 'px';
     canvas.style.height = estimatedHeight + 'px';
 
@@ -52,7 +52,6 @@ const TextToHandwriting = () => {
     // Enable anti-aliasing and high quality rendering
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
-    ctx.textRenderingOptimization = 'optimizeQuality';
 
     // Clear and set background
     ctx.fillStyle = '#ffffff';
@@ -61,20 +60,21 @@ const TextToHandwriting = () => {
     // Add lined paper effect with better quality
     ctx.strokeStyle = '#e8e8e8';
     ctx.lineWidth = 0.5;
-    const lineSpacing = fontSize[0] * lineHeight[0];
-    for (let i = 50; i < estimatedHeight; i += lineSpacing) {
+    const startY = padding + 20;
+    for (let i = startY; i < estimatedHeight - padding; i += lineSpacing) {
       ctx.beginPath();
-      ctx.moveTo(50, i);
-      ctx.lineTo(baseWidth - 50, i);
+      ctx.moveTo(padding, i);
+      ctx.lineTo(baseWidth - padding, i);
       ctx.stroke();
     }
 
     // Add margin line
     ctx.strokeStyle = '#ff9999';
     ctx.lineWidth = 0.8;
+    const marginX = padding + (isMobile ? 20 : 30);
     ctx.beginPath();
-    ctx.moveTo(80, 30);
-    ctx.lineTo(80, estimatedHeight - 30);
+    ctx.moveTo(marginX, padding);
+    ctx.lineTo(marginX, estimatedHeight - padding);
     ctx.stroke();
 
     // Set enhanced text properties
@@ -83,20 +83,32 @@ const TextToHandwriting = () => {
     ctx.textBaseline = 'alphabetic';
 
     // Add realistic handwriting variations
-    const lines = inputText.split('\n');
-    let y = 65;
+    let y = startY + fontSize[0] * 0.8;
+    const maxWidth = baseWidth - marginX - padding;
 
-    lines.forEach((line, lineIndex) => {
+    lines.forEach((line) => {
+      if (!line.trim()) {
+        y += lineSpacing;
+        return;
+      }
+
       const words = line.split(' ');
-      let x = 90;
+      let x = marginX + 10;
 
       words.forEach((word, wordIndex) => {
+        // Check for line wrapping
+        const wordWidth = ctx.measureText(word + ' ').width;
+        if (x + wordWidth > maxWidth && wordIndex > 0) {
+          x = marginX + 10;
+          y += lineSpacing;
+        }
+
         // Enhanced random variations for more realistic handwriting
-        const randomX = x + (Math.random() - 0.5) * 4;
-        const randomY = y + (Math.random() - 0.5) * 5;
+        const randomX = x + (Math.random() - 0.5) * 3;
+        const randomY = y + (Math.random() - 0.5) * 4;
         
         // Slight rotation for individual words
-        const angle = (Math.random() - 0.5) * 0.05;
+        const angle = (Math.random() - 0.5) * 0.04;
         
         ctx.save();
         ctx.translate(randomX, randomY);
@@ -105,7 +117,7 @@ const TextToHandwriting = () => {
         // Add slight character spacing variation
         const chars = word.split('');
         let charX = 0;
-        chars.forEach((char, charIndex) => {
+        chars.forEach((char) => {
           const charRandomX = charX + (Math.random() - 0.5) * 1;
           const charRandomY = (Math.random() - 0.5) * 2;
           ctx.fillText(char, charRandomX, charRandomY);
@@ -114,23 +126,41 @@ const TextToHandwriting = () => {
         
         ctx.restore();
 
-        // Measure word width for line wrapping
-        const wordWidth = ctx.measureText(word + ' ').width;
-        if (x + wordWidth > baseWidth - 90 && wordIndex > 0) {
-          x = 90;
-          y += lineSpacing;
-        } else {
-          x += wordWidth + (Math.random() - 0.5) * 2;
-        }
+        x += wordWidth + (Math.random() - 0.5) * 2;
       });
 
       y += lineSpacing;
     });
   };
 
+  // Auto-generate when inputs change
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (inputText.trim()) {
+        generateHandwriting();
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [inputText, fontStyle, fontSize, lineHeight, quality]);
+
+  // Initial generation
+  useEffect(() => {
+    generateHandwriting();
+  }, []);
+
   const downloadImage = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    if (!inputText.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter some text to download.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     const link = document.createElement('a');
     link.download = 'handwriting-hq.png';
@@ -150,6 +180,8 @@ const TextToHandwriting = () => {
     { value: '"Caveat", cursive', label: 'Caveat' },
     { value: '"Indie Flower", cursive', label: 'Indie Flower' },
     { value: '"Shadows Into Light", cursive', label: 'Shadows Into Light' },
+    { value: '"Patrick Hand", cursive', label: 'Patrick Hand' },
+    { value: '"Amatic SC", cursive', label: 'Amatic SC' },
   ];
 
   return (
@@ -161,17 +193,17 @@ const TextToHandwriting = () => {
             Text to Handwriting Converter
           </CardTitle>
           <CardDescription>
-            Convert typed text into high-quality handwritten-style text on lined paper with realistic variations.
+            Convert typed text into high-quality handwritten-style text with live preview. Changes are applied automatically as you type.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
             <label htmlFor="input-text" className="block text-sm font-medium mb-2">
-              Enter Your Text
+              Enter Your Text (Live Preview)
             </label>
             <Textarea
               id="input-text"
-              placeholder="Type your text here..."
+              placeholder="Type your text here and watch it transform into handwriting automatically..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               rows={6}
@@ -241,24 +273,19 @@ const TextToHandwriting = () => {
             </div>
           </div>
 
-          <div className="flex gap-3">
-            <Button onClick={generateHandwriting} className="flex items-center gap-2">
-              <Type className="h-4 w-4" />
-              Generate Handwriting
-            </Button>
-          </div>
-
-          <Card className="bg-muted/30 dark:bg-muted/20">
+          <Card className="bg-gradient-to-br from-slate-50/50 to-blue-50/30 dark:from-slate-800/50 dark:to-blue-900/20 border-slate-200 dark:border-slate-700">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Generated Handwriting</CardTitle>
+              <CardTitle className="text-lg">Live Handwriting Preview</CardTitle>
+              <CardDescription>Your handwriting updates automatically as you type and adjust settings</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex justify-center">
-                <canvas 
-                  ref={canvasRef} 
-                  className="border rounded-lg shadow-sm bg-white max-w-full h-auto"
-                  style={{ maxHeight: '500px' }}
-                />
+              <div className="flex justify-center overflow-auto">
+                <div className="min-w-0 max-w-full">
+                  <canvas 
+                    ref={canvasRef} 
+                    className="border rounded-lg shadow-sm bg-white max-w-full h-auto block mx-auto"
+                  />
+                </div>
               </div>
               <div className="flex justify-center">
                 <Button onClick={downloadImage} variant="outline" className="flex items-center gap-2">
@@ -269,13 +296,15 @@ const TextToHandwriting = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-blue-50/50 dark:bg-blue-950/50 border-blue-200 dark:border-blue-800">
+          <Card className="bg-gradient-to-br from-blue-50/50 to-purple-50/30 dark:from-blue-950/30 dark:to-purple-950/20 border-blue-200 dark:border-blue-800/50">
             <CardContent className="pt-6">
               <h4 className="font-semibold mb-2 text-blue-900 dark:text-blue-100">Enhanced Quality Features</h4>
               <ul className="text-sm text-blue-700 dark:text-blue-200 space-y-1">
+                <li>• Live preview - see changes instantly as you type</li>
+                <li>• Mobile-optimized responsive design</li>
                 <li>• High-resolution output with anti-aliasing</li>
                 <li>• Realistic character spacing and rotation</li>
-                <li>• Multiple handwriting font styles</li>
+                <li>• 8+ handwriting font styles available</li>
                 <li>• Adjustable quality settings (1x to 3x)</li>
                 <li>• Lined paper with margin lines</li>
                 <li>• Natural handwriting variations</li>
