@@ -5,8 +5,30 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { PenTool, Download, Type } from 'lucide-react';
+import { PenTool, Download, FileImage, FileText, Package } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+
+interface PaperSize {
+  name: string;
+  width: number;
+  height: number;
+  category: string;
+}
+
+const paperSizes: PaperSize[] = [
+  // A-Series (ISO 216 - used in India & most countries)
+  { name: 'A4', width: 210, height: 297, category: 'A-Series (ISO 216)' },
+  { name: 'A5', width: 148, height: 210, category: 'A-Series (ISO 216)' },
+  { name: 'A6', width: 105, height: 148, category: 'A-Series (ISO 216)' },
+  { name: 'A3', width: 297, height: 420, category: 'A-Series (ISO 216)' },
+  { name: 'A2', width: 420, height: 594, category: 'A-Series (ISO 216)' },
+  { name: 'A1', width: 594, height: 841, category: 'A-Series (ISO 216)' },
+  { name: 'A0', width: 841, height: 1189, category: 'A-Series (ISO 216)' },
+  // US/Canada Sizes
+  { name: 'Letter', width: 216, height: 279, category: 'US/Canada' },
+  { name: 'Legal', width: 216, height: 356, category: 'US/Canada' },
+  { name: 'Tabloid', width: 279, height: 432, category: 'US/Canada' },
+];
 
 const TextToHandwriting = () => {
   const [inputText, setInputText] = useState('Welcome to our handwriting tool! Type your text here and see it transform into beautiful handwriting instantly.');
@@ -14,123 +36,189 @@ const TextToHandwriting = () => {
   const [fontSize, setFontSize] = useState([18]);
   const [lineHeight, setLineHeight] = useState([1.6]);
   const [quality, setQuality] = useState([2]);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [paperSize, setPaperSize] = useState('A4');
+  const canvasRefs = useRef<HTMLCanvasElement[]>([]);
+  const [generatedPages, setGeneratedPages] = useState<string[]>([]);
   const { toast } = useToast();
 
+  const getCurrentPaperSize = () => {
+    return paperSizes.find(size => size.name === paperSize) || paperSizes[0];
+  };
+
+  const mmToPx = (mm: number, dpi: number = 96) => {
+    return (mm * dpi) / 25.4;
+  };
+
   const generateHandwriting = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!inputText.trim()) return;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Enhanced quality settings
+    const currentPaperSize = getCurrentPaperSize();
     const pixelRatio = quality[0];
-    const isMobile = window.innerWidth < 768;
-    const baseWidth = isMobile ? 350 : 800;
-    const padding = isMobile ? 30 : 50;
+    const dpi = 96 * pixelRatio;
     
-    // Calculate dynamic height based on content
+    // Convert mm to pixels
+    const pageWidth = mmToPx(currentPaperSize.width, dpi);
+    const pageHeight = mmToPx(currentPaperSize.height, dpi);
+    const padding = mmToPx(20, dpi); // 20mm padding
+    const marginX = mmToPx(25, dpi); // 25mm left margin
+    
     const lines = inputText.split('\n');
-    const lineSpacing = fontSize[0] * lineHeight[0];
-    const estimatedHeight = Math.max(
-      isMobile ? 200 : 300, 
-      lines.length * lineSpacing + padding * 2 + 50
-    );
-
-    // Set actual canvas size for high DPI
-    canvas.width = baseWidth * pixelRatio;
-    canvas.height = estimatedHeight * pixelRatio;
+    const lineSpacing = fontSize[0] * lineHeight[0] * pixelRatio;
+    const maxWidth = pageWidth - marginX - padding;
+    const maxLinesPerPage = Math.floor((pageHeight - padding * 2 - mmToPx(30, dpi)) / lineSpacing);
     
-    // Scale the canvas back down using CSS for proper mobile display
-    canvas.style.width = baseWidth + 'px';
-    canvas.style.height = estimatedHeight + 'px';
-
-    // Scale the drawing context so everything draws at high resolution
-    ctx.scale(pixelRatio, pixelRatio);
-
-    // Enable anti-aliasing and high quality rendering
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-
-    // Clear and set background
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, baseWidth, estimatedHeight);
-
-    // Add lined paper effect with better quality
-    ctx.strokeStyle = '#e8e8e8';
-    ctx.lineWidth = 0.5;
-    const startY = padding + 20;
-    for (let i = startY; i < estimatedHeight - padding; i += lineSpacing) {
-      ctx.beginPath();
-      ctx.moveTo(padding, i);
-      ctx.lineTo(baseWidth - padding, i);
-      ctx.stroke();
-    }
-
-    // Add margin line
-    ctx.strokeStyle = '#ff9999';
-    ctx.lineWidth = 0.8;
-    const marginX = padding + (isMobile ? 20 : 30);
-    ctx.beginPath();
-    ctx.moveTo(marginX, padding);
-    ctx.lineTo(marginX, estimatedHeight - padding);
-    ctx.stroke();
-
-    // Set enhanced text properties
-    ctx.fillStyle = '#1a1a2e';
-    ctx.font = `${fontSize[0]}px ${fontStyle}`;
-    ctx.textBaseline = 'alphabetic';
-
-    // Add realistic handwriting variations
-    let y = startY + fontSize[0] * 0.8;
-    const maxWidth = baseWidth - marginX - padding;
+    // Process text and split into pages
+    const pages: string[][] = [];
+    let currentPage: string[] = [];
+    let currentPageLines = 0;
 
     lines.forEach((line) => {
       if (!line.trim()) {
-        y += lineSpacing;
+        if (currentPageLines < maxLinesPerPage) {
+          currentPage.push('');
+          currentPageLines++;
+        } else {
+          pages.push([...currentPage]);
+          currentPage = [''];
+          currentPageLines = 1;
+        }
         return;
       }
 
+      // Create temporary canvas to measure text
+      const tempCanvas = document.createElement('canvas');
+      const tempCtx = tempCanvas.getContext('2d');
+      if (!tempCtx) return;
+      
+      tempCtx.font = `${fontSize[0] * pixelRatio}px ${fontStyle}`;
       const words = line.split(' ');
-      let x = marginX + 10;
+      let currentLine = '';
 
       words.forEach((word, wordIndex) => {
-        // Check for line wrapping
-        const wordWidth = ctx.measureText(word + ' ').width;
-        if (x + wordWidth > maxWidth && wordIndex > 0) {
-          x = marginX + 10;
-          y += lineSpacing;
+        const testLine = currentLine + (currentLine ? ' ' : '') + word;
+        const testWidth = tempCtx.measureText(testLine).width;
+        
+        if (testWidth > maxWidth && currentLine) {
+          // Add current line and start new one
+          if (currentPageLines >= maxLinesPerPage) {
+            pages.push([...currentPage]);
+            currentPage = [];
+            currentPageLines = 0;
+          }
+          currentPage.push(currentLine);
+          currentPageLines++;
+          currentLine = word;
+        } else {
+          currentLine = testLine;
         }
-
-        // Enhanced random variations for more realistic handwriting
-        const randomX = x + (Math.random() - 0.5) * 3;
-        const randomY = y + (Math.random() - 0.5) * 4;
-        
-        // Slight rotation for individual words
-        const angle = (Math.random() - 0.5) * 0.04;
-        
-        ctx.save();
-        ctx.translate(randomX, randomY);
-        ctx.rotate(angle);
-        
-        // Add slight character spacing variation
-        const chars = word.split('');
-        let charX = 0;
-        chars.forEach((char) => {
-          const charRandomX = charX + (Math.random() - 0.5) * 1;
-          const charRandomY = (Math.random() - 0.5) * 2;
-          ctx.fillText(char, charRandomX, charRandomY);
-          charX += ctx.measureText(char).width + (Math.random() - 0.5) * 0.5;
-        });
-        
-        ctx.restore();
-
-        x += wordWidth + (Math.random() - 0.5) * 2;
       });
 
-      y += lineSpacing;
+      // Add remaining text
+      if (currentLine) {
+        if (currentPageLines >= maxLinesPerPage) {
+          pages.push([...currentPage]);
+          currentPage = [];
+          currentPageLines = 0;
+        }
+        currentPage.push(currentLine);
+        currentPageLines++;
+      }
     });
+
+    if (currentPage.length > 0) {
+      pages.push(currentPage);
+    }
+
+    // Generate canvases for each page
+    const newGeneratedPages: string[] = [];
+    canvasRefs.current = [];
+
+    pages.forEach((pageLines, pageIndex) => {
+      const canvas = document.createElement('canvas');
+      canvasRefs.current.push(canvas);
+      
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Set canvas size
+      canvas.width = pageWidth;
+      canvas.height = pageHeight;
+
+      // Enable anti-aliasing
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      // Set background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, pageWidth, pageHeight);
+
+      // Add lined paper effect
+      ctx.strokeStyle = '#e8e8e8';
+      ctx.lineWidth = 0.5 * pixelRatio;
+      const startY = padding + mmToPx(20, dpi);
+      for (let i = startY; i < pageHeight - padding; i += lineSpacing) {
+        ctx.beginPath();
+        ctx.moveTo(padding, i);
+        ctx.lineTo(pageWidth - padding, i);
+        ctx.stroke();
+      }
+
+      // Add margin line
+      ctx.strokeStyle = '#ff9999';
+      ctx.lineWidth = 0.8 * pixelRatio;
+      ctx.beginPath();
+      ctx.moveTo(marginX, padding);
+      ctx.lineTo(marginX, pageHeight - padding);
+      ctx.stroke();
+
+      // Set text properties
+      ctx.fillStyle = '#1a1a2e';
+      ctx.font = `${fontSize[0] * pixelRatio}px ${fontStyle}`;
+      ctx.textBaseline = 'alphabetic';
+
+      // Draw text with handwriting variations
+      let y = startY + fontSize[0] * pixelRatio * 0.8;
+
+      pageLines.forEach((line) => {
+        if (!line.trim()) {
+          y += lineSpacing;
+          return;
+        }
+
+        const words = line.split(' ');
+        let x = marginX + mmToPx(5, dpi);
+
+        words.forEach((word) => {
+          const randomX = x + (Math.random() - 0.5) * 3 * pixelRatio;
+          const randomY = y + (Math.random() - 0.5) * 4 * pixelRatio;
+          const angle = (Math.random() - 0.5) * 0.04;
+          
+          ctx.save();
+          ctx.translate(randomX, randomY);
+          ctx.rotate(angle);
+          
+          const chars = word.split('');
+          let charX = 0;
+          chars.forEach((char) => {
+            const charRandomX = charX + (Math.random() - 0.5) * 1 * pixelRatio;
+            const charRandomY = (Math.random() - 0.5) * 2 * pixelRatio;
+            ctx.fillText(char, charRandomX, charRandomY);
+            charX += ctx.measureText(char).width + (Math.random() - 0.5) * 0.5 * pixelRatio;
+          });
+          
+          ctx.restore();
+
+          x += ctx.measureText(word + ' ').width + (Math.random() - 0.5) * 2 * pixelRatio;
+        });
+
+        y += lineSpacing;
+      });
+
+      // Convert to data URL
+      newGeneratedPages.push(canvas.toDataURL('image/png', 1.0));
+    });
+
+    setGeneratedPages(newGeneratedPages);
   };
 
   // Auto-generate when inputs change
@@ -139,38 +227,111 @@ const TextToHandwriting = () => {
       if (inputText.trim()) {
         generateHandwriting();
       }
-    }, 300);
+    }, 500);
 
     return () => clearTimeout(timer);
-  }, [inputText, fontStyle, fontSize, lineHeight, quality]);
+  }, [inputText, fontStyle, fontSize, lineHeight, quality, paperSize]);
 
   // Initial generation
   useEffect(() => {
     generateHandwriting();
   }, []);
 
-  const downloadImage = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    if (!inputText.trim()) {
+  const downloadImages = async () => {
+    if (generatedPages.length === 0) {
       toast({
         title: "Error",
-        description: "Please enter some text to download.",
+        description: "Please generate handwriting first.",
         variant: "destructive",
       });
       return;
     }
 
-    const link = document.createElement('a');
-    link.download = 'handwriting-hq.png';
-    link.href = canvas.toDataURL('image/png', 1.0);
-    link.click();
+    if (generatedPages.length === 1) {
+      // Single image download
+      const link = document.createElement('a');
+      link.download = `handwriting-${paperSize.toLowerCase()}.png`;
+      link.href = generatedPages[0];
+      link.click();
+    } else {
+      // Multiple images - create ZIP
+      try {
+        const JSZip = (await import('jszip')).default;
+        const zip = new JSZip();
+        
+        generatedPages.forEach((pageDataUrl, index) => {
+          const base64Data = pageDataUrl.split(',')[1];
+          zip.file(`handwriting-page-${index + 1}.png`, base64Data, { base64: true });
+        });
+        
+        const content = await zip.generateAsync({ type: 'blob' });
+        const link = document.createElement('a');
+        link.download = `handwriting-${paperSize.toLowerCase()}-${generatedPages.length}pages.zip`;
+        link.href = URL.createObjectURL(content);
+        link.click();
+        URL.revokeObjectURL(link.href);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to create ZIP file. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }
 
     toast({
       title: "Downloaded!",
-      description: "High-quality handwriting image has been downloaded.",
+      description: `${generatedPages.length} page(s) downloaded successfully.`,
     });
+  };
+
+  const downloadPDF = async () => {
+    if (generatedPages.length === 0) {
+      toast({
+        title: "Error",
+        description: "Please generate handwriting first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const jsPDF = (await import('jspdf')).default;
+      const currentPaperSize = getCurrentPaperSize();
+      
+      const pdf = new jsPDF({
+        orientation: currentPaperSize.width > currentPaperSize.height ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [currentPaperSize.width, currentPaperSize.height]
+      });
+
+      generatedPages.forEach((pageDataUrl, index) => {
+        if (index > 0) {
+          pdf.addPage();
+        }
+        pdf.addImage(
+          pageDataUrl,
+          'PNG',
+          0,
+          0,
+          currentPaperSize.width,
+          currentPaperSize.height
+        );
+      });
+
+      pdf.save(`handwriting-${paperSize.toLowerCase()}-${generatedPages.length}pages.pdf`);
+      
+      toast({
+        title: "PDF Downloaded!",
+        description: `${generatedPages.length} page PDF created successfully.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create PDF. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const fontOptions = [
@@ -185,7 +346,7 @@ const TextToHandwriting = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-6">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -193,7 +354,7 @@ const TextToHandwriting = () => {
             Text to Handwriting Converter
           </CardTitle>
           <CardDescription>
-            Convert typed text into high-quality handwritten-style text with live preview. Changes are applied automatically as you type.
+            Convert typed text into high-quality handwritten-style text with live preview and multiple page sizes.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -211,9 +372,28 @@ const TextToHandwriting = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div>
-              <label htmlFor="font-style" className="block text-sm font-medium mb-2">
+              <label className="block text-sm font-medium mb-2">
+                Paper Size
+              </label>
+              <Select value={paperSize} onValueChange={setPaperSize}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="A4">A4 (210×297mm)</SelectItem>
+                  <SelectItem value="A5">A5 (148×210mm)</SelectItem>
+                  <SelectItem value="A6">A6 (105×148mm)</SelectItem>
+                  <SelectItem value="A3">A3 (297×420mm)</SelectItem>
+                  <SelectItem value="Letter">Letter (8.5×11in)</SelectItem>
+                  <SelectItem value="Legal">Legal (8.5×14in)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">
                 Font Style
               </label>
               <Select value={fontStyle} onValueChange={setFontStyle}>
@@ -276,21 +456,40 @@ const TextToHandwriting = () => {
           <Card className="bg-gradient-to-br from-slate-50/50 to-blue-50/30 dark:from-slate-800/50 dark:to-blue-900/20 border-slate-200 dark:border-slate-700">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg">Live Handwriting Preview</CardTitle>
-              <CardDescription>Your handwriting updates automatically as you type and adjust settings</CardDescription>
+              <CardDescription>
+                {generatedPages.length > 1 
+                  ? `${generatedPages.length} pages generated • ${getCurrentPaperSize().name} (${getCurrentPaperSize().width}×${getCurrentPaperSize().height}mm)`
+                  : `1 page • ${getCurrentPaperSize().name} (${getCurrentPaperSize().width}×${getCurrentPaperSize().height}mm)`
+                }
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex justify-center overflow-auto">
-                <div className="min-w-0 max-w-full">
-                  <canvas 
-                    ref={canvasRef} 
-                    className="border rounded-lg shadow-sm bg-white max-w-full h-auto block mx-auto"
-                  />
-                </div>
+              <div className="grid gap-4 max-h-96 overflow-y-auto">
+                {generatedPages.map((pageDataUrl, index) => (
+                  <div key={index} className="flex justify-center">
+                    <div className="relative">
+                      <img 
+                        src={pageDataUrl}
+                        alt={`Handwriting Page ${index + 1}`}
+                        className="border rounded-lg shadow-sm bg-white max-w-full h-auto block mx-auto"
+                        style={{ maxHeight: '300px' }}
+                      />
+                      <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
+                        Page {index + 1}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex justify-center">
-                <Button onClick={downloadImage} variant="outline" className="flex items-center gap-2">
-                  <Download className="h-4 w-4" />
-                  Download High-Quality Image
+              
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button onClick={downloadImages} variant="outline" className="flex items-center gap-2">
+                  <FileImage className="h-4 w-4" />
+                  Download Images {generatedPages.length > 1 && '(ZIP)'}
+                </Button>
+                <Button onClick={downloadPDF} variant="outline" className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Download PDF
                 </Button>
               </div>
             </CardContent>
