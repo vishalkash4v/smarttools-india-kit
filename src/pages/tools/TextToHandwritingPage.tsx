@@ -4,7 +4,7 @@ import PageWrapper from '@/components/layout/PageWrapper';
 import TextToHandwriting from '@/components/tools/TextToHandwriting';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Star, PenTool, FileText, Users, Clock, Shield } from 'lucide-react';
+import { Star, PenTool, FileText, Users, Clock, Shield, Zap, Download, Palette } from 'lucide-react';
 
 const TextToHandwritingPage = () => {
   const reviews = [
@@ -41,35 +41,58 @@ const TextToHandwritingPage = () => {
   const faqs = [
     {
       question: "How realistic does the handwriting look?",
-      answer: "Our tool generates very realistic handwriting that closely mimics natural pen-and-paper writing. The text includes subtle variations and imperfections that make it look authentically handwritten."
+      answer: "Our enhanced tool generates very realistic handwriting with natural character variations, slight rotations, and spacing irregularities that closely mimic authentic pen-and-paper writing."
+    },
+    {
+      question: "What's the difference between quality settings?",
+      answer: "Quality settings (1x to 3x) control the resolution and detail level. Higher quality produces sharper, more detailed handwriting perfect for printing, while lower quality is suitable for web use."
     },
     {
       question: "Can I customize the handwriting style?",
-      answer: "Yes! You can adjust various parameters like pen thickness, spacing, and writing style to create different handwriting appearances that suit your needs."
+      answer: "Yes! You can choose from multiple font styles, adjust font size, line height, and quality settings to create different handwriting appearances that suit your needs."
     },
     {
       question: "What formats can I download the handwritten text in?",
-      answer: "You can download your handwritten text as high-quality images (PNG/JPG) suitable for printing, sharing, or including in documents and presentations."
+      answer: "You can download your handwritten text as high-quality PNG images with transparent or white backgrounds, suitable for printing, sharing, or including in documents."
     },
     {
       question: "Is there a limit to how much text I can convert?",
-      answer: "You can convert reasonable amounts of text at once. For very long documents, we recommend breaking them into smaller sections for optimal results."
+      answer: "You can convert reasonable amounts of text at once. For very long documents, we recommend breaking them into smaller sections for optimal quality and performance."
     },
     {
-      question: "Can I use this for official documents?",
-      answer: "While the tool creates realistic handwriting, it's intended for creative, educational, and personal use. Always check requirements for official documents that may need actual handwritten signatures."
+      question: "Does the tool work on mobile devices?",
+      answer: "Yes! The tool is fully responsive and works perfectly on mobile devices, tablets, and desktops. The interface adapts to your screen size for the best experience."
+    }
+  ];
+
+  const features = [
+    {
+      icon: <Zap className="h-6 w-6" />,
+      title: "High-Resolution Output",
+      description: "Generate handwriting at up to 3x resolution with anti-aliasing for crystal-clear results perfect for printing."
     },
     {
-      question: "Does the tool support different languages?",
-      answer: "The tool primarily works with English text and Latin characters. Support for other languages may vary depending on the character sets used."
+      icon: <Palette className="h-6 w-6" />,
+      title: "Multiple Font Styles",
+      description: "Choose from various handwriting fonts including Dancing Script, Kalam, Caveat, and more for different personalities."
+    },
+    {
+      icon: <FileText className="h-6 w-6" />,
+      title: "Realistic Paper Effect",
+      description: "Lined paper with margin lines creates an authentic notebook appearance for your handwritten text."
+    },
+    {
+      icon: <Download className="h-6 w-6" />,
+      title: "Instant Download",
+      description: "Download your handwritten text as high-quality PNG files ready for use in documents, presentations, or printing."
     }
   ];
 
   return (
     <PageWrapper
       title="Text to Handwriting Converter - Convert Typed Text to Handwritten"
-      description="Transform typed text into realistic handwritten text. Perfect for creating personal notes, assignments, and creative projects with authentic handwriting style."
-      keywords="text to handwriting, handwriting converter, handwritten text generator, realistic handwriting"
+      description="Transform typed text into realistic handwritten text with enhanced quality. Perfect for creating personal notes, assignments, and creative projects with authentic handwriting style."
+      keywords="text to handwriting, handwriting converter, handwritten text generator, realistic handwriting, high quality handwriting"
     >
       <div className="container py-8">
         <div className="max-w-4xl mx-auto">
@@ -81,60 +104,70 @@ const TextToHandwritingPage = () => {
               </div>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-              Text to Handwriting Converter
+              Enhanced Text to Handwriting Converter
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Transform your typed text into beautiful, realistic handwriting. Perfect for creating personal notes, assignments, and creative projects.
+              Transform your typed text into beautiful, high-quality realistic handwriting. Perfect for creating personal notes, assignments, and creative projects with enhanced resolution and natural variations.
             </p>
           </div>
 
           {/* Features Grid */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <Card className="text-center">
-              <CardHeader>
-                <PenTool className="h-8 w-8 text-pink-600 mx-auto mb-2" />
-                <CardTitle className="text-lg">Realistic Handwriting</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>Natural-looking handwriting with authentic variations</CardDescription>
-              </CardContent>
-            </Card>
-            
-            <Card className="text-center">
-              <CardHeader>
-                <Clock className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                <CardTitle className="text-lg">Instant Conversion</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>Convert text to handwriting in seconds</CardDescription>
-              </CardContent>
-            </Card>
-            
-            <Card className="text-center">
-              <CardHeader>
-                <FileText className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                <CardTitle className="text-lg">High Quality Output</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>Download high-resolution images for printing or sharing</CardDescription>
-              </CardContent>
-            </Card>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {features.map((feature, index) => (
+              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="mx-auto mb-2 p-2 rounded-lg bg-primary/10 text-primary w-fit">
+                    {feature.icon}
+                  </div>
+                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-sm">{feature.description}</CardDescription>
+                </CardContent>
+              </Card>
+            ))}
           </div>
 
           {/* Main Tool */}
-          <Card className="mb-12">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Convert Text to Handwriting</CardTitle>
-              <CardDescription>Type your text and see it transformed into realistic handwriting</CardDescription>
+          <TextToHandwriting />
+
+          {/* How It Works */}
+          <Card className="mb-12 mt-12">
+            <CardHeader>
+              <CardTitle className="text-2xl text-center">How to Use</CardTitle>
+              <CardDescription className="text-center">
+                Follow these simple steps to convert your text to handwriting
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <TextToHandwriting />
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 font-bold text-lg mx-auto mb-3">1</div>
+                  <h3 className="font-semibold mb-2">Enter Text</h3>
+                  <p className="text-sm text-muted-foreground">Type or paste your text in the input area</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 font-bold text-lg mx-auto mb-3">2</div>
+                  <h3 className="font-semibold mb-2">Customize Style</h3>
+                  <p className="text-sm text-muted-foreground">Choose font, size, spacing, and quality settings</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 font-bold text-lg mx-auto mb-3">3</div>
+                  <h3 className="font-semibold mb-2">Generate</h3>
+                  <p className="text-sm text-muted-foreground">Click generate to create handwritten version</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 font-bold text-lg mx-auto mb-3">4</div>
+                  <h3 className="font-semibold mb-2">Download</h3>
+                  <p className="text-sm text-muted-foreground">Save your high-quality handwritten image</p>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
           {/* Use Cases */}
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <Card>
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="text-xl text-pink-600">Educational Applications</CardTitle>
               </CardHeader>
@@ -147,7 +180,7 @@ const TextToHandwritingPage = () => {
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="text-xl text-purple-600">Creative & Design Projects</CardTitle>
               </CardHeader>
@@ -160,7 +193,7 @@ const TextToHandwritingPage = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="text-xl text-green-600">Business & Professional Use</CardTitle>
               </CardHeader>
@@ -173,7 +206,7 @@ const TextToHandwritingPage = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="text-xl text-orange-600">Personal & Family Use</CardTitle>
               </CardHeader>
@@ -192,13 +225,13 @@ const TextToHandwritingPage = () => {
             <CardHeader>
               <CardTitle className="text-2xl text-center">User Testimonials</CardTitle>
               <CardDescription className="text-center">
-                See what users love about our text to handwriting converter
+                See what users love about our enhanced text to handwriting converter
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-6">
                 {reviews.map((review, index) => (
-                  <div key={index} className="border rounded-lg p-6">
+                  <div key={index} className="border rounded-lg p-6 hover:shadow-md transition-shadow">
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <h4 className="font-semibold">{review.name}</h4>

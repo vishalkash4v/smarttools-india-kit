@@ -11,8 +11,9 @@ import { useToast } from '@/hooks/use-toast';
 const TextToHandwriting = () => {
   const [inputText, setInputText] = useState('');
   const [fontStyle, setFontStyle] = useState('cursive');
-  const [fontSize, setFontSize] = useState([16]);
-  const [lineHeight, setLineHeight] = useState([1.5]);
+  const [fontSize, setFontSize] = useState([18]);
+  const [lineHeight, setLineHeight] = useState([1.6]);
+  const [quality, setQuality] = useState([2]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
 
@@ -32,54 +33,95 @@ const TextToHandwriting = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size
-    canvas.width = 800;
-    canvas.height = Math.max(400, inputText.split('\n').length * fontSize[0] * lineHeight[0] + 100);
+    // High quality settings
+    const pixelRatio = quality[0];
+    const baseWidth = 800;
+    const estimatedHeight = Math.max(400, inputText.split('\n').length * fontSize[0] * lineHeight[0] + 100);
+
+    // Set actual canvas size for high DPI
+    canvas.width = baseWidth * pixelRatio;
+    canvas.height = estimatedHeight * pixelRatio;
+    
+    // Scale the canvas back down using CSS
+    canvas.style.width = baseWidth + 'px';
+    canvas.style.height = estimatedHeight + 'px';
+
+    // Scale the drawing context so everything draws at high resolution
+    ctx.scale(pixelRatio, pixelRatio);
+
+    // Enable anti-aliasing and high quality rendering
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.textRenderingOptimization = 'optimizeQuality';
 
     // Clear and set background
     ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, baseWidth, estimatedHeight);
 
-    // Add lined paper effect
-    ctx.strokeStyle = '#e0e0e0';
+    // Add lined paper effect with better quality
+    ctx.strokeStyle = '#e8e8e8';
     ctx.lineWidth = 0.5;
     const lineSpacing = fontSize[0] * lineHeight[0];
-    for (let i = 50; i < canvas.height; i += lineSpacing) {
+    for (let i = 50; i < estimatedHeight; i += lineSpacing) {
       ctx.beginPath();
       ctx.moveTo(50, i);
-      ctx.lineTo(canvas.width - 50, i);
+      ctx.lineTo(baseWidth - 50, i);
       ctx.stroke();
     }
 
-    // Set text properties
-    ctx.fillStyle = '#1a1a1a';
-    ctx.font = `${fontSize[0]}px ${fontStyle}`;
-    ctx.textBaseline = 'top';
+    // Add margin line
+    ctx.strokeStyle = '#ff9999';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(80, 30);
+    ctx.lineTo(80, estimatedHeight - 30);
+    ctx.stroke();
 
-    // Add slight randomness to simulate handwriting
+    // Set enhanced text properties
+    ctx.fillStyle = '#1a1a2e';
+    ctx.font = `${fontSize[0]}px ${fontStyle}`;
+    ctx.textBaseline = 'alphabetic';
+
+    // Add realistic handwriting variations
     const lines = inputText.split('\n');
-    let y = 60;
+    let y = 65;
 
     lines.forEach((line, lineIndex) => {
       const words = line.split(' ');
-      let x = 60;
+      let x = 90;
 
       words.forEach((word, wordIndex) => {
-        // Add slight random offset for each word
-        const randomX = x + (Math.random() - 0.5) * 2;
-        const randomY = y + (Math.random() - 0.5) * 3;
+        // Enhanced random variations for more realistic handwriting
+        const randomX = x + (Math.random() - 0.5) * 4;
+        const randomY = y + (Math.random() - 0.5) * 5;
+        
+        // Slight rotation for individual words
+        const angle = (Math.random() - 0.5) * 0.05;
+        
+        ctx.save();
+        ctx.translate(randomX, randomY);
+        ctx.rotate(angle);
+        
+        // Add slight character spacing variation
+        const chars = word.split('');
+        let charX = 0;
+        chars.forEach((char, charIndex) => {
+          const charRandomX = charX + (Math.random() - 0.5) * 1;
+          const charRandomY = (Math.random() - 0.5) * 2;
+          ctx.fillText(char, charRandomX, charRandomY);
+          charX += ctx.measureText(char).width + (Math.random() - 0.5) * 0.5;
+        });
+        
+        ctx.restore();
 
-        // Measure word width
+        // Measure word width for line wrapping
         const wordWidth = ctx.measureText(word + ' ').width;
-
-        // Check if word fits on current line
-        if (x + wordWidth > canvas.width - 60 && wordIndex > 0) {
-          x = 60;
+        if (x + wordWidth > baseWidth - 90 && wordIndex > 0) {
+          x = 90;
           y += lineSpacing;
+        } else {
+          x += wordWidth + (Math.random() - 0.5) * 2;
         }
-
-        ctx.fillText(word, randomX, randomY);
-        x += wordWidth;
       });
 
       y += lineSpacing;
@@ -91,22 +133,23 @@ const TextToHandwriting = () => {
     if (!canvas) return;
 
     const link = document.createElement('a');
-    link.download = 'handwriting.png';
-    link.href = canvas.toDataURL();
+    link.download = 'handwriting-hq.png';
+    link.href = canvas.toDataURL('image/png', 1.0);
     link.click();
 
     toast({
       title: "Downloaded!",
-      description: "Handwriting image has been downloaded.",
+      description: "High-quality handwriting image has been downloaded.",
     });
   };
 
   const fontOptions = [
     { value: 'cursive', label: 'Cursive' },
-    { value: 'fantasy', label: 'Fantasy' },
-    { value: '"Brush Script MT", cursive', label: 'Brush Script' },
-    { value: '"Comic Sans MS", cursive', label: 'Comic Sans' },
-    { value: '"Trebuchet MS", sans-serif', label: 'Trebuchet' },
+    { value: '"Dancing Script", cursive', label: 'Dancing Script' },
+    { value: '"Kalam", cursive', label: 'Kalam' },
+    { value: '"Caveat", cursive', label: 'Caveat' },
+    { value: '"Indie Flower", cursive', label: 'Indie Flower' },
+    { value: '"Shadows Into Light", cursive', label: 'Shadows Into Light' },
   ];
 
   return (
@@ -118,7 +161,7 @@ const TextToHandwriting = () => {
             Text to Handwriting Converter
           </CardTitle>
           <CardDescription>
-            Convert typed text into handwritten-style text on lined paper.
+            Convert typed text into high-quality handwritten-style text on lined paper with realistic variations.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -132,10 +175,11 @@ const TextToHandwriting = () => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               rows={6}
+              className="resize-none"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label htmlFor="font-style" className="block text-sm font-medium mb-2">
                 Font Style
@@ -161,8 +205,8 @@ const TextToHandwriting = () => {
               <Slider
                 value={fontSize}
                 onValueChange={setFontSize}
-                max={30}
-                min={12}
+                max={32}
+                min={14}
                 step={1}
                 className="w-full"
               />
@@ -176,8 +220,22 @@ const TextToHandwriting = () => {
                 value={lineHeight}
                 onValueChange={setLineHeight}
                 max={3}
-                min={1}
+                min={1.2}
                 step={0.1}
+                className="w-full"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Quality: {quality[0]}x
+              </label>
+              <Slider
+                value={quality}
+                onValueChange={setQuality}
+                max={3}
+                min={1}
+                step={0.5}
                 className="w-full"
               />
             </div>
@@ -190,7 +248,7 @@ const TextToHandwriting = () => {
             </Button>
           </div>
 
-          <Card className="bg-muted/50">
+          <Card className="bg-muted/30 dark:bg-muted/20">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg">Generated Handwriting</CardTitle>
             </CardHeader>
@@ -205,20 +263,22 @@ const TextToHandwriting = () => {
               <div className="flex justify-center">
                 <Button onClick={downloadImage} variant="outline" className="flex items-center gap-2">
                   <Download className="h-4 w-4" />
-                  Download Image
+                  Download High-Quality Image
                 </Button>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-blue-50 border-blue-200">
+          <Card className="bg-blue-50/50 dark:bg-blue-950/50 border-blue-200 dark:border-blue-800">
             <CardContent className="pt-6">
-              <h4 className="font-semibold mb-2">Tips for Better Results</h4>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Keep paragraphs short for better formatting</li>
-                <li>• Use line breaks to control text layout</li>
-                <li>• Try different font styles to find your preferred handwriting look</li>
-                <li>• Adjust font size and line height for optimal readability</li>
+              <h4 className="font-semibold mb-2 text-blue-900 dark:text-blue-100">Enhanced Quality Features</h4>
+              <ul className="text-sm text-blue-700 dark:text-blue-200 space-y-1">
+                <li>• High-resolution output with anti-aliasing</li>
+                <li>• Realistic character spacing and rotation</li>
+                <li>• Multiple handwriting font styles</li>
+                <li>• Adjustable quality settings (1x to 3x)</li>
+                <li>• Lined paper with margin lines</li>
+                <li>• Natural handwriting variations</li>
               </ul>
             </CardContent>
           </Card>
