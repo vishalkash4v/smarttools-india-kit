@@ -13,7 +13,7 @@ const WhitespaceRemoverPage = () => {
       keywords="whitespace remover, remove spaces, text cleaner, empty line remover, text formatter, clean text, space remover, text optimization"
       pageTitle="Whitespace Remover"
       toolCategory="Text Tool"
-      canonicalUrl="https://smarttools-india.com/whitespace-remover"
+      canonicalUrl="https://fyntools.com/whitespace-remover"
       heroImage="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

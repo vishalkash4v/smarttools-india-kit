@@ -13,7 +13,7 @@ const GstCalculatorPage = () => {
       keywords="GST calculator India, goods and services tax calculator, CGST SGST IGST calculator, tax calculation tool, Indian tax calculator, business GST tool, free GST calculator, online tax calculator"
       pageTitle="GST Calculator"
       toolCategory="Tax Calculator"
-      canonicalUrl="https://smarttoolsworldwide.com/gst-calculator"
+      canonicalUrl="https://fyntools.com//gst-calculator"
       heroImage="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

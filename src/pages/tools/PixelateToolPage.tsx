@@ -8,7 +8,7 @@ const PixelateToolPage = () => {
   return (
     <>
       <Helmet>
-        <title>Pixelate Tool - Apply Pixelation Effects to Images | SmartTools India</title>
+        <title>Pixelate Tool - Apply Pixelation Effects to Images | FYN Tools India</title>
         <meta name="description" content="Apply pixelation effects to specific areas of your images. Control pixelation strength, size, and area with our easy-to-use tool. Perfect for privacy protection and creative effects." />
         <meta name="keywords" content="pixelate, image, photo, effect, privacy, blur, pixelation, pixel art, image editor, photo privacy, blur tool, pixelate image online, selective pixelation" />
         <meta property="og:title" content="Pixelate Tool - Apply Pixelation Effects to Images" />

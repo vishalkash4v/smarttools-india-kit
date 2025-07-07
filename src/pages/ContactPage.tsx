@@ -17,8 +17,8 @@ const ContactPage = () => {
   return (
     <PageWrapper
       title="Contact Us"
-      description="Get in touch with SmartTools India. We'd love to hear from you and help with any questions about our free online tools."
-      keywords="contact, support, help, smarttools india, online tools"
+      description="Get in touch with FYN Tools India. We'd love to hear from you and help with any questions about our free online tools."
+      keywords="contact, support, help, FYN Tools India, online tools"
       toolCategory="Contact"
     >
       <Helmet>
@@ -26,13 +26,13 @@ const ContactPage = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            "name": "SmartTools India",
-            "url": "https://smarttools-india.com",
+            "name": "FYN Tools India",
+            "url": "https://fyntools.com",
             "contactPoint": {
               "@type": "ContactPoint",
               "telephone": "+91-8350937959",
               "contactType": "Customer Service",
-              "email": "contact@smarttools-india.com",
+              "email": "contact@fyntools-india.com",
               "areaServed": "IN"
             },
             "address": {
@@ -77,7 +77,7 @@ const ContactPage = () => {
                     <Mail className="h-5 w-5 text-primary" />
                     <div>
                       <p className="font-medium">Email</p>
-                      <p className="text-muted-foreground">contact@smarttools-india.com</p>
+                      <p className="text-muted-foreground">contact@fyntools-india.com</p>
                     </div>
                   </div>
                   

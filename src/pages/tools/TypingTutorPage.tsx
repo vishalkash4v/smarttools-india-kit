@@ -13,7 +13,7 @@ const TypingTutorPage = () => {
       keywords="typing tutor, learn typing, touch typing, keyboard lessons, typing practice, Hindi typing, English typing, typing skills"
       pageTitle="Typing Tutor - Learn Touch Typing"
       toolCategory="Typing Tools"
-      canonicalUrl="https://tools.best-smm.in/typing-tutor"
+      canonicalUrl="https://fyntools.com/typing-tutor"
       heroImage="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

@@ -13,7 +13,7 @@ const JsonFormatterPage = () => {
       keywords="JSON formatter, JSON validator, JSON beautifier, JSON minifier, JSON pretty print, JSON syntax checker, JSON parser"
       pageTitle="JSON Formatter"
       toolCategory="Developer Tool"
-      canonicalUrl="https://smarttools-india.com/json-formatter"
+      canonicalUrl="https://fyntools.com/json-formatter"
       heroImage="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

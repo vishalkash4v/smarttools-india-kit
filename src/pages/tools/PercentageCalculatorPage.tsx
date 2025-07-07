@@ -13,7 +13,7 @@ const PercentageCalculatorPage = () => {
       keywords="percentage calculator, percent calculator, percentage increase, percentage decrease, discount calculator, grade calculator, percentage formula"
       pageTitle="Percentage Calculator"
       toolCategory="Calculator"
-      canonicalUrl="https://smarttools-india.com/percentage-calculator"
+      canonicalUrl="https://fyntools.com/percentage-calculator"
       heroImage="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

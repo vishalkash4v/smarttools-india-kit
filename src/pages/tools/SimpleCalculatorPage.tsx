@@ -13,7 +13,7 @@ const SimpleCalculatorPage = () => {
       keywords="online calculator, basic calculator, arithmetic calculator, math calculator, simple calculator, addition calculator, division calculator"
       pageTitle="Simple Calculator"
       toolCategory="Calculator"
-      canonicalUrl="https://smarttools-india.com/simple-calculator"
+      canonicalUrl="https://fyntools.com/simple-calculator"
       heroImage="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

@@ -27,33 +27,33 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
   const isNonToolPage = toolCategory === 'About' || toolCategory === 'Contact';
 
   const fullTitle = isNonToolPage
-    ? `${title} | Smart Tools Worldwide`
-    : `${title} - Free Online Tool | Smart Tools Worldwide`;
+    ? `${title} | FYN Tools Worldwide`
+    : `${title} - Free Online Tool | FYN Tools Worldwide`;
   
   const fullDescription = isNonToolPage
     ? description
-    : `${description} Use our free ${title.toLowerCase()} tool for instant results. No registration needed. Smart Tools Worldwide - Your one-stop destination for professional online tools.`;
+    : `${description} Use our free ${title.toLowerCase()} tool for instant results. No registration needed. FYN Tools Worldwide - Your one-stop destination for professional online tools.`;
   
   return (
     <>
       <Helmet>
         <title>{fullTitle}</title>
         <meta name="description" content={fullDescription} />
-        {keywords && <meta name="keywords" content={`${keywords}, free online tool, calculator, worldwide, instant results, no registration, smart tools worldwide`} />}
+        {keywords && <meta name="keywords" content={`${keywords}, free online tool, calculator, worldwide, instant results, no registration, fyn tools worldwide`} />}
         <meta property="og:title" content={fullTitle} />
         <meta property="og:description" content={fullDescription} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content={heroImage} />
-        <meta property="og:site_name" content="Smart Tools Worldwide" />
+        <meta property="og:site_name" content="FYN Tools Worldwide" />
         {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={fullTitle} />
         <meta name="twitter:description" content={fullDescription} />
         <meta name="twitter:image" content={heroImage} />
-        <meta name="twitter:site" content="@smarttoolsworldwide" />
+        <meta name="twitter:site" content="@fyntoolsworldwide" />
         {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
         <meta name="robots" content="index, follow" />
-        <meta name="author" content="Smart Tools Worldwide" />
+        <meta name="author" content="FYN Tools Worldwide" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         
         {/* Tool-specific structured data */}
@@ -72,8 +72,8 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
             },
             "provider": {
               "@type": "Organization",
-              "name": "Smart Tools Worldwide",
-              "url": "https://smarttoolsworldwide.com"
+              "name": "FYN Tools Worldwide",
+              "url": "https://fyntools.com/"
             }
           })}
         </script>

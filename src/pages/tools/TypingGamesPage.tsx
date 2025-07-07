@@ -13,7 +13,7 @@ const TypingGamesPage = () => {
       keywords="typing games, typing speed test, online typing practice, WPM test, typing test 1 minute, typing games for adults, keyboard test online, touch typing course, typing practice online, free typing games, typing race, typing challenges, typing tutor, learn typing, typing skills"
       pageTitle="Free Online Typing Games - Test Your Speed & Accuracy"
       toolCategory="Typing Tools"
-      canonicalUrl="https://tools.best-smm.in/typing-games"
+      canonicalUrl="https://fyntools.com/typing-games"
       heroImage="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

@@ -11,7 +11,7 @@ const WeatherForecastPage = () => {
       keywords="weather forecast, current weather, weather updates, temperature, humidity, wind speed, weather conditions, 5 day forecast, weather API, live weather"
       pageTitle="Weather Forecast"
       toolCategory="Weather Tool"
-      canonicalUrl="https://smarttoolsworldwide.com/weather-forecast"
+      canonicalUrl="https://fyntools.com//weather-forecast"
       heroImage="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=1200&h=630&fit=crop"
     >
       <WeatherForecast />

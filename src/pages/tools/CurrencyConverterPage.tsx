@@ -13,7 +13,7 @@ const CurrencyConverterPage = () => {
       keywords="currency converter, exchange rates, USD to INR, EUR to USD, currency calculator, foreign exchange, money converter, live exchange rates"
       pageTitle="Currency Converter"
       toolCategory="Financial Tool"
-      canonicalUrl="https://smarttools-india.com/currency-converter"
+      canonicalUrl="https://fyntools.com/currency-converter"
       heroImage="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

@@ -11,7 +11,7 @@ const SvgOptimizerPage = () => {
       keywords="svg optimizer, svg minifier, svg compression, optimize svg files, reduce svg size, svg cleaner, vector graphics optimizer, web performance optimization, svg file size reducer"
       pageTitle="SVG Optimizer - Compress & Optimize SVG Files Online"
       toolCategory="Image Tool"
-      canonicalUrl="https://smarttools-india.com/svg-optimizer"
+      canonicalUrl="https://fyntools.com/svg-optimizer"
       heroImage="https://images.unsplash.com/photo-1558655146-d09347e92766?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">

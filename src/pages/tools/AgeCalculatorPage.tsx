@@ -13,7 +13,7 @@ const AgeCalculatorPage = () => {
       keywords="age calculator, calculate age, birth date calculator, age in days, age in months, exact age, date of birth calculator"
       pageTitle="Age Calculator"
       toolCategory="Date Calculator"
-      canonicalUrl="https://smarttools-india.com/age-calculator"
+      canonicalUrl="https://fyntools.com/age-calculator"
       heroImage="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

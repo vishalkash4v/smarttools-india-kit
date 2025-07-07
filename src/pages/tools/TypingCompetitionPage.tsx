@@ -13,7 +13,7 @@ const TypingCompetitionPage = () => {
       keywords="typing competition, typing race, multiplayer typing, typing leaderboard, competitive typing, typing tournament, real-time typing"
       pageTitle="Typing Competition - Race Against Others"
       toolCategory="Typing Tools"
-      canonicalUrl="https://tools.best-smm.in/typing-competition"
+      canonicalUrl="https://fyntools.com/typing-competition"
       heroImage="https://images.unsplash.com/photo-1551818255-e6e10975bc17?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

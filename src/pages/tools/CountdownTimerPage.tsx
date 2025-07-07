@@ -13,7 +13,7 @@ const CountdownTimerPage = () => {
       keywords="countdown timer, productivity timer, event timer, cooking timer, presentation timer, time management, pomodoro timer"
       pageTitle="Countdown Timer"
       toolCategory="Time Management"
-      canonicalUrl="https://smarttools-india.com/countdown-timer"
+      canonicalUrl="https://fyntools.com/countdown-timer"
       heroImage="https://images.unsplash.com/photo-1495364141860-b0d03eccd065?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

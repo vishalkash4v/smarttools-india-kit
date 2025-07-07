@@ -13,7 +13,7 @@ const TableToJsonConverterPage = () => {
       keywords="table to JSON converter, CSV to JSON, HTML table converter, data transformation, JSON generator, spreadsheet converter"
       pageTitle="Table to JSON Converter"
       toolCategory="Data Converter"
-      canonicalUrl="https://smarttools-india.com/table-to-json-converter"
+      canonicalUrl="https://fyntools.com/table-to-json-converter"
       heroImage="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

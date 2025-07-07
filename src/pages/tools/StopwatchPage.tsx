@@ -13,7 +13,7 @@ const StopwatchPage = () => {
       keywords="stopwatch online, timer tool, time tracker, precision timing, workout timer, cooking timer, productivity timer"
       pageTitle="Stopwatch Timer"
       toolCategory="Time Tracker"
-      canonicalUrl="https://smarttools-india.com/stopwatch"
+      canonicalUrl="https://fyntools.com/stopwatch"
       heroImage="https://images.unsplash.com/photo-1501139083538-0139583c060f?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

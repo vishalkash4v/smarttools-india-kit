@@ -13,7 +13,7 @@ const JavaScriptMinifierPage = () => {
       keywords="JavaScript minifier, JS minifier, code compression, file size reduction, website optimization, performance improvement, code minification"
       pageTitle="JavaScript Minifier"
       toolCategory="Developer Tool"
-      canonicalUrl="https://smarttools-india.com/javascript-minifier"
+      canonicalUrl="https://fyntools.com/javascript-minifier"
       heroImage="https://images.unsplash.com/photo-1516996087931-5ae405802f9f?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

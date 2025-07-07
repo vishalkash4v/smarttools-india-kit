@@ -13,7 +13,7 @@ const RegexTesterPage = () => {
       keywords="regex tester, regular expression, pattern matching, regex validator, text processing, string matching, regex debugger"
       pageTitle="Regex Tester"
       toolCategory="Developer Tool"
-      canonicalUrl="https://smarttools-india.com/regex-tester"
+      canonicalUrl="https://fyntools.com/regex-tester"
       heroImage="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

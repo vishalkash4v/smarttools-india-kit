@@ -13,7 +13,7 @@ const QRCodeGeneratorPage = () => {
       keywords="QR code generator, create QR code, QR code maker, generate QR codes, free QR generator, URL to QR code, contact QR code"
       pageTitle="QR Code Generator"
       toolCategory="QR Generator"
-      canonicalUrl="https://smarttools-india.com/qr-code-generator"
+      canonicalUrl="https://fyntools.com/qr-code-generator"
       heroImage="https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

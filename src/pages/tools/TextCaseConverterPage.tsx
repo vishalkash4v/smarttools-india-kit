@@ -13,7 +13,7 @@ const TextCaseConverterPage = () => {
       keywords="text case converter, uppercase converter, lowercase converter, title case, sentence case, text transformer, text formatting tool"
       pageTitle="Text Case Converter"
       toolCategory="Text Tool"
-      canonicalUrl="https://smarttools-india.com/text-case-converter"
+      canonicalUrl="https://fyntools.com/text-case-converter"
       heroImage="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

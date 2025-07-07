@@ -69,7 +69,7 @@ const Footer = () => {
                 <Wrench className="h-6 w-6 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                SmartTools India
+                FYN Tools India
               </span>
             </Link>
             <p className="text-muted-foreground mb-4 leading-relaxed">
@@ -83,7 +83,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
-                <span>contact@smarttools-india.com</span>
+                <span>contact@fyntools-india.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
@@ -128,7 +128,7 @@ const Footer = () => {
               ))}
             </div>
             <p className="text-sm text-muted-foreground">
-              © {currentYear} SmartTools India. All rights reserved.
+              © {currentYear} FYN Tools India. All rights reserved.
             </p>
           </div>
         </div>

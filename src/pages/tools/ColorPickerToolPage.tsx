@@ -13,7 +13,7 @@ const ColorPickerToolPage = () => {
       keywords="color picker, color palette, hex color, RGB color, HSL color, color codes, web design colors, graphic design colors, color wheel"
       pageTitle="Color Picker Tool"
       toolCategory="Design Tool"
-      canonicalUrl="https://smarttools-india.com/color-picker-tool"
+      canonicalUrl="https://fyntools.com/color-picker-tool"
       heroImage="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

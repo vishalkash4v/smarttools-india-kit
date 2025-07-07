@@ -13,7 +13,7 @@ const PasswordGeneratorPage = () => {
       keywords="password generator, strong password, secure password, random password, password creator, password security, cybersecurity tool"
       pageTitle="Password Generator"
       toolCategory="Security Tool"
-      canonicalUrl="https://smarttools-india.com/password-generator"
+      canonicalUrl="https://fyntools.com/password-generator"
       heroImage="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

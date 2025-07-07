@@ -7,7 +7,7 @@ const AutoImageResizerPage = () => {
   return (
     <>
       <Helmet>
-        <title>Auto Image Resizer - SmartTools India</title>
+        <title>Auto Image Resizer - FYN Tools India</title>
         <meta name="description" content="Automatically resize images to optimal dimensions and file sizes for various use cases." />
         <meta name="keywords" content="auto image resizer, automatic resize, optimize images, smart resize" />
       </Helmet>

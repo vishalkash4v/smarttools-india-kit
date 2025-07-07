@@ -13,7 +13,7 @@ const EmiCalculatorPage = () => {
       keywords="EMI calculator India, loan EMI calculator, home loan EMI, car loan calculator, personal loan EMI, monthly installment calculator, loan calculator"
       pageTitle="EMI Calculator"
       toolCategory="Financial Calculator"
-      canonicalUrl="https://smarttools-india.com/emi-calculator"
+      canonicalUrl="https://fyntools.com/emi-calculator"
       heroImage="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

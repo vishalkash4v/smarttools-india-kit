@@ -13,7 +13,7 @@ const DuplicateLineRemoverPage = () => {
       keywords="duplicate line remover, remove duplicate lines, text deduplication, unique lines, list cleaner, text processor, data cleaning tool"
       pageTitle="Duplicate Line Remover"
       toolCategory="Text Tool"
-      canonicalUrl="https://smarttools-india.com/duplicate-line-remover"
+      canonicalUrl="https://fyntools.com/duplicate-line-remover"
       heroImage="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

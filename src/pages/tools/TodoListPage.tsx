@@ -13,7 +13,7 @@ const TodoListPage = () => {
       keywords="todo list, task manager, productivity tool, task organizer, to-do app, task list, project management, personal organizer"
       pageTitle="Todo List Manager"
       toolCategory="Productivity Tool"
-      canonicalUrl="https://smarttools-india.com/todo-list"
+      canonicalUrl="https://fyntools.com/todo-list"
       heroImage="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

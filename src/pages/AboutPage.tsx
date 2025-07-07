@@ -33,15 +33,15 @@ const AboutPage = () => {
   return (
     <PageWrapper
       title="About Us"
-      description="Learn about SmartTools India's mission to provide free, secure, and user-friendly online tools for developers, students, and professionals."
-      keywords="about smarttools india, online tools, free tools, mission, story"
+      description="Learn about FYN Tools India's mission to provide free, secure, and user-friendly online tools for developers, students, and professionals."
+      keywords="about FYN Tools India, online tools, free tools, mission, story"
       toolCategory="About"
     >
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4 heading-gradient">About SmartTools India</h1>
+            <h1 className="text-4xl font-bold mb-4 heading-gradient">About FYN Tools India</h1>
             <p className="text-xl text-muted-foreground">
               Making powerful tools accessible to everyone, everywhere.
             </p>
@@ -63,7 +63,7 @@ const AboutPage = () => {
                 buried under layers of spam.
               </p>
               <p className="text-lg leading-relaxed mb-4">
-                That's when I decided to create SmartTools India - a platform where anyone can access 
+                That's when I decided to create FYN Tools India - a platform where anyone can access 
                 professional-grade tools without any barriers. No registration, no fees, no ads cluttering 
                 the interface. Just clean, fast, and reliable tools that actually work.
               </p>

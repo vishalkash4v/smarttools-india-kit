@@ -13,7 +13,7 @@ const TypingTestPage = () => {
       keywords="typing test, typing speed test, WPM test, typing accuracy, speed typing, Hindi typing test, English typing test"
       pageTitle="Typing Speed Test - Measure Your WPM"
       toolCategory="Typing Tools"
-      canonicalUrl="https://tools.best-smm.in/typing-test"
+      canonicalUrl="https://fyntools.com/typing-test"
       heroImage="https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

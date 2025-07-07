@@ -29,12 +29,12 @@ const Header = () => {
     { name: 'URL Slug Generator', path: '/url-slug-generator', description: 'Generate SEO-friendly URL slugs from text', keywords: 'url slug generator seo friendly web development' },
     { name: 'Notes', path: '/notes', description: 'Take and organize notes with rich text editor', keywords: 'notes notepad text editor rich text organize' },
     { name: 'Regex Tester', path: '/regex-tester', description: 'Test and debug regular expressions with live matching', keywords: 'regex regular expression tester debugger pattern matching' },
-    
+
     { name: 'Typing Tutor', path: '/typing-tutor', description: 'Learn touch typing with interactive lessons and exercises', keywords: 'typing tutor learn touch type practice lessons keyboard' },
     { name: 'Typing Test', path: '/typing-test', description: 'Test your typing speed and accuracy with WPM calculation', keywords: 'typing test speed wpm accuracy words per minute' },
     { name: 'Typing Games', path: '/typing-games', description: 'Fun typing games to improve your keyboard skills', keywords: 'typing games fun keyboard skills improvement practice' },
     { name: 'Typing Competition', path: '/typing-competition', description: 'Competitive typing challenges and leaderboards', keywords: 'typing competition challenge leaderboard compete' },
-    
+
     { name: 'Simple Calculator', path: '/simple-calculator', description: 'Basic arithmetic calculator for everyday calculations', keywords: 'calculator math arithmetic basic operations add subtract multiply divide' },
     { name: 'Age Calculator', path: '/age-calculator', description: 'Calculate exact age from birth date with detailed breakdown', keywords: 'age calculator birthday birth date years months days' },
     { name: 'Date Difference Calculator', path: '/date-difference-calculator', description: 'Calculate difference between two dates', keywords: 'date difference calculator days between dates duration' },
@@ -45,13 +45,13 @@ const Header = () => {
     { name: 'Temperature Converter', path: '/temperature-converter', description: 'Convert between Celsius, Fahrenheit and Kelvin', keywords: 'temperature converter celsius fahrenheit kelvin convert' },
     { name: 'Unit Converter', path: '/unit-converter', description: 'Convert between different units of measurement', keywords: 'unit converter measurement length weight volume area' },
     { name: 'Enhanced Unit Converter', path: '/enhanced-unit-converter', description: 'Advanced unit converter with more categories and precision', keywords: 'enhanced unit converter advanced measurement precision categories' },
-    
+
     { name: 'SIP & Lump Sum Calculator', path: '/sip-calculator', description: 'Calculate SIP returns and lump sum investments', keywords: 'sip calculator investment mutual funds lump sum returns' },
     { name: 'PPF Calculator', path: '/ppf-calculator', description: 'Calculate Public Provident Fund returns and maturity', keywords: 'ppf calculator public provident fund investment tax saving' },
     { name: 'FD Calculator', path: '/fd-calculator', description: 'Calculate Fixed Deposit returns and maturity amount', keywords: 'fd calculator fixed deposit bank interest returns maturity' },
     { name: 'Income Tax Calculator', path: '/income-tax-calculator', description: 'Calculate income tax for Indian tax system', keywords: 'income tax calculator india tax slab deduction investment' },
     { name: 'Currency Converter', path: '/currency-converter', description: 'Convert between different currencies with live rates', keywords: 'currency converter exchange rate money foreign exchange' },
-    
+
     { name: 'Image Compressor', path: '/image-compressor', description: 'Compress images to reduce file size while maintaining quality', keywords: 'image compressor reduce size optimize jpeg png webp quality' },
     { name: 'Logo to Favicon', path: '/logo-to-favicon', description: 'Convert logos to favicon format with multiple sizes', keywords: 'logo favicon converter icon website branding' },
     { name: 'Image Upscaler', path: '/image-upscaler', description: 'Upscale and enhance image quality using advanced algorithms', keywords: 'image upscaler enhance quality resolution increase enlarge' },
@@ -65,7 +65,7 @@ const Header = () => {
     { name: 'Photo Annotation', path: '/tools/photo-annotation-tool', description: 'Add text annotations, arrows and shapes to photos', keywords: 'photo annotation text arrows shapes markup editor' },
     { name: 'Background Remover', path: '/tools/background-remover', description: 'Remove backgrounds from images automatically', keywords: 'background remover transparent remove background automatic' },
     { name: 'Image Resizer', path: '/tools/image-resizer', description: 'Resize images to custom dimensions with quality preservation', keywords: 'image resizer resize dimensions quality preserve scale' },
-    
+
     { name: 'URL Shortener', path: '/url-shortener', description: 'Create short URLs from long ones for easy sharing', keywords: 'url shortener short link tiny url sharing social media' },
     { name: 'Hashtag Generator', path: '/hashtag-generator', description: 'Generate relevant hashtags for social media posts', keywords: 'hashtag generator social media instagram twitter tags' },
     { name: 'Social Media Link Generator', path: '/social-media-link-generator', description: 'Generate social media sharing links for platforms', keywords: 'social media link generator sharing facebook twitter linkedin' },
@@ -73,7 +73,7 @@ const Header = () => {
     { name: 'Social Media DB Viewer', path: '/social-media-db-viewer', description: 'View and manage social media database entries', keywords: 'social media database viewer manage entries data' },
     { name: 'Instagram & Facebook Downloader', path: '/social-media-downloader', description: 'Download content from Instagram and Facebook', keywords: 'instagram facebook downloader social media content download' },
     { name: 'YouTube Downloader', path: '/youtube-downloader', description: 'Download YouTube videos and audio in various formats', keywords: 'youtube downloader video audio mp4 mp3 download' },
-    
+
     { name: 'QR Code Generator', path: '/qr-code-generator', description: 'Generate QR codes for text, URLs and other data', keywords: 'qr code generator barcode text url data mobile scan' },
     { name: 'Password Generator', path: '/password-generator', description: 'Generate secure passwords with customizable options', keywords: 'password generator secure random strong password safety' },
     { name: 'Color Picker Tool', path: '/color-picker-tool', description: 'Pick and convert colors between different formats (HEX, RGB, HSL)', keywords: 'color picker hex rgb hsl convert palette design' },
@@ -86,13 +86,13 @@ const Header = () => {
     { name: 'List Randomizer', path: '/list-randomizer', description: 'Randomize and shuffle list items', keywords: 'list randomizer shuffle random order items' },
     { name: 'Barcode Generator', path: '/barcode-generator', description: 'Generate barcodes in various formats', keywords: 'barcode generator code128 ean upc product retail' },
     { name: 'URL App Wrapper', path: '/url-wrapper', description: 'Wrap URLs as mobile-friendly app interfaces', keywords: 'url wrapper mobile app interface web app pwa' },
-    
+
     { name: 'Hash Generator', path: '/hash-generator', description: 'Generate cryptographic hashes (MD5, SHA1, SHA256)', keywords: 'hash generator md5 sha1 sha256 cryptographic checksum' },
     { name: 'JWT Token Decoder', path: '/jwt-decoder', description: 'Decode and verify JSON Web Tokens', keywords: 'jwt decoder json web token verify authenticate' },
     { name: 'Meta Tag Previewer', path: '/meta-tag-previewer', description: 'Preview how meta tags appear on social media platforms', keywords: 'meta tag previewer social media seo og tags twitter cards' },
-    
+
     { name: 'QR Scanner', path: '/tools/qr-scanner', description: 'Scan QR codes from images and camera', keywords: 'qr scanner reader decode barcode mobile camera' },
-    
+
     { name: "What's My IP", path: '/ip-lookup', description: 'Find your IP address and location information', keywords: 'ip address lookup location what is my ip geolocation' }
   ];
 
@@ -108,8 +108,8 @@ const Header = () => {
   const filteredTools = allTools.filter(tool => {
     const query = searchQuery.toLowerCase();
     return tool.name.toLowerCase().includes(query) ||
-           tool.description.toLowerCase().includes(query) ||
-           tool.keywords.toLowerCase().includes(query);
+      tool.description.toLowerCase().includes(query) ||
+      tool.keywords.toLowerCase().includes(query);
   });
 
   return (
@@ -117,10 +117,12 @@ const Header = () => {
       <div className="container flex h-14 sm:h-16 items-center justify-between px-2 sm:px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-xs sm:text-sm">ST</span>
-          </div>
-          <span className="font-bold text-lg sm:text-xl hidden sm:inline-block">SmartTools</span>
+          <img
+            src="/logo.png"
+            alt="FYN Tools logo"
+            className="h-20 sm:h-50 w-auto object-contain logo"
+          />
+          {/* <span className="font-bold text-lg sm:text-xl hidden sm:inline-block">FYN TOOLS</span> */}
         </Link>
 
         {/* Desktop Navigation */}
@@ -181,7 +183,7 @@ const Header = () => {
         {/* Right Section */}
         <div className="flex items-center space-x-1 sm:space-x-2">
           <ThemeToggle />
-          
+
           {/* Search Button - Mobile */}
           <Button
             variant="ghost"
@@ -191,7 +193,7 @@ const Header = () => {
           >
             <Search className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
-          
+
           {/* Mobile Menu Button */}
           {isMobile && (
             <Button

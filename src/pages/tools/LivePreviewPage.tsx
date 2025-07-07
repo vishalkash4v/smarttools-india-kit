@@ -13,7 +13,7 @@ const LivePreviewPage = () => {
       keywords="HTML preview, live preview, code editor, web development, HTML CSS JavaScript, real-time preview, code playground"
       pageTitle="Live HTML Preview"
       toolCategory="Developer Tool"
-      canonicalUrl="https://smarttools-india.com/live-preview"
+      canonicalUrl="https://fyntools.com/live-preview"
       heroImage="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

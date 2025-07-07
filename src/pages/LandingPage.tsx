@@ -271,30 +271,30 @@ const LandingPage = () => {
   return (
     <>
       <Helmet>
-        <title>SmartTools India - Free Online Professional Tools</title>
+        <title>FYN Tools India - Free Online Professional Tools</title>
         <meta name="description" content="25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration." />
         <meta name="keywords" content="online tools, free calculators, text tools, developers tools, converters, generators, BMI calculator, JSON formatter, QR code generator, India" />
-        <meta property="og:title" content="SmartTools India - Free Online Professional Tools" />
+        <meta property="og:title" content="FYN Tools India - Free Online Professional Tools" />
         <meta property="og:description" content="25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://tools.best-smm.in" />
+        <meta property="og:url" content="https://fyntools.com" />
         <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="SmartTools India - Free Online Professional Tools" />
+        <meta name="twitter:title" content="FYN Tools India - Free Online Professional Tools" />
         <meta name="twitter:description" content="25+ free online tools for professionals. Secure calculators, text tools, converters, and generators. Instant results, no registration." />
-        <link rel="canonical" href="https://tools.best-smm.in" />
+        <link rel="canonical" href="https://fyntools.com" />
         
         {/* Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
-            "name": "SmartTools India",
+            "name": "FYN Tools India",
             "description": "Professional online tools for developers, businesses and individuals",
-            "url": "https://tools.best-smm.in",
+            "url": "https://fyntools.com",
             "potentialAction": {
               "@type": "SearchAction",
-              "target": "https://tools.best-smm.in/tools?q={search_term_string}",
+              "target": "https://fyntools.com/tools?q={search_term_string}",
               "query-input": "required name=search_term_string"
             }
           })}
@@ -417,7 +417,7 @@ const LandingPage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Why Choose SmartTools India?
+                Why Choose FYN Tools India?
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Built with modern technology for the best user experience
@@ -458,7 +458,7 @@ const LandingPage = () => {
                 Ready to Boost Your Productivity?
               </h2>
               <p className="text-xl text-muted-foreground mb-8">
-                Join thousands of professionals who trust SmartTools India for their daily tasks
+                Join thousands of professionals who trust FYN Tools India for their daily tasks
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="btn-primary text-lg px-8 py-4">

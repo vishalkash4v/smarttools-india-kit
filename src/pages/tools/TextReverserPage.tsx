@@ -13,7 +13,7 @@ const TextReverserPage = () => {
       keywords="text reverser, reverse text, mirror text, backward text, text manipulation, string reversal, character reversal"
       pageTitle="Text Reverser"
       toolCategory="Text Tool"
-      canonicalUrl="https://smarttools-india.com/text-reverser"
+      canonicalUrl="https://fyntools.com/text-reverser"
       heroImage="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

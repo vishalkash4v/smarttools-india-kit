@@ -13,7 +13,7 @@ const WordCounterPage = () => {
       keywords="word counter, character counter, text analyzer, word count tool, writing tools, text statistics, sentence counter, paragraph counter"
       pageTitle="Word & Character Counter"
       toolCategory="Text Analysis"
-      canonicalUrl="https://tools.best-smm.in/word-counter"
+      canonicalUrl="https://fyntools.com/word-counter"
       heroImage="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

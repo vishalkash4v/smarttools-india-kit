@@ -13,7 +13,7 @@ const BmiCalculatorPage = () => {
       keywords="BMI calculator, body mass index, weight calculator, health calculator, fitness calculator, obesity calculator, underweight calculator"
       pageTitle="BMI Calculator"
       toolCategory="Health Calculator"
-      canonicalUrl="https://smarttools-india.com/bmi-calculator"
+      canonicalUrl="https://fyntools.com/bmi-calculator"
       heroImage="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&h=630&fit=crop"
     >
       <div className="container mx-auto py-8 px-4">

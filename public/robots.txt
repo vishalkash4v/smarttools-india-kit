@@ -14,4 +14,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://tools.best-smm.in/sitemap.xml
+Sitemap: https://fyntools.com/sitemap.xml
