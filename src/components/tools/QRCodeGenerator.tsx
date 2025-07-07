@@ -437,64 +437,73 @@ const QRCodeGenerator: React.FC = () => {
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="generate" className="space-y-6">
+      <TabsContent value="generate" className="space-y-8">
         {/* How to Create QR Code Guide */}
-        <Card className="bg-gradient-to-br from-background to-muted/20 border-border/50">
-          <CardContent className="p-6">
-            <h3 className="text-xl font-semibold text-foreground mb-4">How to create a free QR Code</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-sm flex-shrink-0">
-                  1
+        <Card className="glass-card border border-white/20 dark:border-white/10 hover-lift">
+          <CardContent className="p-8">
+            <h3 className="text-2xl font-bold gradient-text mb-6 text-center">How to create a professional QR Code</h3>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="flex flex-col items-center text-center group">
+                <div className="relative mb-4">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center font-bold text-xl text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    1
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-accent to-primary rounded-full animate-glow-pulse"></div>
                 </div>
-                <div>
-                  <h4 className="font-medium text-foreground mb-1">Choose your QR Code type</h4>
-                  <p className="text-sm text-muted-foreground">Select the QR Code type that fits your content—for example, a website URL, a phone contact, or a downloadable PDF.</p>
-                </div>
+                <h4 className="font-semibold text-lg text-foreground mb-3">Choose your QR Code type</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">Select the QR Code type that fits your content—for example, a website URL, a phone contact, or a downloadable PDF.</p>
               </div>
               
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-sm flex-shrink-0">
-                  2
+              <div className="flex flex-col items-center text-center group">
+                <div className="relative mb-4">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center font-bold text-xl text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    2
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-accent to-primary rounded-full animate-glow-pulse"></div>
                 </div>
-                <div>
-                  <h4 className="font-medium text-foreground mb-1">Add details and customize</h4>
-                  <p className="text-sm text-muted-foreground">Add elements like your brand's primary color, company logo, or a frame with a call-to-action to make your QR Code recognizable and professional.</p>
-                </div>
+                <h4 className="font-semibold text-lg text-foreground mb-3">Add details and customize</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">Add elements like your brand's primary color, company logo, or a frame with a call-to-action to make your QR Code recognizable and professional.</p>
               </div>
               
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-sm flex-shrink-0">
-                  3
+              <div className="flex flex-col items-center text-center group">
+                <div className="relative mb-4">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center font-bold text-xl text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    3
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-accent to-primary rounded-full animate-glow-pulse"></div>
                 </div>
-                <div>
-                  <h4 className="font-medium text-foreground mb-1">Download and share</h4>
-                  <p className="text-sm text-muted-foreground">Choose the format that best fits your use case. Download as PNG for high quality prints or use SVG for scalable graphics.</p>
-                </div>
+                <h4 className="font-semibold text-lg text-foreground mb-3">Download and share</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">Choose the format that best fits your use case. Download as PNG for high quality prints or use SVG for scalable graphics.</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Generator Section */}
-          <Card className="bg-gradient-to-br from-card via-card/95 to-muted/20 border-border/50">
-            <CardContent className="p-6 space-y-4">
+          <Card className="glass-card border border-white/20 dark:border-white/10 hover-lift relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
+            <CardContent className="p-8 space-y-6 relative z-10">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold gradient-text mb-2">QR Code Generator</h3>
+                <p className="text-sm text-muted-foreground">Create your custom QR code in seconds</p>
+              </div>
+              
               <div>
-                <Label htmlFor="qrType" className="block text-sm font-medium mb-2">
+                <Label htmlFor="qrType" className="block text-sm font-medium mb-3">
                   QR Code Type
                 </Label>
                 <Select value={qrType} onValueChange={(value: QRType) => setQrType(value)}>
-                  <SelectTrigger className="w-full bg-background/50">
+                  <SelectTrigger className="w-full glass border border-white/20 dark:border-white/10 bg-white/10 dark:bg-black/20 backdrop-blur-md">
                     <SelectValue placeholder="Select QR type" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="glass-card border border-white/20 dark:border-white/10 backdrop-blur-xl">
                     {qrTypeOptions.map((option) => {
                       const IconComponent = option.icon;
                       return (
-                        <SelectItem key={option.value} value={option.value}>
-                          <div className="flex items-center gap-2">
-                            <IconComponent className="h-4 w-4" />
+                        <SelectItem key={option.value} value={option.value} className="hover:bg-white/10 dark:hover:bg-white/5">
+                          <div className="flex items-center gap-3">
+                            <IconComponent className="h-4 w-4 text-primary" />
                             {option.label}
                           </div>
                         </SelectItem>
@@ -506,63 +515,75 @@ const QRCodeGenerator: React.FC = () => {
 
               {renderInputFields()}
 
-              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
-                <QrCode className="mr-2 h-4 w-4" />
+              <Button onClick={handleGenerate} className="w-full h-12 text-base bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent text-white shadow-lg hover:shadow-xl hover:shadow-primary/30 transition-all duration-300">
+                <QrCode className="mr-2 h-5 w-5" />
                 Generate QR Code
               </Button>
             </CardContent>
           </Card>
 
           {/* Customization Section */}
-          <Card className="bg-gradient-to-br from-card via-card/95 to-muted/20 border-border/50">
-            <CardContent className="p-6 space-y-4">
-              <Label className="block text-sm font-medium mb-2">Customize Appearance</Label>
+          <Card className="glass-card border border-white/20 dark:border-white/10 hover-lift relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-primary/5"></div>
+            <CardContent className="p-8 space-y-6 relative z-10">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold gradient-text mb-2">Customize Appearance</h3>
+                <p className="text-sm text-muted-foreground">Make your QR code unique and professional</p>
+              </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="fgColor" className="text-xs text-muted-foreground">Foreground Color</Label>
-                  <Input
-                    id="fgColor"
-                    type="color"
-                    value={fgColor}
-                    onChange={(e) => setFgColor(e.target.value)}
-                    className="w-full h-10 p-1 bg-background/50"
-                  />
+                  <Label htmlFor="fgColor" className="text-sm font-medium mb-2 block">Foreground Color</Label>
+                  <div className="relative">
+                    <Input
+                      id="fgColor"
+                      type="color"
+                      value={fgColor}
+                      onChange={(e) => setFgColor(e.target.value)}
+                      className="w-full h-12 p-2 cursor-pointer"
+                    />
+                    <div className="absolute inset-2 rounded-lg border-2 border-white/50 pointer-events-none"></div>
+                  </div>
                 </div>
                 <div>
-                  <Label htmlFor="bgColor" className="text-xs text-muted-foreground">Background Color</Label>
-                  <Input
-                    id="bgColor"
-                    type="color"
-                    value={bgColor}
-                    onChange={(e) => setBgColor(e.target.value)}
-                    className="w-full h-10 p-1 bg-background/50"
-                  />
+                  <Label htmlFor="bgColor" className="text-sm font-medium mb-2 block">Background Color</Label>
+                  <div className="relative">
+                    <Input
+                      id="bgColor"
+                      type="color"
+                      value={bgColor}
+                      onChange={(e) => setBgColor(e.target.value)}
+                      className="w-full h-12 p-2 cursor-pointer"
+                    />
+                    <div className="absolute inset-2 rounded-lg border-2 border-white/50 pointer-events-none"></div>
+                  </div>
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="logoUpload" className="text-xs text-muted-foreground mb-2 block">
-                  <Upload className="inline h-3 w-3 mr-1" />
+                <Label htmlFor="logoUpload" className="text-sm font-medium mb-3 flex items-center gap-2">
+                  <Upload className="h-4 w-4 text-primary" />
                   Upload Logo (max 1MB)
                 </Label>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <Input
                     id="logoUpload"
                     type="file"
                     accept="image/png, image/jpeg, image/svg+xml"
                     onChange={handleLogoUpload}
                     ref={fileInputRef}
-                    className="text-sm bg-background/50"
+                    className="text-sm flex-1"
                   />
                   {logoSrc && (
-                    <Button onClick={clearLogo} variant="outline" size="sm">Clear</Button>
+                    <Button onClick={clearLogo} variant="outline" size="sm" className="glass border-white/20 dark:border-white/10">
+                      Clear
+                    </Button>
                   )}
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="qrCodeSize" className="text-xs text-muted-foreground">QR Code Size (px)</Label>
+                <Label htmlFor="qrCodeSize" className="text-sm font-medium mb-3 block">QR Code Size (px)</Label>
                 <Input
                   id="qrCodeSize"
                   type="number"
@@ -571,23 +592,31 @@ const QRCodeGenerator: React.FC = () => {
                   min="64"
                   max="1024"
                   step="8"
-                  className="w-full bg-background/50"
+                  className="w-full"
                 />
               </div>
 
               {logoSrc && (
                 <div>
-                  <Label htmlFor="logoSize" className="text-xs text-muted-foreground">Logo Size ({(logoSize * 100).toFixed(0)}%)</Label>
-                  <Input
-                    id="logoSizeSlider"
-                    type="range"
-                    min="0.05"
-                    max="0.3"
-                    step="0.01"
-                    value={logoSize}
-                    onChange={(e) => setLogoSize(parseFloat(e.target.value))}
-                    className="w-full mt-2"
-                  />
+                  <Label htmlFor="logoSize" className="text-sm font-medium mb-3 block">
+                    Logo Size ({(logoSize * 100).toFixed(0)}%)
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="logoSizeSlider"
+                      type="range"
+                      min="0.05"
+                      max="0.3"
+                      step="0.01"
+                      value={logoSize}
+                      onChange={(e) => setLogoSize(parseFloat(e.target.value))}
+                      className="w-full mt-2 accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                      <span>5%</span>
+                      <span>30%</span>
+                    </div>
+                  </div>
                 </div>
               )}
             </CardContent>
@@ -596,10 +625,16 @@ const QRCodeGenerator: React.FC = () => {
 
         {/* QR Code Preview */}
         {qrValue && (
-          <Card className="bg-gradient-to-br from-card via-card/95 to-muted/20 border-border/50">
-            <CardContent className="p-8 flex flex-col items-center space-y-6">
+          <Card className="glass-card border border-white/20 dark:border-white/10 hover-lift glow-hover relative overflow-hidden animate-scale-in">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
+            <CardContent className="p-12 flex flex-col items-center space-y-8 relative z-10">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold gradient-text mb-2">Your QR Code is Ready!</h3>
+                <p className="text-muted-foreground">Scan to test or download for use</p>
+              </div>
+              
               <div 
-                className="p-6 inline-block shadow-2xl rounded-2xl relative overflow-hidden border border-border/20" 
+                className="p-8 inline-block shadow-2xl rounded-3xl relative overflow-hidden border-2 border-white/20 dark:border-white/10 hover:scale-105 transition-transform duration-300" 
                 style={{ backgroundColor: bgColor }}
               >
                 <div className="relative">
@@ -614,9 +649,16 @@ const QRCodeGenerator: React.FC = () => {
                     imageSettings={imageSettings}
                   />
                 </div>
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-white/5 pointer-events-none rounded-2xl"></div>
               </div>
-              <Button onClick={handleDownload} className="bg-primary hover:bg-primary/90 px-8 py-3">
-                <Download className="mr-2 h-5 w-5" />
+              
+              <Button 
+                onClick={handleDownload} 
+                variant="default"
+                size="lg"
+                className="px-12 py-4 text-lg shadow-xl hover:shadow-2xl hover:shadow-primary/30 hover:scale-105 transition-all duration-300"
+              >
+                <Download className="mr-3 h-6 w-6" />
                 Download High Quality QR Code
               </Button>
             </CardContent>
