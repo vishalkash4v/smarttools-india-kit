@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Upload, Camera, Copy, ExternalLink, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
+import jsQR from 'jsqr';
 
 const QRScanner = () => {
   const [scannedResult, setScannedResult] = useState<string>('');
@@ -27,44 +28,24 @@ const QRScanner = () => {
       .catch(() => setHasCamera(false));
   }, []);
 
-  // QR Code detection function (simplified)
+  // QR Code detection function using jsQR
   const detectQRCode = useCallback((imageData: ImageData) => {
-    // This is a simplified QR code detection
-    // In a real implementation, you would use a library like jsQR
-    const { data, width, height } = imageData;
-    
-    // Simple pattern detection for demonstration
-    // This won't actually detect QR codes - you'd need jsQR library
-    // For now, we'll simulate QR detection
-    const hasPattern = checkForQRPattern(data, width, height);
-    
-    if (hasPattern) {
-      // Simulate QR code content
-      return 'https://example.com/simulated-qr-result';
+    try {
+      const code = jsQR(imageData.data, imageData.width, imageData.height, {
+        inversionAttempts: "dontInvert",
+      });
+      
+      if (code) {
+        return code.data;
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('QR detection error:', error);
+      return null;
     }
-    
-    return null;
   }, []);
 
-  const checkForQRPattern = (data: Uint8ClampedArray, width: number, height: number): boolean => {
-    // Simplified pattern detection
-    // Look for alternating dark/light patterns typical of QR codes
-    let patternCount = 0;
-    
-    for (let y = 0; y < height; y += 10) {
-      for (let x = 0; x < width; x += 10) {
-        const i = (y * width + x) * 4;
-        const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
-        
-        if (brightness < 128) { // Dark pixel
-          patternCount++;
-        }
-      }
-    }
-    
-    // If there's a significant number of dark pixels in a pattern, assume QR code
-    return patternCount > (width * height) / 400;
-  };
 
   const startCamera = useCallback(async () => {
     try {
