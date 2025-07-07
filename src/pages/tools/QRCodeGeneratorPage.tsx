@@ -8,11 +8,11 @@ import { QrCode, Smartphone, Share, Download } from 'lucide-react';
 const QRCodeGeneratorPage = () => {
   return (
     <PageWrapper
-      title="QR Code Generator"
-      description="Generate QR codes instantly for URLs, text, contact info, WiFi passwords, and more. Free professional QR code creator with download options."
-      keywords="QR code generator, create QR code, QR code maker, generate QR codes, free QR generator, URL to QR code, contact QR code"
-      pageTitle="QR Code Generator"
-      toolCategory="QR Generator"
+      title="QR Code Generator Free - Create QR Codes Online"
+      description="Free QR code generator to create QR codes instantly. Generate QR codes for URLs, text, contact info, WiFi, social media and more. Professional QR code maker with scanner included."
+      keywords="qr code generator, qr code scanner, qr generator, qr code generator free, qr code, create qr code, qr code maker, generate qr codes, free qr generator, qr scanner, barcode generator"
+      pageTitle="QR Code Generator & Scanner"
+      toolCategory="QR Tools"
       canonicalUrl="https://fyntools.com/qr-code-generator"
       heroImage="https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=1200&h=630&fit=crop"
     >
@@ -86,60 +86,114 @@ const QRCodeGeneratorPage = () => {
             </CardContent>
           </Card>
 
-          {/* Info Sections */}
+          {/* Benefits Section */}
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <Card className="hover-lift bg-gradient-to-br from-card to-card/50">
+              <CardHeader>
+                <CardTitle className="text-xl text-primary">Why QR Codes are Essential</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-base leading-relaxed">
+                  QR codes bridge the gap between physical and digital worlds. They provide instant access to information 
+                  without typing long URLs or contact details. Perfect for contactless sharing, QR codes have become 
+                  essential for businesses, events, and personal use. They're cost-effective, versatile, and can be 
+                  scanned by any smartphone camera, making them universally accessible.
+                </CardDescription>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover-lift bg-gradient-to-br from-card to-card/50">
+              <CardHeader>
+                <CardTitle className="text-xl text-primary">How QR Codes Ease Your Work</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-base leading-relaxed">
+                  Save time and reduce errors by eliminating manual data entry. Share complex information instantly 
+                  with a simple scan. Update linked content without reprinting codes. Track engagement and gather 
+                  analytics. Reduce paper waste with digital menus and catalogs. Enable contactless payments and 
+                  interactions. Perfect for restaurants, retail, healthcare, education, and events.
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Use Cases Section */}
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-center text-foreground mb-8">Where You Can Use QR Codes</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <Card className="hover-lift bg-gradient-to-br from-card to-card/50">
+                <CardHeader className="text-center">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Smartphone className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">Restaurant & Food</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-center">
+                    Digital menus, table ordering, payment links, customer feedback forms, loyalty programs, 
+                    and promotional offers.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover-lift bg-gradient-to-br from-card to-card/50">
+                <CardHeader className="text-center">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Share className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">Business & Networking</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-center">
+                    Business cards, contact sharing, website links, social media profiles, product catalogs, 
+                    and company presentations.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover-lift bg-gradient-to-br from-card to-card/50">
+                <CardHeader className="text-center">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Download className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">Events & Education</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-center">
+                    Event tickets, check-in systems, educational resources, assignment links, conference materials, 
+                    and attendee networking.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Features Section */}
           <div className="grid md:grid-cols-2 gap-8">
             <Card className="hover-lift bg-gradient-to-br from-card to-card/50">
               <CardHeader>
-                <CardTitle className="text-xl text-primary">Business Applications</CardTitle>
+                <CardTitle className="text-xl text-primary">Professional QR Code Generator</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base leading-relaxed">
-                  Perfect for businesses wanting to bridge offline and online experiences. Add QR codes to 
-                  business cards, flyers, posters, and product packaging. Link to your website, social media 
-                  profiles, contact information, or promotional offers. Great for restaurants sharing menus, 
-                  events promoting tickets, or retail stores connecting to online catalogs.
+                  Create high-quality QR codes with custom colors, logos, and branding. Support for multiple 
+                  content types including URLs, text, contact information, WiFi credentials, social media profiles, 
+                  and more. Download in PNG format for print and digital use. Perfect for businesses wanting 
+                  professional-looking QR codes that match their brand identity.
                 </CardDescription>
               </CardContent>
             </Card>
             
             <Card className="hover-lift bg-gradient-to-br from-card to-card/50">
               <CardHeader>
-                <CardTitle className="text-xl text-primary">Event Management</CardTitle>
+                <CardTitle className="text-xl text-primary">Free QR Code Scanner</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base leading-relaxed">
-                  Streamline event check-ins, share event details, and connect attendees instantly. Generate 
-                  QR codes for event tickets, registration links, feedback forms, or social media pages. 
-                  Perfect for conferences, weddings, parties, and corporate events. Attendees can quickly 
-                  access event information, connect to WiFi, or join event-specific apps.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            <Card className="hover-lift bg-gradient-to-br from-card to-card/50">
-              <CardHeader>
-                <CardTitle className="text-xl text-primary">Marketing & Promotion</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base leading-relaxed">
-                  Enhance your marketing campaigns with trackable QR codes. Link to special offers, product 
-                  pages, video content, or app downloads. Use in print advertisements, digital displays, 
-                  packaging, or direct mail campaigns. Track engagement, measure campaign effectiveness, 
-                  and create seamless customer journeys from physical to digital touchpoints.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            
-            <Card className="hover-lift bg-gradient-to-br from-card to-card/50">
-              <CardHeader>
-                <CardTitle className="text-xl text-primary">Personal & Educational</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base leading-relaxed">
-                  Share personal contact information, WiFi passwords, or educational resources quickly. 
-                  Teachers can create QR codes linking to assignments, resources, or online classrooms. 
-                  Students can share projects or portfolios easily. Perfect for sharing social media profiles, 
-                  personal websites, or contact details without typing long URLs or information.
+                  Built-in QR code scanner allows you to test your generated codes and scan existing QR codes. 
+                  Works with your device camera or uploaded images. Instantly decode QR codes to view their 
+                  content before sharing. Essential for quality control and testing your QR code campaigns 
+                  before deployment.
                 </CardDescription>
               </CardContent>
             </Card>

@@ -7,8 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { QRCodeCanvas } from 'qrcode.react';
 import { useToast } from '@/components/ui/use-toast';
-import { Download, Image as ImageIcon, Palette, MessageCircle, Phone, Mail, Instagram, Facebook, Youtube, X } from 'lucide-react';
+import { Download, Image as ImageIcon, Palette, MessageCircle, Phone, Mail, Instagram, Facebook, Youtube, X, QrCode, Camera, Upload } from 'lucide-react';
 import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import QRScanner from './QRScanner';
 
 type QRType = 'text' | 'whatsapp' | 'instagram' | 'facebook' | 'youtube' | 'x' | 'sms' | 'phone' | 'email';
 
@@ -417,169 +419,215 @@ const QRCodeGenerator: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Input Section */}
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="qrType" className="block text-sm font-medium text-gray-700 mb-1">
-              QR Code Type
-            </Label>
-            <Select value={qrType} onValueChange={(value: QRType) => setQrType(value)}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select QR type" />
-              </SelectTrigger>
-              <SelectContent>
-                {qrTypeOptions.map((option) => {
-                  const IconComponent = option.icon;
-                  return (
-                    <SelectItem key={option.value} value={option.value}>
-                      <div className="flex items-center gap-2">
-                        <IconComponent className="h-4 w-4" />
-                        {option.label}
-                      </div>
-                    </SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </Select>
-          </div>
+    <Tabs defaultValue="generate" className="w-full">
+      <TabsList className="grid w-full grid-cols-2 mb-8 bg-card/50 p-1 rounded-xl">
+        <TabsTrigger 
+          value="generate" 
+          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg py-3"
+        >
+          <QrCode className="h-4 w-4" />
+          Generate QR Code
+        </TabsTrigger>
+        <TabsTrigger 
+          value="scan" 
+          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg py-3"
+        >
+          <Camera className="h-4 w-4" />
+          Scan QR Code
+        </TabsTrigger>
+      </TabsList>
 
-          {renderInputFields()}
-
-          <Button onClick={handleGenerate} className="w-full">
-            Generate QR Code
-          </Button>
-        </div>
-
-        {/* Customization Section */}
-        <div className="space-y-4">
-          <Label className="block text-sm font-medium text-gray-700 mb-1">Customize Appearance</Label>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="fgColor" className="text-xs text-muted-foreground">Foreground Color</Label>
-              <Input
-                id="fgColor"
-                type="color"
-                value={fgColor}
-                onChange={(e) => setFgColor(e.target.value)}
-                className="w-full h-10 p-1"
-              />
-            </div>
-            <div>
-              <Label htmlFor="bgColor" className="text-xs text-muted-foreground">Background Color</Label>
-              <Input
-                id="bgColor"
-                type="color"
-                value={bgColor}
-                onChange={(e) => setBgColor(e.target.value)}
-                className="w-full h-10 p-1"
-              />
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="logoUpload" className="text-xs text-muted-foreground">Upload Logo (max 1MB)</Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="logoUpload"
-                type="file"
-                accept="image/png, image/jpeg, image/svg+xml"
-                onChange={handleLogoUpload}
-                ref={fileInputRef}
-                className="text-sm file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
-              />
-              {logoSrc && (
-                <Button onClick={clearLogo} variant="outline" size="sm">Clear</Button>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="bgImageUpload" className="text-xs text-muted-foreground">Background Image (max 1MB)</Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="bgImageUpload"
-                type="file"
-                accept="image/png, image/jpeg, image/svg+xml"
-                onChange={handleBgImageUpload}
-                ref={bgImageInputRef}
-                className="text-sm file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
-              />
-              {bgImageSrc && (
-                <Button onClick={clearBgImage} variant="outline" size="sm">Clear</Button>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="qrCodeSize" className="text-xs text-muted-foreground">QR Code Size (px)</Label>
-            <Input
-              id="qrCodeSize"
-              type="number"
-              value={qrCodeSize}
-              onChange={(e) => setQrCodeSize(Math.max(64, Math.min(1024, parseInt(e.target.value, 10) || 256)))}
-              min="64"
-              max="1024"
-              step="8"
-              className="w-full"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="logoSize" className="text-xs text-muted-foreground">Logo Size (relative to QR)</Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="logoSizeSlider"
-                type="range"
-                min="0.05"
-                max="0.3"
-                step="0.01"
-                value={logoSize}
-                onChange={(e) => setLogoSize(parseFloat(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-                disabled={!logoSrc}
-              />
-              <span className="text-xs text-muted-foreground w-12 text-right">{(logoSize * 100).toFixed(0)}%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {qrValue && (
-        <Card className="mt-6">
-          <CardContent className="p-6 flex flex-col items-center space-y-4">
-            <div 
-              className="p-4 inline-block shadow-md rounded-lg relative overflow-hidden" 
-              style={{ backgroundColor: bgColor }}
-            >
-              {bgImageSrc && (
-                <div 
-                  className="absolute inset-0 bg-cover bg-center opacity-20"
-                  style={{ backgroundImage: `url(${bgImageSrc})` }}
-                />
-              )}
-              <div className="relative">
-                <QRCodeCanvas
-                  id="qrcode-canvas"
-                  value={qrValue}
-                  size={qrCodeSize}
-                  fgColor={fgColor}
-                  bgColor={bgImageSrc ? 'transparent' : bgColor}
-                  level="H"
-                  includeMargin={true}
-                  imageSettings={imageSettings}
-                />
+      <TabsContent value="generate" className="space-y-6">
+        {/* How to Create QR Code Guide */}
+        <Card className="bg-gradient-to-br from-background to-muted/20 border-border/50">
+          <CardContent className="p-6">
+            <h3 className="text-xl font-semibold text-foreground mb-4">How to create a free QR Code</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-sm flex-shrink-0">
+                  1
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground mb-1">Choose your QR Code type</h4>
+                  <p className="text-sm text-muted-foreground">Select the QR Code type that fits your content—for example, a website URL, a phone contact, or a downloadable PDF.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-sm flex-shrink-0">
+                  2
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground mb-1">Add details and customize</h4>
+                  <p className="text-sm text-muted-foreground">Add elements like your brand's primary color, company logo, or a frame with a call-to-action to make your QR Code recognizable and professional.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-sm flex-shrink-0">
+                  3
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground mb-1">Download and share</h4>
+                  <p className="text-sm text-muted-foreground">Choose the format that best fits your use case. Download as PNG for high quality prints or use SVG for scalable graphics.</p>
+                </div>
               </div>
             </div>
-            <Button onClick={handleDownload} variant="outline" className="w-full sm:w-auto">
-              <Download className="mr-2 h-4 w-4" /> Download QR Code
-            </Button>
           </CardContent>
         </Card>
-      )}
-    </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Generator Section */}
+          <Card className="bg-gradient-to-br from-card via-card/95 to-muted/20 border-border/50">
+            <CardContent className="p-6 space-y-4">
+              <div>
+                <Label htmlFor="qrType" className="block text-sm font-medium mb-2">
+                  QR Code Type
+                </Label>
+                <Select value={qrType} onValueChange={(value: QRType) => setQrType(value)}>
+                  <SelectTrigger className="w-full bg-background/50">
+                    <SelectValue placeholder="Select QR type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {qrTypeOptions.map((option) => {
+                      const IconComponent = option.icon;
+                      return (
+                        <SelectItem key={option.value} value={option.value}>
+                          <div className="flex items-center gap-2">
+                            <IconComponent className="h-4 w-4" />
+                            {option.label}
+                          </div>
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {renderInputFields()}
+
+              <Button onClick={handleGenerate} className="w-full bg-primary hover:bg-primary/90">
+                <QrCode className="mr-2 h-4 w-4" />
+                Generate QR Code
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Customization Section */}
+          <Card className="bg-gradient-to-br from-card via-card/95 to-muted/20 border-border/50">
+            <CardContent className="p-6 space-y-4">
+              <Label className="block text-sm font-medium mb-2">Customize Appearance</Label>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="fgColor" className="text-xs text-muted-foreground">Foreground Color</Label>
+                  <Input
+                    id="fgColor"
+                    type="color"
+                    value={fgColor}
+                    onChange={(e) => setFgColor(e.target.value)}
+                    className="w-full h-10 p-1 bg-background/50"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="bgColor" className="text-xs text-muted-foreground">Background Color</Label>
+                  <Input
+                    id="bgColor"
+                    type="color"
+                    value={bgColor}
+                    onChange={(e) => setBgColor(e.target.value)}
+                    className="w-full h-10 p-1 bg-background/50"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="logoUpload" className="text-xs text-muted-foreground mb-2 block">
+                  <Upload className="inline h-3 w-3 mr-1" />
+                  Upload Logo (max 1MB)
+                </Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="logoUpload"
+                    type="file"
+                    accept="image/png, image/jpeg, image/svg+xml"
+                    onChange={handleLogoUpload}
+                    ref={fileInputRef}
+                    className="text-sm bg-background/50"
+                  />
+                  {logoSrc && (
+                    <Button onClick={clearLogo} variant="outline" size="sm">Clear</Button>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="qrCodeSize" className="text-xs text-muted-foreground">QR Code Size (px)</Label>
+                <Input
+                  id="qrCodeSize"
+                  type="number"
+                  value={qrCodeSize}
+                  onChange={(e) => setQrCodeSize(Math.max(64, Math.min(1024, parseInt(e.target.value, 10) || 256)))}
+                  min="64"
+                  max="1024"
+                  step="8"
+                  className="w-full bg-background/50"
+                />
+              </div>
+
+              {logoSrc && (
+                <div>
+                  <Label htmlFor="logoSize" className="text-xs text-muted-foreground">Logo Size ({(logoSize * 100).toFixed(0)}%)</Label>
+                  <Input
+                    id="logoSizeSlider"
+                    type="range"
+                    min="0.05"
+                    max="0.3"
+                    step="0.01"
+                    value={logoSize}
+                    onChange={(e) => setLogoSize(parseFloat(e.target.value))}
+                    className="w-full mt-2"
+                  />
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* QR Code Preview */}
+        {qrValue && (
+          <Card className="bg-gradient-to-br from-card via-card/95 to-muted/20 border-border/50">
+            <CardContent className="p-8 flex flex-col items-center space-y-6">
+              <div 
+                className="p-6 inline-block shadow-2xl rounded-2xl relative overflow-hidden border border-border/20" 
+                style={{ backgroundColor: bgColor }}
+              >
+                <div className="relative">
+                  <QRCodeCanvas
+                    id="qrcode-canvas"
+                    value={qrValue}
+                    size={qrCodeSize}
+                    fgColor={fgColor}
+                    bgColor={bgColor}
+                    level="H"
+                    includeMargin={true}
+                    imageSettings={imageSettings}
+                  />
+                </div>
+              </div>
+              <Button onClick={handleDownload} className="bg-primary hover:bg-primary/90 px-8 py-3">
+                <Download className="mr-2 h-5 w-5" />
+                Download High Quality QR Code
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+      </TabsContent>
+
+      <TabsContent value="scan">
+        <QRScanner />
+      </TabsContent>
+    </Tabs>
   );
 };
 
