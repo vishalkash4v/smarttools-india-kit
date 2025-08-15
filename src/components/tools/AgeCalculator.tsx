@@ -1,24 +1,21 @@
 
 import React, { useState, useMemo } from 'react';
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { differenceInYears, differenceInMonths, differenceInDays, isValid, parseISO, format } from 'date-fns';
-import { User, Calendar, Gift } from 'lucide-react';
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { differenceInYears, differenceInMonths, differenceInDays, isValid, format } from 'date-fns';
+import { User, Calendar as CalendarIcon, Gift } from 'lucide-react';
+import { cn } from "@/lib/utils";
 
 const AgeCalculator = () => {
-  const [dob, setDob] = useState<string>('');
-
-  const handleDobChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDob(e.target.value);
-  };
+  const [dob, setDob] = useState<Date>();
 
   const ageResult = useMemo(() => {
     if (!dob) return null;
 
-    const birthDate = parseISO(dob);
-    if (!isValid(birthDate)) return { error: "Invalid date format. Please use YYYY-MM-DD." };
+    const birthDate = dob;
+    if (!isValid(birthDate)) return { error: "Invalid date selected." };
     
     const today = new Date();
     if (birthDate > today) return { error: "Date of birth cannot be in the future." };
@@ -48,10 +45,8 @@ const AgeCalculator = () => {
   }, [dob]);
 
   const handleReset = () => {
-    setDob('');
+    setDob(undefined);
   };
-
-  const todayDateString = format(new Date(), 'yyyy-MM-dd');
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
@@ -67,22 +62,46 @@ const AgeCalculator = () => {
       </div>
 
       {/* Main Calculator Card */}
-      <Card className="border-0 shadow-xl bg-white">
+      <Card className="glass-card shadow-xl">
         <CardContent className="p-8">
           <div className="space-y-8">
             {/* Date Input */}
-            <div className="space-y-4">
-              <Label htmlFor="dob" className="text-lg font-semibold text-gray-700">
-                Enter Your Date of Birth
-              </Label>
-              <Input
-                id="dob"
-                type="date"
-                value={dob}
-                onChange={handleDobChange}
-                className="h-14 text-lg border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-0"
-                max={todayDateString}
-              />
+            <div className="space-y-6">
+              <div className="text-center space-y-2">
+                <h3 className="text-lg font-semibold gradient-text">
+                  Select Your Date of Birth
+                </h3>
+                <p className="text-muted-foreground text-sm">Choose your birth date from the calendar below</p>
+              </div>
+              
+              <div className="flex justify-center">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="glass"
+                      className={cn(
+                        "w-full max-w-md h-14 text-lg justify-start text-left font-normal border-2",
+                        !dob && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-3 h-5 w-5" />
+                      {dob ? format(dob, "MMMM d, yyyy") : <span>Pick your birth date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 glass-card" align="center">
+                    <Calendar
+                      mode="single"
+                      selected={dob}
+                      onSelect={setDob}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date("1900-01-01")
+                      }
+                      initialFocus
+                      className="pointer-events-auto"
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
 
             {/* Error Display */}
@@ -93,15 +112,17 @@ const AgeCalculator = () => {
             )}
 
             {/* Reset Button */}
-            <div className="flex justify-center">
-              <Button 
-                onClick={handleReset} 
-                variant="outline" 
-                className="h-12 px-8 text-lg border-2 rounded-xl"
-              >
-                Reset
-              </Button>
-            </div>
+            {dob && (
+              <div className="flex justify-center">
+                <Button 
+                  onClick={handleReset} 
+                  variant="glass" 
+                  className="h-12 px-8 text-lg"
+                >
+                  Reset Date
+                </Button>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -110,33 +131,33 @@ const AgeCalculator = () => {
       {ageResult && !ageResult.error && (
         <div className="space-y-6 animate-fade-in">
           {/* Main Age Display */}
-          <Card className="border-0 shadow-xl bg-gradient-to-br from-purple-50 to-pink-50">
+          <Card className="glass-card shadow-xl bg-gradient-to-br from-primary/5 to-accent/5">
             <CardContent className="p-8 text-center">
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-gray-900">Your Age</h2>
+                <h2 className="text-2xl font-bold gradient-text">Your Age</h2>
                 
                 {/* Age Summary */}
-                <div className="text-5xl font-bold text-purple-600">
+                <div className="text-6xl font-bold gradient-text animate-glow-pulse">
                   {ageResult.years}
                 </div>
-                <div className="text-xl text-gray-600">
+                <div className="text-xl text-muted-foreground">
                   years old
                 </div>
                 
                 {/* Detailed Breakdown */}
-                <div className="pt-6 border-t border-purple-200">
+                <div className="pt-6 border-t border-border/30">
                   <div className="grid grid-cols-3 gap-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-gray-900">{ageResult.years}</div>
-                      <div className="text-sm text-gray-600 font-medium">Years</div>
+                    <div className="text-center space-y-2">
+                      <div className="text-3xl font-bold text-foreground">{ageResult.years}</div>
+                      <div className="text-sm text-muted-foreground font-medium">Years</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-gray-900">{ageResult.months}</div>
-                      <div className="text-sm text-gray-600 font-medium">Months</div>
+                    <div className="text-center space-y-2">
+                      <div className="text-3xl font-bold text-foreground">{ageResult.months}</div>
+                      <div className="text-sm text-muted-foreground font-medium">Months</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-gray-900">{ageResult.days}</div>
-                      <div className="text-sm text-gray-600 font-medium">Days</div>
+                    <div className="text-center space-y-2">
+                      <div className="text-3xl font-bold text-foreground">{ageResult.days}</div>
+                      <div className="text-sm text-muted-foreground font-medium">Days</div>
                     </div>
                   </div>
                 </div>
@@ -145,14 +166,16 @@ const AgeCalculator = () => {
           </Card>
           
           {/* Next Birthday Card */}
-          <Card className="border-0 shadow-lg bg-white">
+          <Card className="glass-card shadow-lg hover-lift">
             <CardContent className="p-6">
               <div className="flex items-center justify-center space-x-3">
-                <Gift className="w-6 h-6 text-pink-500" />
+                <div className="p-3 rounded-full bg-gradient-to-br from-primary/20 to-accent/20">
+                  <Gift className="w-6 h-6 text-primary" />
+                </div>
                 <div className="text-center">
-                  <h3 className="text-lg font-semibold text-gray-900">Next Birthday</h3>
-                  <p className="text-gray-600">
-                    <span className="font-bold text-pink-600">{ageResult.daysToNextBirthday}</span> days to go
+                  <h3 className="text-lg font-semibold gradient-text">Next Birthday</h3>
+                  <p className="text-muted-foreground">
+                    <span className="font-bold text-primary">{ageResult.daysToNextBirthday}</span> days to go
                   </p>
                 </div>
               </div>
